@@ -1,9 +1,9 @@
 {
-  "name":"HANS-MD",
-  "description":"Best whatsapp bot created by HANSTECH",
+  "name":"BONIPHACE-MD",
+  "description":"Best whatsapp bot created by BONIPHACE TECH",
   "keywords":["bot","node","baileys","whatsapp"],
   "logo":"https://files.catbox.moe/l1i9o4.jpg",
-  "repository":"https://github.com/Mrhannstz/HANS-MD",
+  "repository":"https://github.com/Mrhanstz/HANS-MD",
   "succes_url":"/",
   "stack":"container",
   "env":{
