@@ -1,1 +1,1 @@
-💥 Auto crash GitHub  wen you fork this repo kama unabisha just try to fork antifork made boy Tanzania developers team ☠️☠️☠️☠️☠️💀💀💀💀
+💥 Auto crash GitHub  wen you this is an antifork made by Tanzania developers team ☠️☠️☠️☠️☠️💀💀💀💀
