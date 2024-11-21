@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const { zokou } = require("../framework/zokou");
 
 zokou({ nomCom: "repo", catégorie:"General", reaction: "✨", nomFichier: __filename }, async (dest, zk, commandeOptions) => {
-  const githubRepo = 'https://api.github.com/repos/HANSTZTECH/HANS-MD';
+  const githubRepo = 'https://api.github.com/repos/Mrhanstz/HANS-MD';
   const img = 'https://files.catbox.moe/3vkm13.jpeg';
 
   try {
