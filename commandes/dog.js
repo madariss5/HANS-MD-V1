@@ -1,12 +1,7 @@
-const {
-   smd
-} = require('../lib')
-smd({
-   cmdname: "dog",
-   desc: "Send videos of randome dogs!",
-   type: "misc",
-   filename: __filename,
-},
+zokou({ nomCom: "dog", categorie: "General" }, async (dest, zk, commandeOptions) => {
+    let { ms, repondre ,prefixe,nomAuteurMessage,mybotpic} = commandeOptions;
+    let { cm } = require(__dirname + "/../framework//zokou");
+
    async (m) => {
       try {
          const fetch = require("node-fetch");
