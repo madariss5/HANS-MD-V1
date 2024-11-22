@@ -25,7 +25,7 @@ zokou({ nomCom: "repo", catégorie:"General", reaction: "✨", nomFichier: __fil
 ᴛʜɪs ɪs* *HANS-MD .*\n sᴜᴘᴘᴏʀᴛ ᴏᴜʀ ᴄʜᴀɴɴᴇʟ *ʙʏ*,  https://whatsapp.com/channel/0029VasiOoR3bbUw5aV4qB31
 
 ╔═━━━━════──────➳
-║╔═━━━━━━━━━━════─━━━━━━─➳
+║╔═━━━━━━════─━━─➳
 ║║ 🗼 *REPOSITORY:* ${data.html_url}
 ║║ 🌟 *STARS:* ${repoInfo.stars}
 ║║ 🧧 *FORKS:* ${repoInfo.forks}
@@ -34,12 +34,12 @@ zokou({ nomCom: "repo", catégorie:"General", reaction: "✨", nomFichier: __fil
 ║║ 👨‍💻 *OWNER:* *HANSTZTECH*
 ║║ 💞 *NAME:* *HANS-MD *
 ║║ 🥰 *ENJOY TO USE HANS MD *
-║╚══━━━━━━━━════─━━━━━━──➳
-║╔═━━━━━━━━━━════─━━━━━━──✰ 
-║║  ╭───────────────➳
-║║  ║✨ MADE BY HANS ✌️😎
-║║  ╰───────────────➳
-║╚══━━━━━━━━━════─━━━━━━──✰ 
+║╚══━━════─━━━──➳
+║╔═━━━━━════─━━━━━━──✰ 
+║║ ╭───────────────➳
+║║ ║✨ MADE BY HANS ✌️😎
+║║ ╰───────────────➳
+║╚══━━━━════─━━━━━━──✰ 
 ╚══━━━━━━━════───➳
  ✰━━━━━━━━━━━━━━━━━━✰`;
 
