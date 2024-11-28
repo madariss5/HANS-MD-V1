@@ -330,8 +330,6 @@ zokou({ nomCom: "del", categorie: 'Group',reaction:"🧹" }, async (dest, zk, co
 
 });
 
-let antiGifStatus = {true}; // Object to store the anti-GIF status per group
-
 zokou({ nomCom: "antilinkgif", categorie: 'Group', reaction: "🚫" }, async (dest, zk, commandeOptions) => {
   const { repondre, verifGroupe, auteurMessage, args, idBot } = commandeOptions;
 
