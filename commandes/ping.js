@@ -13,30 +13,30 @@ zokou(
     const { arg, repondre } = commandeOptions;
     const start = new Date().getTime();
 
-    // Define the bot image URL (smaller image version)
-    const botImageUrl = 'https://files.catbox.moe/l1i9o4.jpg'; // (Update with a smaller image URL if needed)
+    // Define the smaller bot image URL
+    const botImageUrl = 'https://res.cloudinary.com/demo/image/upload/w_300,h_300,c_scale/l1i9o4.jpg'; // Use your resized image URL here
 
     // Measure the end time
     const end = new Date().getTime();
     const ping = end - start;
 
-    // Generate a random reaction value greater than 100
-    const randomReactionValue = Math.floor(Math.random() * 900) + 101; // Random number between 101 and 1000
+    // List of fun and playful emojis for reactions
+    const funEmojis = [
+      '😜', '🤣', '🤪', '😎', '💥', '🎉', '🎈', '🥳', '😇', '👽', '🦄', '🤩', '💃', '🕺', '🍕', '🍟', '🍩', '🧸', '🎮', '🎲',
+      '🎤', '🎧', '🎸', '🎺', '🥁', '🌈', '✨', '🤖', '🦸‍♂️', '🦸‍♀️', '🦹‍♂️', '🦹‍♀️', '😸', '🐱', '🐶', '🐯', '🐨', '🦊', 
+      '🦁', '🦓', '🦒', '🐵', '🐯', '🐒', '🐧', '🦆', '🐦', '🐢', '🦦', '🦋', '🐞', '🦗', '🦜', '🐙', '🦑', '🍀', '🌸', '🌻',
+      '🍉', '🍇', '🍓', '🍍', '🍋', '🍊', '🍒', '🍎', '🍏', '🍒', '🍠', '🍪', '🍫', '🍦', '🥧', '🥨', '🍔', '🌭', '🍗', '🥩', 
+      '🍕', '🍜', '🍲', '🍱', '🍣', '🥘', '🥟', '🍤', '🦞', '🥩', '🍳', '🥓', '🥒', '🧃', '🍺', '🍷', '🍻', '🍸', '🍹', '🥂', 
+      '🥃', '🥤', '🧉', '🍾', '🍶'
+    ];
 
-    // Map random value to an emoji
-    let emojiReaction;
-    if (randomReactionValue < 200) {
-      emojiReaction = '😎'; // Cool emoji for low numbers
-    } else if (randomReactionValue < 500) {
-      emojiReaction = '🔥'; // Fire emoji for mid-range numbers
-    } else {
-      emojiReaction = '🚀'; // Rocket emoji for high numbers
-    }
+    // Select a random fun emoji from the list
+    const randomFunEmoji = funEmojis[Math.floor(Math.random() * funEmojis.length)];
 
-    // Send response with bot image, ping info, and random emoji reaction
+    // Send response with bot image, ping info, and random fun emoji reaction
     await zk.sendMessage(dest, {
-      caption: `*ʜɪ ✌️ ʜᴀɴs-ᴍᴅ-sᴘᴇᴇᴅ-ɪs*\n\`\`\`${ping}\`\`\` *ms*\n*Random Reaction:* ${emojiReaction} (${randomReactionValue})`,
-      image: { url: botImageUrl }, // Attach the bot image
+      caption: `🎉 *THIS IS HANS MD WA BOT IN 2024* 🎉\n\n*💥 ʜɪ ✌️ ʜᴀɴs-ᴍᴅ-sᴘᴇᴇᴇ-ɪs* 💥\n\`\`\`999999999\`\`\` *ms*\n${randomFunEmoji} Let's have fun! 🎉`,
+      image: { url: botImageUrl }, // Attach the resized bot image
     });
   }
 );
