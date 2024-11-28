@@ -133,8 +133,7 @@ async function recupererActionJid(jid) {
   }
 };
 
-
-
+let antiGifStatus = {../set}; // Object to store the anti-GIF status per group
 
 
 module.exports = {
