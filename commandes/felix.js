@@ -18,21 +18,17 @@ zokou({ nomCom: "menu2", categorie: "General" }, async (dest, zk, commandeOption
         mode = "private";
     }
 
-
-    
- cm.map(async (com, index) => {
+    cm.map(async (com, index) => {
         if (!coms[com.categorie])
             coms[com.categorie] = [];
         coms[com.categorie].push(com.nomCom);
     });
 
     moment.tz.setDefault('EAT');
+    const temps = moment().format('HH:mm:ss');
+    const date = moment().format('DD/MM/YYYY');
 
-// Créer une date et une heure en EAT
-const temps = moment().format('HH:mm:ss');
-const date = moment().format('DD/MM/YYYY');
-
-  let infoMsg =  `
+    let infoMsg =  `
 ╭──────────────────☠︎︎
 ┊☠︎╭───*𝐇𝐀𝐍𝐒-𝐌𝐃*────☠︎︎
 ┊⚠︎┊ *𝐔𝐬𝐞𝐫* : ${s.OWNER_NAME}
@@ -42,54 +38,60 @@ const date = moment().format('DD/MM/YYYY');
 ┊⚠︎┊ *𝐑𝐀𝐌* : ${format(os.totalmem() - os.freemem())}/${format(os.totalmem())}
 ┊☠︎︎╰───────────────☠︎︎
 ╰──────────────────☠︎︎ \n\n`;
- 
-    let menuMsg=`  
-  *𝐇𝐀𝐍𝐒 𝐌𝐃 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒*
-`;
+
+    let menuMsg = `*𝐇𝐀𝐍𝐒 𝐌𝐃 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒*\n`;
+
+    let buttonArray = []; // This will store the buttons
 
     for (const cat in coms) {
         menuMsg += `*╭────☠︎︎* *${cat}* *☠︎︎*`;
         for (const cmd of coms[cat]) {
-            menuMsg += `  
-*┊☠➪︎︎* ${cmd}`;
+            menuMsg += `\n*┊☠➪︎︎* ${cmd}`;
+            
+            // Create a button for each command
+            buttonArray.push({
+                buttonText: { displayText: cmd },
+                type: 1,
+                clickAction: { type: "message", text: `${prefixe}${cmd}` } // This sends the command when the button is clicked
+            });
         }
-        menuMsg += `
-*╰═════════════☠︎︎* \n`
+        menuMsg += `\n*╰═════════════☠︎︎* \n`
     }
 
     menuMsg += `
-    ◇          ◇
+◇            ◇
 *—————👊👊👊👊—————*
 
   *𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇*                                         
 *╰═════════════☠︎︎*
 `;
 
-   var lien = mybotpic();
+    var lien = mybotpic();
 
-   if (lien.match(/\.(mp4|gif)$/i)) {
+    // Sending the message with buttons
     try {
-        zk.sendMessage(dest, { video: { url: lien }, caption:infoMsg + menuMsg, footer: "Je suis *Zokou-MD*, développé par Djalega++" , gifPlayback : true }, { quoted: ms });
-    }
-    catch (e) {
+        if (lien.match(/\.(mp4|gif)$/i)) {
+            zk.sendMessage(dest, {
+                video: { url: lien },
+                caption: infoMsg + menuMsg,
+                footer: "Je suis *Zokou-MD*, développé par Djalega++",
+                gifPlayback: true,
+                buttons: buttonArray
+            }, { quoted: ms });
+        }
+        else if (lien.match(/\.(jpeg|png|jpg)$/i)) {
+            zk.sendMessage(dest, {
+                image: { url: lien },
+                caption: infoMsg + menuMsg,
+                footer: "*popkid*",
+                buttons: buttonArray
+            }, { quoted: ms });
+        } 
+        else {
+            repondre(infoMsg + menuMsg, { buttons: buttonArray });
+        }
+    } catch (e) {
         console.log("🥵🥵 Menu erreur " + e);
         repondre("🥵🥵 Menu erreur " + e);
     }
-} 
-// Vérification pour .jpeg ou .png
-else if (lien.match(/\.(jpeg|png|jpg)$/i)) {
-    try {
-        zk.sendMessage(dest, { image: { url: lien }, caption:infoMsg + menuMsg, footer: "*popkid*" }, { quoted: ms });
-    }
-    catch (e) {
-        console.log("🥵🥵 Menu erreur " + e);
-        repondre("🥵🥵 Menu erreur " + e);
-    }
-} 
-else {
-    
-    repondre(infoMsg + menuMsg);
-    
-}
-
 });
