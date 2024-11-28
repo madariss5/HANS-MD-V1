@@ -1,42 +1,35 @@
 const { zokou } = require("../framework/zokou");
 const moment = require("moment-timezone");
 const { default: axios } = require('axios');
+//const conf = require('../set');
+const { random } = require('lodash'); // Import random function for random reactions
 
-zokou(
-  {
+zokou({
     nomCom: 'ping',
     desc: 'To check ping',
     Categorie: 'General',
-    fromMe: 'true',
-  },
-  async (dest, zk, commandeOptions) => {
-    const { arg, repondre } = commandeOptions;
+    reaction: '🚀', 
+    fromMe: 'true', 
+},
+async (dest, zk, commandeOptions) => {
+    const { ms, arg, repondre } = commandeOptions;
     const start = new Date().getTime();
 
-    // Define the smaller bot image URL
-    const botImageUrl = 'https://res.cloudinary.com/demo/image/upload/w_300,h_300,c_scale/l1i9o4.jpg'; // Use your resized image URL here
+    // Randomly select one of the reactions from a list
+    const reactions = ['🚀', '⚡', '🔥', '🌐', '💨', '🚀✨'];
+    const randomReaction = reactions[random(0, reactions.length - 1)];
 
-    // Measure the end time
+    // Calculate a random ping speed between 50 and 200 ms
+    const randomPing = random(50, 200);
+
+    // Simulate response with random ping speed and reaction
+    await repondre(`*ʜɪ ✌️ ʜᴀɴs-ᴍᴅ-sᴘᴇᴇᴅ-ɪs*\n\`\`\`${randomPing} ms\`\`\` *ᴍ/s*`);
+
     const end = new Date().getTime();
-    const ping = end - start;
 
-    // List of fun and playful emojis for reactions
-    const funEmojis = [
-      '😜', '🤣', '🤪', '😎', '💥', '🎉', '🎈', '🥳', '😇', '👽', '🦄', '🤩', '💃', '🕺', '🍕', '🍟', '🍩', '🧸', '🎮', '🎲',
-      '🎤', '🎧', '🎸', '🎺', '🥁', '🌈', '✨', '🤖', '🦸‍♂️', '🦸‍♀️', '🦹‍♂️', '🦹‍♀️', '😸', '🐱', '🐶', '🐯', '🐨', '🦊', 
-      '🦁', '🦓', '🦒', '🐵', '🐯', '🐒', '🐧', '🦆', '🐦', '🐢', '🦦', '🦋', '🐞', '🦗', '🦜', '🐙', '🦑', '🍀', '🌸', '🌻',
-      '🍉', '🍇', '🍓', '🍍', '🍋', '🍊', '🍒', '🍎', '🍏', '🍒', '🍠', '🍪', '🍫', '🍦', '🥧', '🥨', '🍔', '🌭', '🍗', '🥩', 
-      '🍕', '🍜', '🍲', '🍱', '🍣', '🥘', '🥟', '🍤', '🦞', '🥩', '🍳', '🥓', '🥒', '🧃', '🍺', '🍷', '🍻', '🍸', '🍹', '🥂', 
-      '🥃', '🥤', '🧉', '🍾', '🍶'
-    ];
-
-    // Select a random fun emoji from the list
-    const randomFunEmoji = funEmojis[Math.floor(Math.random() * funEmojis.length)];
-
-    // Send response with bot image, ping info, and random fun emoji reaction
-    await zk.sendMessage(dest, {
-      caption: `🎉 *THIS IS HANS MD WA BOT IN 2024* 🎉\n\n*💥 ʜɪ ✌️ ʜᴀɴs-ᴍᴅ-sᴘᴇᴇᴇ-ɪs* 💥\n\`\`\`999999999\`\`\` *ms*\n${randomFunEmoji} Let's have fun! 🎉`,
-      image: { url: botImageUrl }, // Attach the resized bot image
+    // Send a message with the ping calculation
+    await zokou.sendMessage('*Pong!*\n```' + (end - start) + ' ms```', {
+        image: 'https://files.catbox.moe/l1i9o4.jpg', // Image URL as requested
+        caption: randomReaction, // Add the random reaction to the message
     });
-  }
-);
+});
