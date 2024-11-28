@@ -1,0 +1,44 @@
+const { zokou } = require("../framework/zokou");
+let antiTagActive = false; // Variable to store the state of the anti-tag system
+
+zokou({
+  nomCom: "antitag",
+  categorie: "General",
+  reaction: "🚫"
+}, async (origineMessage, zk, commandeOptions) => {
+  const { ms, arg } = commandeOptions;
+
+  // Check if the command has an argument to toggle anti-tag
+  if (arg[0]) {
+    const action = arg[0].toLowerCase();
+    if (action === "on") {
+      antiTagActive = true;
+      await zk.sendMessage(origineMessage, "La commande anti-tag est activée.");
+      return;
+    } else if (action === "off") {
+      antiTagActive = false;
+      await zk.sendMessage(origineMessage, "La commande anti-tag est désactivée.");
+      return;
+    }
+  }
+
+  // Check if anti-tag is enabled
+  if (!antiTagActive) {
+    await zk.sendMessage(origineMessage, "La commande anti-tag est actuellement désactivée.");
+    return;
+  }
+
+  // Check for a tag in the message
+  if (ms.message.extendedTextMessage && ms.message.extendedTextMessage.contextInfo) {
+    const mentionedJids = ms.message.extendedTextMessage.contextInfo.mentionedJid || [];
+    const ownerJid = "owner_number@s.whatsapp.net"; // Replace 'owner_number' with the actual owner's number
+
+    if (mentionedJids.includes(ownerJid)) {
+      // Send warning message
+      await zk.sendMessage(origineMessage.key.remoteJid, {
+        text: "⚠️ DON'T TAG MY OWNER!",
+        mentions: [origineMessage.key.participant],
+      });
+    }
+  }
+});
