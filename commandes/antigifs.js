@@ -1,5 +1,5 @@
 const { zokou } = require("../framework/zokou");
-const { ajouterOuMettreAJourJid, mettreAJourAction, verifierEtatJid } = require("../bdd/antilien");
+const { ajouterOuMettreAJourJid, mettreAJourAction, verifierEtatJid } = require("../bdd/antigifm");
 const { Sticker, StickerTypes } = require('wa-sticker-formatter'); 
 const { default: axios } = require('axios');
 
