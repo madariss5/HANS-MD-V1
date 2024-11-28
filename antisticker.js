@@ -1,4 +1,4 @@
-const { verifierEtatJid, ajouterOuMettreAJourJid, mettreAJourAction } = require('./commndes'); // Replace with your database integration
+const { verifierEtatJid, ajouterOuMettreAJourJid, mettreAJourAction } = require('./commandes'); // Replace with your database integration
 
 /**
  * Command Handler for Antisticker
