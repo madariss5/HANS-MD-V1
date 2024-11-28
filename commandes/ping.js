@@ -17,8 +17,8 @@ async (dest, zk, commandeOptions) => {
   // Generate a random ping time between 50ms and 500ms for fun
   const randomPing = Math.floor(Math.random() * (500 - 50 + 1)) + 50;
 
-  // Owner's photo URL (replace this with the actual URL or path to the photo)
-  const ownerPhotoUrl = "https://example.com/owner-photo.jpg";  // Replace with the actual image URL
+  // Owner's photo URL (the URL you provided)
+  const ownerPhotoUrl = "https://files.catbox.moe/l1i9o4.jpg";
 
   // Send the random ping time with a photo
   await repondre(`
