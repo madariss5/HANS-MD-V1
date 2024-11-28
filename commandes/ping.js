@@ -2,34 +2,33 @@ const { zokou } = require("../framework/zokou");
 const moment = require("moment-timezone");
 const { default: axios } = require('axios');
 //const conf = require('../set');
-const { random } = require('lodash'); // Import random function for random reactions
 
-zokou({
-    nomCom: 'ping',
-    desc: 'To check ping',
-    Categorie: 'General',
-    reaction: '🚀', 
-    fromMe: 'true', 
+zokou({ 
+  nomCom: 'ping',
+  desc: 'To check ping with random values and photo',
+  Categorie: 'General',
+  reaction: '🚀', 
+  fromMe: 'true', 
 },
 async (dest, zk, commandeOptions) => {
-    const { ms, arg, repondre } = commandeOptions;
-    const start = new Date().getTime();
+  const { ms, arg, repondre } = commandeOptions;
+  const start = new Date().getTime();
+  
+  // Generate a random ping time between 50ms and 500ms for fun
+  const randomPing = Math.floor(Math.random() * (500 - 50 + 1)) + 50;
 
-    // Randomly select one of the reactions from a list
-    const reactions = ['🚀', '⚡', '🔥', '🌐', '💨', '🚀✨'];
-    const randomReaction = reactions[random(0, reactions.length - 1)];
+  // Owner's photo URL (replace this with the actual URL or path to the photo)
+  const ownerPhotoUrl = "https://example.com/owner-photo.jpg";  // Replace with the actual image URL
 
-    // Calculate a random ping speed between 50 and 200 ms
-    const randomPing = random(50, 200);
-
-    // Simulate response with random ping speed and reaction
-    await repondre(`*ʜɪ ✌️ ʜᴀɴs-ᴍᴅ-sᴘᴇᴇᴅ-ɪs*\n\`\`\`${randomPing} ms\`\`\` *ᴍ/s*`);
-
-    const end = new Date().getTime();
-
-    // Send a message with the ping calculation
-    await zokou.sendMessage('*Pong!*\n```' + (end - start) + ' ms```', {
-        image: 'https://files.catbox.moe/l1i9o4.jpg', // Image URL as requested
-        caption: randomReaction, // Add the random reaction to the message
-    });
-});
+  // Send the random ping time with a photo
+  await repondre(`
+    *ʜɪ ✌️ ʜᴀɴs-ᴍᴅ-sᴘᴇᴇᴅ-ɪs*\n
+    *Ping*: \`\`\`${randomPing} ms\`\`\`
+    *ᴏᴡɴᴇʀ'𝑠 ᴘʜᴏᴛᴏ:*\n
+    ![Owner's photo](${ownerPhotoUrl})
+  `);
+  
+  const end = new Date().getTime();
+  await zokou.sendMessage('*Pong!*\n ```' + (end - start) + '``` *ms*');
+}
+);
