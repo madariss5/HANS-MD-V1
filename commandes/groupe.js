@@ -330,6 +330,49 @@ zokou({ nomCom: "del", categorie: 'Group',reaction:"🧹" }, async (dest, zk, co
 
 });
 
+zokou({ nomCom: "antilinkgif", categorie: 'Group', reaction: "🚫" }, async (dest, zk, commandeOptions) => {
+  const { ms, repondre, verifGroupe, idBot, msgRepondu, verifAdmin, superUser } = commandeOptions;
+
+  if (!verifGroupe) {
+    return repondre("This command only works in group chats.");
+  }
+
+  try {
+    // Check if the bot has admin rights
+    const groupeInfo = await zk.groupMetadata(dest);
+    const botIsAdmin = groupeInfo.participants.some(p => p.id === idBot && p.admin !== null);
+
+    if (!botIsAdmin) {
+      return repondre("I need admin rights to perform this action.");
+    }
+
+    // Monitor all incoming messages for GIFs
+    zk.on("message-new", async (message) => {
+      const { mimetype, fromMe, isGroup, participant } = message;
+
+      // Ignore messages that are not in groups or sent by the bot
+      if (!isGroup || fromMe) return;
+
+      // Check for GIFs or animated media
+      if (mimetype === "image/gif" || (mimetype === "video/mp4" && message.isAnimated)) {
+        const key = {
+          remoteJid: dest,
+          id: message.key.id,
+          fromMe: false,
+          participant: participant,
+        };
+
+        // Delete the detected GIF
+        await zk.sendMessage(dest, { delete: key });
+        repondre("GIFs are not allowed in this group and have been deleted.");
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    repondre("An error occurred while trying to enable the anti-GIF system.");
+  }
+});
+
 zokou({ nomCom: "info", categorie: 'Group' }, async (dest, zk, commandeOptions) => {
   const { ms, repondre, verifGroupe } = commandeOptions;
   if (!verifGroupe) { repondre("order reserved for the group only"); return };
