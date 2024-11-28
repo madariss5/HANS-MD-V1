@@ -330,46 +330,64 @@ zokou({ nomCom: "del", categorie: 'Group',reaction:"🧹" }, async (dest, zk, co
 
 });
 
+let antiGifStatus = {true}; // Object to store the anti-GIF status per group
+
 zokou({ nomCom: "antilinkgif", categorie: 'Group', reaction: "🚫" }, async (dest, zk, commandeOptions) => {
-  const { ms, repondre, verifGroupe, idBot, msgRepondu, verifAdmin, superUser } = commandeOptions;
+  const { repondre, verifGroupe, auteurMessage, args, idBot } = commandeOptions;
 
   if (!verifGroupe) {
     return repondre("This command only works in group chats.");
   }
 
-  try {
-    // Check if the bot has admin rights
-    const groupeInfo = await zk.groupMetadata(dest);
-    const botIsAdmin = groupeInfo.participants.some(p => p.id === idBot && p.admin !== null);
+  const groupeInfo = await zk.groupMetadata(dest);
+  const botIsAdmin = groupeInfo.participants.some(p => p.id === idBot && p.admin !== null);
+  const isGroupAdmin = groupeInfo.participants.some(p => p.id === auteurMessage && p.admin !== null);
 
-    if (!botIsAdmin) {
-      return repondre("I need admin rights to perform this action.");
+  if (!isGroupAdmin) {
+    return repondre("Only group admins can toggle the anti-GIF system.");
+  }
+
+  if (!botIsAdmin) {
+    return repondre("I need admin rights to manage the anti-GIF system.");
+  }
+
+  // Handle "on" or "off" commands
+  const command = args[0]?.toLowerCase();
+  if (command === "on") {
+    antiGifStatus[dest] = true;
+    return repondre("Anti-GIF system has been activated for this group.");
+  } else if (command === "off") {
+    antiGifStatus[dest] = false;
+    return repondre("Anti-GIF system has been deactivated for this group.");
+  }
+
+  // Inform if no valid command is provided
+  repondre("Use 'on' to activate or 'off' to deactivate the anti-GIF system.");
+});
+
+// Monitor messages to enforce anti-GIF rules
+zk.on("message-new", async (message) => {
+  const { remoteJid: groupId, mimetype, isGroup, fromMe, key } = message;
+
+  // Ignore if the message is not from a group or the anti-GIF system is off
+  if (!isGroup || !antiGifStatus[groupId] || fromMe) return;
+
+  // Detect GIFs or animated videos
+  if (mimetype === "image/gif" || (mimetype === "video/mp4" && message.isAnimated)) {
+    try {
+      const keyToDelete = {
+        remoteJid: groupId,
+        id: key.id,
+        fromMe: false,
+        participant: key.participant,
+      };
+
+      // Delete the GIF message
+      await zk.sendMessage(groupId, { delete: keyToDelete });
+      await zk.sendMessage(groupId, { text: "GIFs are not allowed and have been deleted." });
+    } catch (error) {
+      console.error("Failed to delete GIF:", error);
     }
-
-    // Monitor all incoming messages for GIFs
-    zk.on("message-new", async (message) => {
-      const { mimetype, fromMe, isGroup, participant } = message;
-
-      // Ignore messages that are not in groups or sent by the bot
-      if (!isGroup || fromMe) return;
-
-      // Check for GIFs or animated media
-      if (mimetype === "image/gif" || (mimetype === "video/mp4" && message.isAnimated)) {
-        const key = {
-          remoteJid: dest,
-          id: message.key.id,
-          fromMe: false,
-          participant: participant,
-        };
-
-        // Delete the detected GIF
-        await zk.sendMessage(dest, { delete: key });
-        repondre("GIFs are not allowed in this group and have been deleted.");
-      }
-    });
-  } catch (error) {
-    console.error(error);
-    repondre("An error occurred while trying to enable the anti-GIF system.");
   }
 });
 
