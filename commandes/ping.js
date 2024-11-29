@@ -1,33 +1,25 @@
 const { zokou } = require("../framework/zokou");
-const { default: axios } = require('axios');
+const conf = require('../set'); // Assuming this file contains the owner's number configuration
 
-zokou({ 
-  nomCom: 'ping',
-  desc: 'To check ping with random values and photo',
-  Categorie: 'General',
-  reaction: '🚀', 
-  fromMe: 'true', 
-},
-async (dest, zk, commandeOptions) => {
-  const { repondre } = commandeOptions;
-  
-  // Generate a random ping time between 50ms and 500ms for fun
-  const randomPing = Math.floor(Math.random() * (500 - 50 + 1)) + 50;
+zokou(
+  {
+    nomCom: 'ping',
+    desc: 'To check ping',
+    Categorie: 'General',
+    reaction: '🚀',
+    fromMe: true,
+  },
+  async (dest, zk, commandeOptions) => {
+    const { repondre } = commandeOptions;
 
-  // Owner's photo URL
-  const ownerPhotoUrl = "https://files.catbox.moe/l1i9o4.jpg";  // Updated image URL
+    // Generate a random ping between 50ms and 500ms
+    const randomPing = Math.floor(Math.random() * (500 - 50 + 1)) + 50;
+    const ownerNumber = conf.NUMERO_OWNER; // Owner's number from the configuration file
 
-  // Send the random ping time with a photo
-  await repondre(`
-    *ʜɪ ✌️ ʜᴀɴs-ᴍᴅ-sᴘᴇᴇᴅ-ɪs*\n
-    *Ping*: \`\`\`${randomPing} ms\`\`\`
-    *ᴏᴡɴᴇʀ'𝑠 ᴘʜᴏᴛᴏ:*\n
-    ![Owner's photo](${ownerPhotoUrl})
-  `);
-  
-  // Send the ping calculation response
-  const start = new Date().getTime();
-  const end = new Date().getTime();
-  await zokou.sendMessage('*Pong!*\n ```' + (end - start) + '``` *ms*');
-}
+    await repondre(
+      `*Hi ✌️*\n` +
+      `*Hans-MD-Speed is:* \`\`\`${randomPing}\`\`\` *ms*\n` +
+      `*@${ownerNumber}, Pong!*`
+    );
+  }
 );
