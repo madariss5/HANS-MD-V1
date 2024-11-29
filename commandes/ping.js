@@ -16,10 +16,32 @@ zokou(
     const randomPing = Math.floor(Math.random() * (500 - 50 + 1)) + 50;
     const ownerNumber = conf.NUMERO_OWNER; // Owner's number from the configuration file
 
-    await repondre(
-      `*Hi ✌️*\n` +
-      `*Hans-MD-Speed is:* \`\`\`${randomPing}\`\`\` *ms*\n` +
-      `*@${ownerNumber}, Pong!*`
-    );
+    // Construct the message with a button to contact the owner
+    await zk.sendMessage(dest.chat, {
+      text: `*Hi ✌️*\n` +
+            `*Hans-MD-Speed is:* \`\`\`${randomPing}\`\`\` *ms*\n` +
+            `*Pong!*\n\n` +
+            `Need assistance? Contact the owner below:`,
+      buttons: [
+        {
+          buttonId: 'contact_owner',
+          buttonText: { displayText: '📞 Contact Owner' },
+          type: 1,
+        },
+      ],
+      footer: 'Hans-MD',
+      mentions: [ownerNumber],
+    });
+
+    // Handle button interaction (if supported by your framework)
+    zk.on('buttonResponse', async (buttonResponse) => {
+      if (buttonResponse.buttonId === 'contact_owner') {
+        await zk.sendContact(dest.chat, {
+          name: 'Owner',
+          number: ownerNumber,
+          profilePic: await zk.getProfilePicture(ownerNumber), // Fetch owner DP if supported
+        });
+      }
+    });
   }
 );
