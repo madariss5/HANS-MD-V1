@@ -1,47 +1,28 @@
 const { zokou } = require("../framework/zokou");
-const conf = require('../set'); // Assuming this file contains the owner's number configuration
+const moment = require("moment-timezone");
+const { default: axios } = require('axios');
+const conf = require('../set'); // Assuming this file contains the owner number or other configuration.
 
-zokou(
-  {
+// Command to check ping
+zokou({
     nomCom: 'ping',
     desc: 'To check ping',
     Categorie: 'General',
     reaction: '🚀',
-    fromMe: true,
-  },
-  async (dest, zk, commandeOptions) => {
-    const { repondre } = commandeOptions;
+    fromMe: 'true',
+},
+async (dest, zk, commandeOptions) => {
+    const { ms, arg, repondre } = commandeOptions;
+    const { start } = new Date().getTime();
 
-    // Generate a random ping between 50ms and 500ms
-    const randomPing = Math.floor(Math.random() * (500 - 50 + 1)) + 50;
-    const ownerNumber = conf.NUMERO_OWNER; // Owner's number from the configuration file
+    // Respond with speed info
+    repondre(`*ʜɪ ✌️ ʜᴀɴs-ᴍᴅ-sᴘᴇᴇᴅ-ɪs*\n \`\`\`+0700\`\`\` *ᴍ/s*`);
+    
+    const { end } = new Date().getTime();
 
-    // Construct the message with a button to contact the owner
-    await zk.sendMessage(dest.chat, {
-      text: `*Hi ✌️*\n` +
-            `*Hans-MD-Speed is:* \`\`\`${randomPing}\`\`\` *ms*\n` +
-            `*Pong!*\n\n` +
-            `Need assistance? Contact the owner below:`,
-      buttons: [
-        {
-          buttonId: 'contact_owner',
-          buttonText: { displayText: '📞 Contact Owner' },
-          type: 1,
-        },
-      ],
-      footer: 'Hans-MD',
-      mentions: [ownerNumber],
-    });
+    // Send the response with the ping in ms
+    await zokou.sendMessage(`*Pong!*\n \`\`\` ${end - start} \`\`\` *ms*`);
 
-    // Handle button interaction (if supported by your framework)
-    zk.on('buttonResponse', async (buttonResponse) => {
-      if (buttonResponse.buttonId === 'contact_owner') {
-        await zk.sendContact(dest.chat, {
-          name: 'Owner',
-          number: ownerNumber,
-          profilePic: await zk.getProfilePicture(ownerNumber), // Fetch owner DP if supported
-        });
-      }
-    });
-  }
-);
+    // Include the owner's number in the response
+    await zokou.sendMessage(`*Owner Number* : 😎 @${conf.NUMERO_OWNER}`);
+});
