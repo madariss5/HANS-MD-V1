@@ -34,6 +34,12 @@ zokou({ nomCom: "repo", catégorie:"General", reaction: "✨", nomFichier: __fil
 ║║ 👨‍💻 *OWNER:* *HANSTZTECH*
 ║║ 💞 *NAME:* *HANS-MD *
 ║║ 🥰 *ENJOY TO USE HANS MD *
+║║   
+║║   *HANSTZ CONTACTS NUMBERS*
+║║ > https://wa.me/255692540143
+║║ > https://wa.me/255756530143
+║║ > https://wa.me/255760774888
+║║
 ║╚══━━════─━━━──➳
 ║╔═━━━━━════─━━━━━━──✰ 
 ║║ ╭───────────────➳
