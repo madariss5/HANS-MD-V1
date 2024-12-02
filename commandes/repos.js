@@ -22,7 +22,7 @@ zokou({ nomCom: "repo", catégorie:"General", reaction: "✨", nomFichier: __fil
       const lastUpdateDate = new Date(data.updated_at).toLocaleDateString('en-GB');
 
       const gitdata = `*ʜᴇʟʟᴏᴡ ᴡʜᴀᴛsᴀᴀᴘ ᴜsᴇʀ
-ᴛʜɪs ɪs* *HANS-MD .*\n sᴜᴘᴘᴏʀᴛ ᴏᴜʀ ᴄʜᴀɴɴᴇʟ *ʙʏ*,  https://whatsapp.com/channel/0029VasiOoR3bbUw5aV4qB31
+ᴛʜɪs ɪs* *HANS-MD .*\n sᴜᴘᴘᴏʀᴛ ᴏᴜʀ ᴄʜᴀɴɴᴇʟ *ʙʏ*,  https://whatsapp.com/channel/0029Vav3hzmCsU9JziuwwJ02
 
 ╔═━━━━════──────➳
 ║╔═━━━━━━════─━━─➳
