@@ -69,7 +69,7 @@ zokou({ nomCom: 'channel',
   async (dest, zk, commandeOptions) => {
     const { ms, arg, repondre } = commandeOptions;
 
-                 await repondre(`Support Here My Owner By Follow This Channel Please :https://whatsapp.com/channel/0029VasiOoR3bbUw5aV4qB31`) 
+                 await repondre(`Support Here My Owner By Follow This Channel Please :https://whatsapp.com/channel/0029Vav3hzmCsU9JziuwwJ02`) 
 
    
 
@@ -89,7 +89,9 @@ zokou({ nomCom: 'chatme',
   async (dest, zk, commandeOptions) => {
     const { ms, arg, repondre } = commandeOptions;
 
-                 await repondre(`*Tap Here To Chat with HANSTZ * https://wa.me/255760774888`) 
+                 await repondre(`*Tap Here To Chat with HANSTZ * > https://wa.me/255692540143
+> https://wa.me/255756530143
+> https://wa.me/255760774888`) 
 
    
 
@@ -219,10 +221,10 @@ zokou({ nomCom: 'problem',
 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 ❶ || Creator = 𖥘 HANS TZ 𖥘
 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬
-❷ || WhattsApp Channel = https://whatsapp.com/channel/0029VasiOoR3bbUw5aV4qB31
+❷ || WhattsApp Channel = https://whatsapp.com/channel/0029Vav3hzmCsU9JziuwwJ02
 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 Please Follow My Githubu
-✌️ https://github.com/HANSTZTECH
+✌️ https://github.com/Mrhanstz
 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 ©*2025-2099 HANS TECH_*`) 
 
