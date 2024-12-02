@@ -34,7 +34,7 @@ const temps = moment().format('HH:mm:ss');
 const date = moment().format('DD/MM/YYYY');
 
   let infoMsg =  `
-✰━━━════──⊷──════━━━✰
+✰━━━════──⊷──═══━━✰
  *INFORMATION ABOUT HANSTZ* 
 ✰━━━➳════⊷════━━━━✰
 
@@ -42,10 +42,12 @@ const date = moment().format('DD/MM/YYYY');
 > https://github.com/HANSTZTECH
 
 *FOR DEVELOPER T.ME*
+> https://wa.me/255692540143
+> https://wa.me/255756530143
 > https://wa.me/255760774888
 
 *WHATSAPP CHANNEL*
-> https://whatsapp.com/channel/0029VasiOoR3bbUw5aV4qB31 
+> https://whatsapp.com/channel/0029Vav3hzmCsU9JziuwwJ02 
 
 *FOR MORE INFO TAP ON THE LINK BELOW*
 > https://github.com/HANSTZTECH/HANS-MD
