@@ -16,7 +16,7 @@ async (dest, zk, commandeOptions) => {
     const { start } = new Date().getTime();
 
     // Respond with speed info
-    repondre(`*ʜɪ ✌️ ʜᴀɴs-ᴍᴅ-sᴘᴇᴇᴅ-ɪs*\n \`\`\`+0700\`\`\` *ᴍ/s*`);
+    repondre(`*ʜɪ ✌️ ʜᴀɴs-ᴍᴅ-sᴘᴇᴇᴅ-ɪs*\n \`\`\`${ping}\`\`\` *ᴍ/s*`);
     
     const { end } = new Date().getTime();
 
