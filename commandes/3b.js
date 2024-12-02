@@ -148,7 +148,7 @@ zokou({
           'video': {
             'url': _0x1edad2
           },
-          'caption': "*YOUR VIDEO GENERATING BY LUCKY MD*",
+          'caption': "*HI YOUR VIDEO SUCCESSFULY DOWNLOADED BY HANS TZ*",
           'mimetype': "video/mp4"
         }, {
           'quoted': _0x38072b
