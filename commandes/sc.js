@@ -50,7 +50,7 @@ const date = moment().format('DD/MM/YYYY');
 > https://whatsapp.com/channel/0029Vav3hzmCsU9JziuwwJ02 
 
 *FOR MORE INFO TAP ON THE LINK BELOW*
-> https://github.com/HANSTZTECH/HANS-MD
+> https://github.com/Mrhanstz/HANS-MD
 ╭──━━━━═════════━━━━❖
 ┃ ✰━━━════════━━━━✰
 ┃▓▒⁠⁠⁠⁠ *RAM* : ${format(os.totalmem() - os.freemem())}/${format(os.totalmem())}
