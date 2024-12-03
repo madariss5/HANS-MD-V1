@@ -48,10 +48,10 @@ zokou(
       }
     });
 
-    // Send video with a URL
+    // Send video with the provided URL
     await zk.sendMessage(dest, {
       video: {
-        url: 'https://files.catbox.moe/76oo5l.mp4' // Replace with your actual video URL
+        url: 'https://files.catbox.moe/76oo5l.mp4' // Provided video URL
       },
       caption: '*Here is a response video to your ping test!*'
     });
