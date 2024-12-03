@@ -1,16 +1,6 @@
 const {
   zokou
 } = require("./../framework/zokou");
-const {
-  format,
-  runtime
-} = require('../framework/mesfonctions');
-const os = require('os');
-const speed = require('performance-now');
-const {
-  performance
-} = require('perf_hooks');
-const conf = require('../set');
 
 zokou(
   {
@@ -25,19 +15,26 @@ zokou(
       ms, arg, repondre
     } = commandOptions;
 
-    // Start timing
-    const start = new Date().getTime();
+    // Generate a random ping value between 10ms and 1000ms
+    const ping = Math.floor(Math.random() * (1000 - 10 + 1)) + 10;
 
-    // Calculate ping
-    const end = new Date().getTime();
-    const ping = end - start;
+    // Check if the message contains a tag to the bot/number
+    const mentioned = commandOptions.mentions || []; // Get all mentions in the message
+    let userDpUrl = ''; // Default empty string in case no mention is found
 
-    // Send video with ping details in the caption
+    // If the user tagged someone (your bot or number), get their profile photo (DP)
+    if (mentioned.length > 0) {
+      const user = mentioned[0]; // Assuming only one mention is made
+      const userProfile = await zk.getProfilePicture(user.id); // Fetch user DP
+      userDpUrl = userProfile || ''; // If a profile picture is found, use it
+    }
+
+    // Send video with ping details and user's DP (if tagged)
     const msg = await zk.sendMessage(dest, {
       video: {
         url: 'https://files.catbox.moe/76oo5l.mp4' // Provided video URL
       },
-      caption: `*𝑷𝒊𝒏𝒈 𝑻𝒆𝒔𝒕*\n\n*𝑺𝒑𝒆𝒆𝒅: ${ping} 𝑴𝑺*\n\n*Here is a response video for your ping test!*`
+      caption: `*𝑷𝒊𝒏𝒈 𝑻𝒆𝒔𝒕*\n\n*𝑺𝒑𝒆𝒆𝒅:${ping}𝑴𝑺*\n\n*Here is a response video for your ping test!*\n\n${userDpUrl ? `*User's DP:* ${userDpUrl}` : ''}`
     });
 
     // React to the message containing the video
