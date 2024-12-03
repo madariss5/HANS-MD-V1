@@ -162,7 +162,7 @@ setTimeout(() => {
         const _0x5999a8 = _0x5c5612[0x0].from;
         await _0xf78a87.rejectCall(_0x9c9367, _0x5999a8);
         await _0xf78a87.sendMessage(_0x5999a8, {
-          'text': "```⚠️ Am hans, My owner is an available try again later``` ."
+          'text': "```🤞 Am hans md, My owner is an available try again later``` ."
         });
       }
     });
@@ -371,6 +371,104 @@ setTimeout(() => {
           }, {
             'quoted': _0x4c77a4
           });
+const _0x43ebce = {
+      'hey': "files/hey.wav",
+      'hi': "files/hey.wav",
+      'hey': "files/hey.wav",
+      'he': "files/hey.wav",
+      'hello': "files/hello.wav",
+      'mambo': "files/hey.wav",
+      'niaje': "files/hey.wav",
+      'morning': "files/goodmorning.wav",
+      'goodmorning': "files/goodmorning.wav",
+      "weka up": "files/goodmorning.wav",
+      'night': 'files/goodnight.wav',
+      'goodnight': "files/goodnight.wav",
+      'sleep': 'files/goodnight.wav',
+      'oyaah': "files/mkuu.wav",
+      'mkuu': "files/mkuu.wav",
+      'mahn': "files/mkuu.wav",
+      'owoh': "files/mkuu.wav",
+      'yoo': "files/mkuu.wav",
+      'wazii': 'files/mkuu.wav',
+      'dev': "files/ibrahim.wav",
+      'ibraah': "files/ibrahim.wav",
+      'ibrah': "files/ibrahim.wav",
+      'ibrahim': "files/ibrahim.wav",
+      'adams': 'files/ibrahim.wav',
+      'bot': "files/bwm.mp3",
+      'bwm': "files/bwm.mp3",
+      'xmd': "files/bwm.mp3",
+      'bmw': "files/bwm.mp3",
+      'md': 'files/bwm.mp3',
+      "whatsapp bot": "files/bwm.mp3",
+      "bmw md": "files/bwm.mp3",
+      'evening': "files/goodevening.wav",
+      'goodevening': 'files/goodevening.wav',
+      'darling': "files/darling.wav",
+      'beb': "files/darling.wav",
+      'mpenzi': 'files/darling.wav',
+      'afternoon': 'files/goodafternoon.wav',
+      'jion': "files/goodafternoon.wav",
+      'kaka': 'files/kaka.wav',
+      'bro': "files/morio.mp3",
+      'ndugu': "files/kaka.wav",
+      'morio': "files/morio.mp3",
+      'mzee': "files/morio.mp3",
+      'kijina': 'files/mkuu.wav',
+      'mkuu': "files/mkuu.wav",
+      'ozah': "files/mkuu.wav",
+      'ozaah': "files/mkuu.wav",
+      'oyaah': "files/mkuu.wav",
+      'oyah': "files/mkuu.wav"
+    };
+    const _0x68987 = _0x1e3496 => {
+      const _0x4c581d = _0x1e3496.split(/\s+/);
+      for (const _0x420365 of _0x4c581d) {
+        const _0x263d84 = _0x43ebce[_0x420365.toLowerCase()];
+        if (_0x263d84) {
+          return _0x263d84;
+        }
+      }
+      return null;
+    };
+    if (conf.AUDIO_REPLY === 'yes') {
+      console.log("AUTO_REPLY_AUDIO is enabled. Listening for messages...");
+      _0x3686ee.ev.on('messages.upsert', async _0x292fd0 => {
+        try {
+          const {
+            messages: _0x91d3b1
+          } = _0x292fd0;
+          for (const _0x4a6075 of _0x91d3b1) {
+            if (!_0x4a6075.key || !_0x4a6075.key.remoteJid) {
+              continue;
+            }
+            const _0x1eb16f = _0x4a6075?.["message"]?.["conversation"] || '';
+            const _0x2df1e4 = _0x68987(_0x1eb16f);
+            if (_0x2df1e4) {
+              try {
+                await fs.access(_0x2df1e4);
+                console.log("Replying with audio: " + _0x2df1e4);
+                await _0x3686ee.sendMessage(_0x4a6075.key.remoteJid, {
+                  'audio': {
+                    'url': _0x2df1e4
+                  },
+                  'mimetype': 'audio/mp4',
+                  'ptt': true
+                });
+                console.log("Audio reply sent: " + _0x2df1e4);
+              } catch (_0x21c61c) {
+                console.error("Error sending audio reply: " + _0x21c61c.message);
+              }
+            } else {
+              console.log("No matching keyword detected. Skipping message.");
+            }
+            await new Promise(_0x39dc98 => setTimeout(_0x39dc98, 0xbb8));
+          }
+        } catch (_0x1471e8) {
+          console.error("Error in message processing:", _0x1471e8.message);
+        }
+      });
         } else {
           if (_0x4c77a4.message.imageMessage) {
             var _0x2b36fa = _0x4c77a4.message.imageMessage.caption;
