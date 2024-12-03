@@ -11,7 +11,7 @@ zokou({nomCom:"hans",reaction:"😎",categorie:"IA"},async(dest,zk,commandeOptio
   const {repondre,ms,arg}=commandeOptions;
   
     if(!arg || !arg[0])
-    {return repondre("😎🤏 yes im here....!.")}
+    {return repondre("🫵😅 yes im here....!.")}
     //var quest = arg.join(' ');
   try{
     
