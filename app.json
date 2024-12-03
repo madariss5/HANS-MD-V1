@@ -1,9 +1,9 @@
 {
-  "name":"HANS-MD",
-  "description":"Best whatsapp bot created by HANSTECH",
+  "name":"LUCKY-MD",
+  "description":"Best whatsapp bot created by HANSTZTECH",
   "keywords":["bot","node","baileys","whatsapp"],
   "logo":"https://files.catbox.moe/l1i9o4.jpg",
-  "repository":"https://github.com/Mrhannstz/HANS-MD",
+  "repository":"https://github.com/Mrhanntz/HANS-MD",
   "succes_url":"/",
   "stack":"container",
   "env":{
@@ -27,12 +27,6 @@
     },
     "AUTO_READ_STATUS":
     {
-"AUTO_REPLY":
-    {
-      "description":"Enter yes for your bot to auto reply message when offline",
-      "value":"no",
-      "required":false
-    },
       "description":"Your contact status will be read automatically(type yes to active or no to deactive  ; don't write in capital letter)",
       "value":"yes",
       "required":false
@@ -73,6 +67,7 @@
 	,
     "HEROKU_API_KEY": {
     "description": "insert your heroku api-key (this is optionnal)",
+     "value":"", 
      "required" :false
     },
   "HEROKU_APP_NAME": {
@@ -92,41 +87,41 @@
     
     "desc": "Your Name",
     "required": false,
-    "value": "HANSTZ"
+    "value": "HANS TECH"
   },
     "NUMERO_OWNER":
   {
     
     "desc": "Your number , dont put '+' and put you area code(exemple of togo '228')",
     "required":false,
-    "value": "255760774888"
+    "value": "255756530143"
   },
     "WARN_COUNT":
   {
     "desc": "this is the limit of warn for warning commandes",
     "required": false,
-    "value": "3"
+    "value": "5"
   },
   "STARTING_BOT_MESSAGE":
   {
     "description": "if you don't want startting-bot-message put no else put yes",
     "required": true,
-    "value": "yes"
+    "value": "no"
   },
   "PRESENCE":{
     "description":"Mark your presence: 1 to indicate that you are online even if you are not. 2 to indicate that you are currently typing a message. 3 to indicate that you are currently recording an audio. Or leave the field blank to indicate your real state.",
-    "value":"",
+    "value":"2",
     "required": false
 	  
   },
 	    "AUTO_READ":{
     "description":"Enter yes for auto read messages.",
-    "value":"",
+    "value":"no",
     "required": false
     },
   "ANTI_DELETE_MESSAGE" : {
     "description": "if you want to enable anti delete message put yes else put no",
-    "value": "yes",
+    "value": "no",
         "required": false
   }
   },
@@ -154,4 +149,4 @@
       "plan": "heroku-postgresql:essential-0"
     }
   ]
-}
+  }
