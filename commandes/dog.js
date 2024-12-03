@@ -1,14 +1,30 @@
-zokou({ nomCom: "dog", categorie: "General" }, async (dest, zk, commandeOptions) => {
-    let { ms, repondre ,prefixe,nomAuteurMessage,mybotpic} = commandeOptions;
-    let { cm } = require(__dirname + "/../framework//zokou");
+const { zokou } = require("./../framework/zokou");
 
-   async (m) => {
-      try {
-         const fetch = require("node-fetch");
-         let res = await fetch('https://random.dog/woof.json')
-         let json = await res.json()
-         if (json.status) return await m.reply("*Request Denied!*")
-         m.bot.sendFileUrl(m.jid, json.url, "", m, { author: "Asta-Md" }, "video");
-
-      } catch (e) { m.error(`${e}\n\nCommand: dog`, e, false) }
-   })
+zokou(
+  {
+    nomCom: "randomdog",
+    categorie: "Fun",
+    reaction: "🐕",
+    alias: ["dog", "pup"]
+  },
+  async (dest, zk) => {
+    try {
+      const fetch = require("node-fetch");
+      let res = await fetch("https://random.dog/woof.json");
+      let json = await res.json();
+      
+      // Check if the response contains a valid URL
+      if (json && json.url) {
+        await zk.sendMessage(dest, {
+          video: json.url.endsWith(".mp4") ? { url: json.url } : undefined,
+          image: json.url.endsWith(".jpg") || json.url.endsWith(".png") ? { url: json.url } : undefined,
+          caption: `Powered by Hans | Enjoy this random dog! 🐶`
+        });
+      } else {
+        await zk.sendMessage(dest, { text: "Couldn't fetch a random dog image/video. Try again!" });
+      }
+    } catch (error) {
+      await zk.sendMessage(dest, { text: `Error: ${error.message}` });
+    }
+  }
+);
