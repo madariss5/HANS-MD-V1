@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const { zokou } = require("../framework/zokou");
+const fs = require("fs"); // Import file system module
+const path = require("path"); // Import path module for cross-platform compatibility
 
 zokou({ 
     nomCom: "test", 
@@ -14,18 +16,27 @@ zokou({
     let d = ' by *hanstz Tech⚠️ *';
     let varmess = z + d;
 
-    // Video file path
+    // Video URL
     let videoUrl = 'https://files.catbox.moe/sgtk23.mp4';
 
-    // Audio file path (local)
-    let audioPath = '../media/test.mp3';
+    // Local audio file path
+    let audioPath = path.join(__dirname, "../media/test.mp3");
+
+    // Check if the audio file exists
+    if (!fs.existsSync(audioPath)) {
+        console.error("Audio file not found at:", audioPath);
+        return;
+    }
+
+    // Read the local audio file
+    let audioBuffer = fs.readFileSync(audioPath);
 
     // Send video with caption
     await zk.sendMessage(dest, { video: { url: videoUrl }, caption: varmess });
     console.log("Video message sent successfully!");
 
-    // Send audio from local file
-    await zk.sendMessage(dest, { audio: { url: audioPath }, caption: varmess });
+    // Send audio with caption
+    await zk.sendMessage(dest, { audio: audioBuffer, caption: varmess });
     console.log("Audio message sent successfully!");
 });
 
