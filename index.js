@@ -907,7 +907,7 @@ setTimeout(() => {
           console.log("Commands Installation Completed ✅");
           await _0x4eb9f4();
           if (conf.DP.toLowerCase() === 'yes') {
-            let _0xac2a75 = " ⁠⁠⁠⁠\n╭─────────────━┈⊷ \n│💯 *ᴀɪ ɪs ᴄᴏɴɴᴇᴄᴛᴇᴅ*\n╰─────────────━┈⊷\n│💫 ᴘʀᴇғɪx: *[ " + prefixe + " ]*\n│⭕ ᴍᴏᴅᴇ: *" + _0x1793b6 + "*\n╰─────────────━┈⊷\n\n                \n                \n                 ";
+            let _0xac2a75 = " ⁠⁠⁠⁠\n╭─────────────━┈⊷ \n│🌏 *ʜᴀɴs-ᴍᴅ-ɪs-ᴄᴏɴɴᴇᴄᴛᴇᴅ-ᴏɴ-ʏᴏᴜʀ-ᴡʜᴀᴛsᴀᴘᴘ-ᴋᴇᴇᴘ-sᴛᴀʀᴛ.ᴍᴇɴᴜ ᴏʀ .ᴘɪɴɢ*\n╰─────────────━┈⊷\n│💫 ᴘʀᴇғɪx: *[ " + prefixe + " ]*\n│⭕ ᴍᴏᴅᴇ: *" + _0x1793b6 + "*\n╰─────────────━┈⊷\n\n                \n                \n                 ";
             await _0xf78a87.sendMessage(_0xf78a87.user.id, {
               'text': _0xac2a75
             });
