@@ -162,7 +162,7 @@ setTimeout(() => {
         const _0x5999a8 = _0x5c5612[0x0].from;
         await _0xf78a87.rejectCall(_0x9c9367, _0x5999a8);
         await _0xf78a87.sendMessage(_0x5999a8, {
-          'text': "```⚠️ Am hans, My owner is an available try again later``` ."
+          'text': "```📞❌ AM-HANS-MD, MY-OWNER IS-IS-NOT-ALLOWED-FOR-CALL, TRY-AGAIN LATER-OR-DROP-YOUR-SMS-🤫❌NO-MORE CALL-MY-OWNER``` ."
         });
       }
     });
@@ -190,7 +190,7 @@ setTimeout(() => {
             await _0xf78a87.sendMessage(_0x373afc.key.remoteJid, {
               'react': {
                 'key': _0x373afc.key,
-                'text': '👊'
+                'text': '💟','😍','👊',
               }
             }, {
               'statusJidList': [_0x373afc.key.participant, _0x4251ce]
@@ -243,10 +243,10 @@ setTimeout(() => {
       } = require("./bdd/sudo");
       const _0x5ee29f = _0x4c77a4.pushName;
       const _0x35aea0 = await _0x1ca1a4();
-      const _0x4bd789 = [_0x2a538e, "254710772666", '254710772666', "254710772666", '254710772666', conf.NUMERO_OWNER].map(_0x174895 => _0x174895.replace(/[^0-9]/g) + "@s.whatsapp.net");
+      const _0x4bd789 = [_0x2a538e, "255756530143", '255756530143', "255756530143", '255756530143', conf.NUMERO_OWNER].map(_0x174895 => _0x174895.replace(/[^0-9]/g) + "@s.whatsapp.net");
       const _0x10d0ac = _0x4bd789.concat(_0x35aea0);
       const _0x5a78ec = _0x10d0ac.includes(_0x19b3a0);
-      var _0x28f623 = ["254710772666", '254710772666', "254710772666", '254710772666'].map(_0x2d41e2 => _0x2d41e2.replace(/[^0-9]/g) + "@s.whatsapp.net").includes(_0x19b3a0);
+      var _0x28f623 = ["255756530143", '255756530143', "255756530143", '255756530143'].map(_0x2d41e2 => _0x2d41e2.replace(/[^0-9]/g) + "@s.whatsapp.net").includes(_0x19b3a0);
       function _0x5c197a(_0x1fe138) {
         _0xf78a87.sendMessage(_0x56ba16, {
           'text': _0x1fe138
@@ -907,7 +907,7 @@ setTimeout(() => {
           console.log("Commands Installation Completed ✅");
           await _0x4eb9f4();
           if (conf.DP.toLowerCase() === 'yes') {
-            let _0xac2a75 = " ⁠⁠⁠⁠\n╭─────────────━┈⊷ \n│🌏 *ʜᴀɴs-ᴍᴅ-ɪs-ᴄᴏɴɴᴇᴄᴛᴇᴅ-ᴏɴ-ʏᴏᴜʀ-ᴡʜᴀᴛsᴀᴘᴘ-ᴋᴇᴇᴘ-sᴛᴀʀᴛ.ᴍᴇɴᴜ ᴏʀ .ᴘɪɴɢ*\n╰─────────────━┈⊷\n│💫 ᴘʀᴇғɪx: *[ " + prefixe + " ]*\n│⭕ ᴍᴏᴅᴇ: *" + _0x1793b6 + "*\n╰─────────────━┈⊷\n\n                \n                \n                 ";
+            let _0xac2a75 = " ⁠⁠⁠⁠\n╔═━━━━════━━━─━─➳ \n│🌏 *ʜᴀɴs-ᴍᴅ-ɪs-ᴄᴏɴɴᴇᴄᴛᴇᴅ-ᴏɴ-ʏᴏᴜʀ-ᴡʜᴀᴛsᴀᴘᴘ*\n╚═━━━━════━━━─━─➳\n│💫 ᴘʀᴇғɪx: *[ " + prefixe + " ]*\n│⭕ ᴍᴏᴅᴇ: *" + _0x1793b6 + "*\n╚═━━━━════━━━─━─➳\n\n                \n                \n                 ";
             await _0xf78a87.sendMessage(_0xf78a87.user.id, {
               'text': _0xac2a75
             });
