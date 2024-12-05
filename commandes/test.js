@@ -16,17 +16,25 @@ zokou({
     let d = ' by *hanstz Tech⚠️ *';
     let varmess = z + d;
 
-    // Get user profile picture (DP) URL
-    const profilePicUrl = await zk.getProfilePicture(dest); // Fetch the user's profile picture URL
+    // Fetch user DP (Display Picture)
+    try {
+        const user = await zk.getUser(dest);
+        const dpUrl = user.profilePicUrl; // Get the URL of the user's profile picture
+        
+        if (!dpUrl) {
+            console.error("No profile picture found for the user.");
+            return;
+        }
 
-    if (!profilePicUrl) {
-        console.error("Could not fetch the user's profile picture.");
-        return;
+        // Fetch the image (dpUrl could be a URL)
+        const dpBuffer = await zk.fetch(dpUrl);  // Fetch the image from the URL
+        
+        // Send message with user DP
+        await zk.sendMessage(dest, { image: dpBuffer, caption: varmess });
+        console.log("Message with DP sent successfully!");
+    } catch (error) {
+        console.error("Error fetching DP:", error);
     }
-
-    // Send the user's DP as an image with the message
-    await zk.sendMessage(dest, { image: { url: profilePicUrl }, caption: varmess });
-    console.log("Profile picture sent successfully!");
 });
 
-console.log("mon test avec user profile picture");
+console.log("mon test");
