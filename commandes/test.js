@@ -16,28 +16,17 @@ zokou({
     let d = ' by *hanstz Tech⚠️ *';
     let varmess = z + d;
 
-    // Video URL
-    let videoUrl = 'https://files.catbox.moe/sgtk23.mp4';
+    // Get user profile picture (DP) URL
+    const profilePicUrl = await zk.getProfilePicture(dest); // Fetch the user's profile picture URL
 
-    // Local WAV file path
-    let wavPath = path.join(__dirname, "../media/test.wav");
-
-    // Check if the WAV file exists
-    if (!fs.existsSync(wavPath)) {
-        console.error("WAV file not found at:", wavPath);
+    if (!profilePicUrl) {
+        console.error("Could not fetch the user's profile picture.");
         return;
     }
 
-    // Read the local WAV file
-    let wavBuffer = fs.readFileSync(wavPath);
-
-    // Send video with caption
-    await zk.sendMessage(dest, { video: { url: videoUrl }, caption: varmess });
-    console.log("Video message sent successfully!");
-
-    // Send WAV audio without MIME specification
-    await zk.sendMessage(dest, { audio: wavBuffer });
-    console.log("WAV audio message sent successfully!");
+    // Send the user's DP as an image with the message
+    await zk.sendMessage(dest, { image: { url: profilePicUrl }, caption: varmess });
+    console.log("Profile picture sent successfully!");
 });
 
-console.log("mon test WAV");
+console.log("mon test avec user profile picture");
