@@ -19,29 +19,25 @@ zokou({
     // Video URL
     let videoUrl = 'https://files.catbox.moe/sgtk23.mp4';
 
-    // Local audio file path (WAV format)
-    let audioPath = path.join(__dirname, "../media/test.wav");
+    // Local WAV file path
+    let wavPath = path.join(__dirname, "../media/test.wav");
 
-    // Check if the audio file exists
-    if (!fs.existsSync(audioPath)) {
-        console.error("Audio file not found at:", audioPath);
+    // Check if the WAV file exists
+    if (!fs.existsSync(wavPath)) {
+        console.error("WAV file not found at:", wavPath);
         return;
     }
 
-    // Read the local audio file
-    let audioBuffer = fs.readFileSync(audioPath);
+    // Read the local WAV file
+    let wavBuffer = fs.readFileSync(wavPath);
 
     // Send video with caption
     await zk.sendMessage(dest, { video: { url: videoUrl }, caption: varmess });
     console.log("Video message sent successfully!");
 
-    // Send audio with caption
-    await zk.sendMessage(dest, { 
-        audio: audioBuffer, 
-        mimetype: 'audio/wav', // MIME type for WAV files
-        caption: "Here is your WAV audio file!" 
-    });
-    console.log("Audio message sent successfully!");
+    // Send WAV audio without MIME specification
+    await zk.sendMessage(dest, { audio: wavBuffer });
+    console.log("WAV audio message sent successfully!");
 });
 
-console.log("mon test");
+console.log("mon test WAV");
