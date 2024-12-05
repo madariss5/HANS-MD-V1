@@ -19,8 +19,8 @@ zokou({
     // Video URL
     let videoUrl = 'https://files.catbox.moe/sgtk23.mp4';
 
-    // Local audio file path (M4A format)
-    let audioPath = path.join(__dirname, "../media/test.m4a");
+    // Local audio file path (WAV format)
+    let audioPath = path.join(__dirname, "../media/test.wav");
 
     // Check if the audio file exists
     if (!fs.existsSync(audioPath)) {
@@ -35,8 +35,12 @@ zokou({
     await zk.sendMessage(dest, { video: { url: videoUrl }, caption: varmess });
     console.log("Video message sent successfully!");
 
-    // Send audio with caption (ensure the correct M4A format is sent)
-    await zk.sendMessage(dest, { audio: audioBuffer, mimetype: 'audio/mp4', caption: varmess });
+    // Send audio with caption
+    await zk.sendMessage(dest, { 
+        audio: audioBuffer, 
+        mimetype: 'audio/wav', // MIME type for WAV files
+        caption: "Here is your WAV audio file!" 
+    });
     console.log("Audio message sent successfully!");
 });
 
