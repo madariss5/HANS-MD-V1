@@ -44,7 +44,7 @@ zokou(
       video: {
         url: 'https://files.catbox.moe/c8ke0f.mp4' // Provided video URL
       },
-      caption: `*𝑷𝒊𝒏𝒈 𝑻𝒆𝒔𝒕*\n\n*𝑺𝒑𝒆𝒆𝒅: ${randomPing} 𝑴𝑺*\n\n*Hello 👋 Am Hans md Ma alive 🫵🤫*`
+      caption: `*𝑷𝒊𝒏𝒈 𝑻𝒆𝒔𝒕*\n\n*𝑺𝒑𝒆𝒆𝒅: ${randomPing} 𝑴𝑺*\n\n*Hello 👋 Am Hans md am alive 🫵🤫*`
     });
 
     // React with a random emoji
