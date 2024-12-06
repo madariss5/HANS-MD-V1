@@ -1,1031 +1,2089 @@
-var __createBinding = this && this.__createBinding || (Object.create ? function (_0x2ec542, _0x343352, _0x509ecb, _0x3fbc7a) {
-  if (_0x3fbc7a === undefined) {
-    _0x3fbc7a = _0x509ecb;
-  }
-  var _0x10699e = Object.getOwnPropertyDescriptor(_0x343352, _0x509ecb);
-  if (!_0x10699e || ("get" in _0x10699e ? !_0x343352.__esModule : _0x10699e.writable || _0x10699e.configurable)) {
-    _0x10699e = {
-      'enumerable': true,
-      'get': function () {
-        return _0x343352[_0x509ecb];
-      }
-    };
-  }
-  Object.defineProperty(_0x2ec542, _0x3fbc7a, _0x10699e);
-} : function (_0x5ab263, _0x22ff5c, _0x357afc, _0x53931b) {
-  if (_0x53931b === undefined) {
-    _0x53931b = _0x357afc;
-  }
-  _0x5ab263[_0x53931b] = _0x22ff5c[_0x357afc];
-});
-var __setModuleDefault = this && this.__setModuleDefault || (Object.create ? function (_0x3e8010, _0x206e93) {
-  Object.defineProperty(_0x3e8010, "default", {
-    'enumerable': true,
-    'value': _0x206e93
-  });
-} : function (_0x45b5e0, _0x39e8b4) {
-  _0x45b5e0['default'] = _0x39e8b4;
-});
-var __importStar = this && this.__importStar || function (_0x109aba) {
-  if (_0x109aba && _0x109aba.__esModule) {
-    return _0x109aba;
-  }
-  var _0x2de687 = {};
-  if (_0x109aba != null) {
-    for (var _0x2c671e in _0x109aba) if (_0x2c671e !== "default" && Object.prototype.hasOwnProperty.call(_0x109aba, _0x2c671e)) {
-      __createBinding(_0x2de687, _0x109aba, _0x2c671e);
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+  var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
     }
-  }
-  __setModuleDefault(_0x2de687, _0x109aba);
-  return _0x2de687;
-};
-var __importDefault = this && this.__importDefault || function (_0x1edd0a) {
-  return _0x1edd0a && _0x1edd0a.__esModule ? _0x1edd0a : {
-    'default': _0x1edd0a
-  };
-};
-Object.defineProperty(exports, "__esModule", {
-  'value': true
+    Object.defineProperty(o, k2, desc); 
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
 });
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 const baileys_1 = __importStar(require("@whiskeysockets/baileys"));
-const logger_1 = __importDefault(require("@whiskeysockets/baileys/lib/Utils/logger"));
-const logger = logger_1['default'].child({});
-logger.level = "silent";
+const logger_1 = __importDefault(require("@whiskeysockets/baileys/bdd/Utils/logger"));
+const logger = logger_1.default.child({});
+logger.level = 'silent';
 const pino = require("pino");
-const boom_1 = require('@hapi/boom');
+const boom_1 = require("@hapi/boom");
 const conf = require("./set");
+const axios = require("axios");
+const moment = require("moment-timezone");
 let fs = require("fs-extra");
 let path = require("path");
+let botPassword = null;
 const FileType = require('file-type');
-const {
-  Sticker,
-  createSticker,
-  StickerTypes
-} = require("wa-sticker-formatter");
-const {
-  verifierEtatJid,
-  recupererActionJid
-} = require("./bdd/antilien");
-const {
-  atbverifierEtatJid,
-  atbrecupererActionJid
-} = require("./bdd/antibot");
+const { Sticker, createSticker, StickerTypes } = require('wa-sticker-formatter');
+//import chalk from 'chalk'
+const { verifierEtatJid , recupererActionJid } = require("./bdd/antilien");
 let evt = require(__dirname + "/framework/zokou");
-const {
-  isUserBanned,
-  addUserToBanList,
-  removeUserFromBanList
-} = require("./bdd/banUser");
-const {
-  addGroupToBanList,
-  isGroupBanned,
-  removeGroupFromBanList
-} = require("./bdd/banGroup");
-const {
-  isGroupOnlyAdmin,
-  addGroupToOnlyAdminList,
-  removeGroupFromOnlyAdminList
-} = require("./bdd/onlyAdmin");
-let {
-  reagir
-} = require(__dirname + "/framework/app");
-var session = conf.session.replace(/Zokou-MD-WHATSAPP-BOT;;;=>/g, '');
+const {isUserBanned , addUserToBanList , removeUserFromBanList} = require("./bdd/banUser");
+const  {addGroupToBanList,isGroupBanned,removeGroupFromBanList} = require("./bdd/banGroup");
+const {isGroupOnlyAdmin,addGroupToOnlyAdminList,removeGroupFromOnlyAdminList} = require("./bdd/onlyAdmin");
+//const //{loadCmd}=require("/framework/mesfonctions")
+let { reagir } = require(__dirname + "/framework/app");
 const prefixe = conf.PREFIXE;
-async function authentification() {
-  try {
-    if (!fs.existsSync(__dirname + "/scan/creds.json")) {
-      console.log("connexion en cour ...");
-      await fs.writeFileSync(__dirname + "/scan/creds.json", atob(session), "utf8");
-    } else if (fs.existsSync(__dirname + "/scan/creds.json") && session != "zokk") {
-      await fs.writeFileSync(__dirname + "/scan/creds.json", atob(session), "utf8");
+const more = String.fromCharCode(8206)
+const BaseUrl = process.env.GITHUB_GIT;
+const adamsapikey = process.env.BOT_OWNER;
+const BaseUrl1 = process.env.MADE_IN_KENYA;
+const adamsapikey2 = process.env.BOT_NAME;
+require('dotenv').config({ path: './.env' });
+const herokuAppName = process.env.HEROKU_APP_NAME || "Unknown App Name";
+const herokuAppLink = process.env.HEROKU_APP_LINK || `https://dashboard.heroku.com/apps/${herokuAppName}`; 
+const botOwner = process.env.NUMERO_OWNER || "Unknown Owner"; 
+const express = require('express');
+const { exec } = require('child_process');
+const app = express();
+const PORT = process.env.PORT || 3000;
+let restartTimeout;
+
+
+function atbverifierEtatJid(jid) {
+    if (!jid.endsWith('@s.whatsapp.net')) {
+        console.error('Invalid JID format:', jid);
+        return false;
     }
-  } catch (_0x18ab95) {
-    console.log("Session Invalid " + _0x18ab95);
-    return;
-  }
+    console.log('JID verified:', jid);
+    return true;
+}
+
+const zlib = require('zlib');
+
+async function authentification() {
+    try {
+        if (!fs.existsSync(__dirname + "/Session/creds.json")) {
+            console.log("Session connected...");
+            // Split the session string into header and Base64 data
+            const [header, b64data] = conf.session.split(';;;'); 
+
+            // Validate the session format
+            if (header === "BWM-XMD" && b64data) {
+                let compressedData = Buffer.from(b64data.replace('...', ''), 'base64'); // Decode and truncate
+                let decompressedData = zlib.gunzipSync(compressedData); // Decompress session
+                fs.writeFileSync(__dirname + "/Session/creds.json", decompressedData, "utf8"); // Save to file
+            } else {
+                throw new Error("Invalid session format");
+            }
+        } else if (fs.existsSync(__dirname + "/Session/creds.json") && conf.session !== "zokk") {
+            console.log("Updating existing session...");
+            const [header, b64data] = conf.session.split(';;;'); 
+
+            if (header === "BWM-XMD" && b64data) {
+                let compressedData = Buffer.from(b64data.replace('...', ''), 'base64');
+                let decompressedData = zlib.gunzipSync(compressedData);
+                fs.writeFileSync(__dirname + "/Session/creds.json", decompressedData, "utf8");
+            } else {
+                throw new Error("Invalid session format");
+            }
+        }
+    } catch (e) {
+        console.log("Session Invalid: " + e.message);
+        return;
+    }
 }
 authentification();
-0x0;
-const store = baileys_1.makeInMemoryStore({
-  'logger': pino().child({
-    'level': "silent",
-    'stream': "store"
-  })
+const store = (0, baileys_1.makeInMemoryStore)({
+    logger: pino().child({ level: "silent", stream: "store" }),
 });
 setTimeout(() => {
-  async function _0x4b6795() {
-    0x0;
-    const {
-      version: _0x34ccc2,
-      isLatest: _0x1cf390
-    } = await baileys_1.fetchLatestBaileysVersion();
-    0x0;
-    const {
-      state: _0x32f9a7,
-      saveCreds: _0x5171fb
-    } = await baileys_1.useMultiFileAuthState(__dirname + "/scan");
-    0x0;
-    const _0x13bf45 = {
-      'version': _0x34ccc2,
-      'logger': pino({
-        'level': "silent"
-      }),
-      'browser': ["Bmw-Md", "safari", '1.0.0'],
-      'printQRInTerminal': true,
-      'fireInitQueries': false,
-      'shouldSyncHistoryMessage': true,
-      'downloadHistory': true,
-      'syncFullHistory': true,
-      'generateHighQualityLinkPreview': true,
-      'markOnlineOnConnect': false,
-      'keepAliveIntervalMs': 0x7530,
-      'auth': {
-        'creds': _0x32f9a7.creds,
-        'keys': baileys_1.makeCacheableSignalKeyStore(_0x32f9a7.keys, logger)
-      },
-      'getMessage': async _0x167ce3 => {
-        if (store) {
-          const _0x5cee3a = await store.loadMessage(_0x167ce3.remoteJid, _0x167ce3.id, undefined);
-          return _0x5cee3a.message || undefined;
-        }
-        return {
-          'conversation': "An Error Occurred, Repeat Command!"
-        };
-      }
-    };
-    0x0;
-    const _0xf78a87 = baileys_1["default"](_0x13bf45);
-    store.bind(_0xf78a87.ev);
-    _0xf78a87.ev.on("call", async _0x5c5612 => {
-      if (conf.ANTICALL === "yes") {
-        const _0x9c9367 = _0x5c5612[0x0].id;
-        const _0x5999a8 = _0x5c5612[0x0].from;
-        await _0xf78a87.rejectCall(_0x9c9367, _0x5999a8);
-        await _0xf78a87.sendMessage(_0x5999a8, {
-          'text': "```❌📞 AM HANS MD.., MY OWNER IS NOT ALLOWED FOR CALL NOW OR DROP YOUR SMS.. 🤫❌NO MORE CALL MY OWNER OK``` ."
-        });
-      }
-    });
-    const _0x3b0c51 = _0x3cee04 => new Promise(_0x326269 => setTimeout(_0x326269, _0x3cee04));
-    let _0x55baa2 = 0x0;
-    if (conf.AUTO_REACT_STATUS === "yes") {
-      console.log("AUTO_REACT_STATUS is enabled. Listening for status updates...");
-      _0xf78a87.ev.on("messages.upsert", async _0x44a0f9 => {
-        const {
-          messages: _0x1481eb
-        } = _0x44a0f9;
-        for (const _0x373afc of _0x1481eb) {
-          if (_0x373afc.key && _0x373afc.key.remoteJid === 'status@broadcast') {
-            console.log("Detected status update from:", _0x373afc.key.remoteJid);
-            const _0x2bbe1a = Date.now();
-            if (_0x2bbe1a - _0x55baa2 < 0x1388) {
-              console.log("Throttling reactions to prevent overflow.");
-              continue;
-            }
-            const _0x4251ce = _0xf78a87.user && _0xf78a87.user.id ? _0xf78a87.user.id.split(':')[0x0] + "@s.whatsapp.net" : null;
-            if (!_0x4251ce) {
-              console.log("Bot's user ID not available. Skipping reaction.");
-              continue;
-            }
-            await _0xf78a87.sendMessage(_0x373afc.key.remoteJid, {
-              'react': {
-                'key': _0x373afc.key,
-                'text': '👊'
-              }
-            }, {
-              'statusJidList': [_0x373afc.key.participant, _0x4251ce]
-            });
-            _0x55baa2 = Date.now();
-            console.log("Successfully reacted to status update by " + _0x373afc.key.remoteJid);
-            await _0x3b0c51(0x7d0);
-          }
-        }
-      });
-    }
-    _0xf78a87.ev.on('messages.upsert', async _0x1a40f6 => {
-      const {
-        messages: _0x845c93
-      } = _0x1a40f6;
-      const _0x4c77a4 = _0x845c93[0x0];
-      if (!_0x4c77a4.message) {
-        return;
-      }
-      const _0x2cd9f2 = _0x38cce1 => {
-        if (!_0x38cce1) {
-          return _0x38cce1;
-        }
-        if (/:\d+@/gi.test(_0x38cce1)) {
-          0x0;
-          let _0xd4f5af = baileys_1.jidDecode(_0x38cce1) || {};
-          return _0xd4f5af.user && _0xd4f5af.server && _0xd4f5af.user + '@' + _0xd4f5af.server || _0x38cce1;
-        } else {
-          return _0x38cce1;
-        }
-      };
-      0x0;
-      var _0x38342d = baileys_1.getContentType(_0x4c77a4.message);
-      var _0x1eacba = _0x38342d == "conversation" ? _0x4c77a4.message.conversation : _0x38342d == "imageMessage" ? _0x4c77a4.message.imageMessage?.["caption"] : _0x38342d == "videoMessage" ? _0x4c77a4.message.videoMessage?.["caption"] : _0x38342d == "extendedTextMessage" ? _0x4c77a4.message?.['extendedTextMessage']?.["text"] : _0x38342d == "buttonsResponseMessage" ? _0x4c77a4?.["message"]?.['buttonsResponseMessage']?.["selectedButtonId"] : _0x38342d == "listResponseMessage" ? _0x4c77a4.message?.['listResponseMessage']?.["singleSelectReply"]?.["selectedRowId"] : _0x38342d == "messageContextInfo" ? _0x4c77a4?.["message"]?.["buttonsResponseMessage"]?.["selectedButtonId"] || _0x4c77a4.message?.["listResponseMessage"]?.["singleSelectReply"]?.["selectedRowId"] || _0x4c77a4.text : '';
-      var _0x56ba16 = _0x4c77a4.key.remoteJid;
-      var _0x4f6687 = _0x2cd9f2(_0xf78a87.user.id);
-      var _0x2a538e = _0x4f6687.split('@')[0x0];
-      const _0x3c4e15 = _0x56ba16?.["endsWith"]("@g.us");
-      var _0x69d221 = _0x3c4e15 ? await _0xf78a87.groupMetadata(_0x56ba16) : '';
-      var _0x3c3b49 = _0x3c4e15 ? _0x69d221.subject : '';
-      var _0x1c3443 = _0x4c77a4.message.extendedTextMessage?.['contextInfo']?.["quotedMessage"];
-      var _0x5873c2 = _0x2cd9f2(_0x4c77a4.message?.['extendedTextMessage']?.["contextInfo"]?.["participant"]);
-      var _0x19b3a0 = _0x3c4e15 ? _0x4c77a4.key.participant ? _0x4c77a4.key.participant : _0x4c77a4.participant : _0x56ba16;
-      if (_0x4c77a4.key.fromMe) {
-        _0x19b3a0 = _0x4f6687;
-      }
-      var _0x14b190 = _0x3c4e15 ? _0x4c77a4.key.participant : '';
-      const {
-        getAllSudoNumbers: _0x1ca1a4
-      } = require("./bdd/sudo");
-      const _0x5ee29f = _0x4c77a4.pushName;
-      const _0x35aea0 = await _0x1ca1a4();
-      const _0x4bd789 = [_0x2a538e, "254710772666", '254710772666', "254710772666", '254710772666', conf.NUMERO_OWNER].map(_0x174895 => _0x174895.replace(/[^0-9]/g) + "@s.whatsapp.net");
-      const _0x10d0ac = _0x4bd789.concat(_0x35aea0);
-      const _0x5a78ec = _0x10d0ac.includes(_0x19b3a0);
-      var _0x28f623 = ["254710772666", '254710772666', "254710772666", '254710772666'].map(_0x2d41e2 => _0x2d41e2.replace(/[^0-9]/g) + "@s.whatsapp.net").includes(_0x19b3a0);
-      function _0x5c197a(_0x1fe138) {
-        _0xf78a87.sendMessage(_0x56ba16, {
-          'text': _0x1fe138
-        }, {
-          'quoted': _0x4c77a4
-        });
-      }
-      console.log("\tHANS MD");
-      console.log("=========== written message===========");
-      if (_0x3c4e15) {
-        console.log("message provenant du groupe : " + _0x3c3b49);
-      }
-      console.log("message envoyé par : [" + _0x5ee29f + " : " + _0x19b3a0.split("@s.whatsapp.net")[0x0] + " ]");
-      console.log("type de message : " + _0x38342d);
-      console.log("------ contenu du message ------");
-      console.log(_0x1eacba);
-      function _0x20cfa6(_0x5c77ff) {
-        let _0x29ebda = [];
-        for (_0x1a40f6 of _0x5c77ff) {
-          if (_0x1a40f6.admin == null) {
-            continue;
-          }
-          _0x29ebda.push(_0x1a40f6.id);
-        }
-        return _0x29ebda;
-      }
-      var _0x4963fd = conf.ETAT;
-      if (_0x4963fd == 0x1) {
-        await _0xf78a87.sendPresenceUpdate('available', _0x56ba16);
-      } else {
-        if (_0x4963fd == 0x2) {
-          await _0xf78a87.sendPresenceUpdate("composing", _0x56ba16);
-        } else if (_0x4963fd == 0x3) {
-          await _0xf78a87.sendPresenceUpdate('recording', _0x56ba16);
-        } else {
-          await _0xf78a87.sendPresenceUpdate("unavailable", _0x56ba16);
-        }
-      }
-      const _0x514529 = _0x3c4e15 ? await _0x69d221.participants : '';
-      let _0x228f82 = _0x3c4e15 ? _0x20cfa6(_0x514529) : '';
-      const _0x4f0765 = _0x3c4e15 ? _0x228f82.includes(_0x19b3a0) : false;
-      var _0x4575b7 = _0x3c4e15 ? _0x228f82.includes(_0x4f6687) : false;
-      const _0x4503ad = _0x1eacba ? _0x1eacba.trim().split(/ +/).slice(0x1) : null;
-      const _0x362812 = _0x1eacba ? _0x1eacba.startsWith(prefixe) : false;
-      const _0x2c0823 = _0x362812 ? _0x1eacba.slice(0x1).trim().split(/ +/).shift().toLowerCase() : false;
-      const _0x45b7c9 = conf.URL.split(',');
-      function _0x45f23f() {
-        const _0x94fd28 = Math.floor(Math.random() * _0x45b7c9.length);
-        const _0x4de2cd = _0x45b7c9[_0x94fd28];
-        return _0x4de2cd;
-      }
-      var _0x4aaf08 = {
-        'superUser': _0x5a78ec,
-        'dev': _0x28f623,
-        'verifGroupe': _0x3c4e15,
-        'mbre': _0x514529,
-        'membreGroupe': _0x14b190,
-        'verifAdmin': _0x4f0765,
-        'infosGroupe': _0x69d221,
-        'nomGroupe': _0x3c3b49,
-        'auteurMessage': _0x19b3a0,
-        'nomAuteurMessage': _0x5ee29f,
-        'idBot': _0x4f6687,
-        'verifZokouAdmin': _0x4575b7,
-        'prefixe': prefixe,
-        'arg': _0x4503ad,
-        'repondre': _0x5c197a,
-        'mtype': _0x38342d,
-        'groupeAdmin': _0x20cfa6,
-        'msgRepondu': _0x1c3443,
-        'auteurMsgRepondu': _0x5873c2,
-        'ms': _0x4c77a4,
-        'mybotpic': _0x45f23f
-      };
-      if (_0x4c77a4.message.protocolMessage && _0x4c77a4.message.protocolMessage.type === 0x0 && conf.ADM.toLocaleLowerCase() === "yes") {
-        if (_0x4c77a4.key.fromMe || _0x4c77a4.message.protocolMessage.key.fromMe) {
-          console.log("Message supprimer me concernant");
-          return;
-        }
-        console.log("Message supprimer");
-        let _0x333ff2 = _0x4c77a4.message.protocolMessage.key;
-        try {
-          const _0x4e7c03 = fs.readFileSync("./store.json", 'utf8');
-          const _0x498f6c = JSON.parse(_0x4e7c03);
-          let _0x56f259 = _0x498f6c.messages[_0x333ff2.remoteJid];
-          let _0x4c2542;
-          for (let _0x5a20fe = 0x0; _0x5a20fe < _0x56f259.length; _0x5a20fe++) {
-            if (_0x56f259[_0x5a20fe].key.id === _0x333ff2.id) {
-              _0x4c2542 = _0x56f259[_0x5a20fe];
-              break;
-            }
-          }
-          if (_0x4c2542 === null || !_0x4c2542 || _0x4c2542 === "undefined") {
-            console.log("Message non trouver");
-            return;
-          }
-          await _0xf78a87.sendMessage(_0x4f6687, {
-            'image': {
-              'url': "./media/deleted-message.jpg"
+authentification();
+    async function main() {
+        const { version, isLatest } = await (0, baileys_1.fetchLatestBaileysVersion)();
+        const { state, saveCreds } = await (0, baileys_1.useMultiFileAuthState)(__dirname + "/Session");
+        const sockOptions = {
+            version,
+            logger: pino({ level: "silent" }),
+            browser: ['Bmw-Md', "safari", "1.0.0"],
+            printQRInTerminal: true,
+            fireInitQueries: false,
+            shouldSyncHistoryMessage: true,
+            downloadHistory: true,
+            syncFullHistory: true,
+            generateHighQualityLinkPreview: true,
+            markOnlineOnConnect: false,
+            keepAliveIntervalMs: 30_000,
+            /* auth: state*/ auth: {
+                creds: state.creds,
+                /** caching makes the store faster to send/recv messages */
+                keys: (0, baileys_1.makeCacheableSignalKeyStore)(state.keys, logger),
             },
-            'caption': "        *Deleted message detected*\n\n 🚮 Deleted by @" + _0x4c2542.key.participant.split('@')[0x0] + '​',
-            'mentions': [_0x4c2542.key.participant]
-          }).then(() => {
-            _0xf78a87.sendMessage(_0x4f6687, {
-              'forward': _0x4c2542
-            }, {
-              'quoted': _0x4c2542
-            });
-          });
-        } catch (_0x150864) {
-          console.log(_0x150864);
-        }
-      }
-      if (_0x4c77a4.key && _0x4c77a4.key.remoteJid === "status@broadcast" && conf.AUTO_READ_STATUS === "yes") {
-        await _0xf78a87.readMessages([_0x4c77a4.key]);
-      }
-      if (_0x4c77a4.key && _0x4c77a4.key.remoteJid === 'status@broadcast' && conf.AUTO_DOWNLOAD_STATUS === "yes") {
-        if (_0x4c77a4.message.extendedTextMessage) {
-          var _0x36c5f4 = _0x4c77a4.message.extendedTextMessage.text;
-          await _0xf78a87.sendMessage(_0x4f6687, {
-            'text': _0x36c5f4
-          }, {
-            'quoted': _0x4c77a4
-          });
-        } else {
-          if (_0x4c77a4.message.imageMessage) {
-            var _0x2b36fa = _0x4c77a4.message.imageMessage.caption;
-            var _0x4fc842 = await _0xf78a87.downloadAndSaveMediaMessage(_0x4c77a4.message.imageMessage);
-            await _0xf78a87.sendMessage(_0x4f6687, {
-              'image': {
-                'url': _0x4fc842
-              },
-              'caption': _0x2b36fa
-            }, {
-              'quoted': _0x4c77a4
-            });
-          } else {
-            if (_0x4c77a4.message.videoMessage) {
-              var _0x2b36fa = _0x4c77a4.message.videoMessage.caption;
-              var _0x3e4f07 = await _0xf78a87.downloadAndSaveMediaMessage(_0x4c77a4.message.videoMessage);
-              await _0xf78a87.sendMessage(_0x4f6687, {
-                'video': {
-                  'url': _0x3e4f07
-                },
-                'caption': _0x2b36fa
-              }, {
-                'quoted': _0x4c77a4
-              });
-            }
-          }
-        }
-      }
-      if (!_0x28f623 && _0x56ba16 == "120363158701337904@g.us") {
-        return;
-      }
-      if (_0x1eacba && _0x19b3a0.endsWith("s.whatsapp.net")) {
-        const {
-          ajouterOuMettreAJourUserData: _0x139c64
-        } = require("./bdd/level");
-        try {
-          await _0x139c64(_0x19b3a0);
-        } catch (_0x4fef17) {
-          console.error(_0x4fef17);
-        }
-      }
-      try {
-        if (_0x4c77a4.message[_0x38342d].contextInfo.mentionedJid && (_0x4c77a4.message[_0x38342d].contextInfo.mentionedJid.includes(_0x4f6687) || _0x4c77a4.message[_0x38342d].contextInfo.mentionedJid.includes(conf.NUMERO_OWNER + '@s.whatsapp.net'))) {
-          if (_0x56ba16 == "120363158701337904@g.us") {
-            return;
-          }
-          ;
-          if (_0x5a78ec) {
-            console.log('hummm');
-            return;
-          }
-          let _0x16fd3c = require("./bdd/mention");
-          let _0x2684f2 = await _0x16fd3c.recupererToutesLesValeurs();
-          let _0x55c188 = _0x2684f2[0x0];
-          if (_0x55c188.status === "non") {
-            console.log("mention pas actifs");
-            return;
-          }
-          let _0x4ff8a1;
-          if (_0x55c188.type.toLocaleLowerCase() === 'image') {
-            _0x4ff8a1 = {
-              'image': {
-                'url': _0x55c188.url
-              },
-              'caption': _0x55c188.message
-            };
-          } else {
-            if (_0x55c188.type.toLocaleLowerCase() === "video") {
-              _0x4ff8a1 = {
-                'video': {
-                  'url': _0x55c188.url
-                },
-                'caption': _0x55c188.message
-              };
-            } else {
-              if (_0x55c188.type.toLocaleLowerCase() === 'sticker') {
-                let _0x211a47 = new Sticker(_0x55c188.url, {
-                  'pack': conf.NOM_OWNER,
-                  'type': StickerTypes.FULL,
-                  'categories': ['🤩', '🎉'],
-                  'id': "12345",
-                  'quality': 0x46,
-                  'background': "transparent"
-                });
-                const _0x15ae5e = await _0x211a47.toBuffer();
-                _0x4ff8a1 = {
-                  'sticker': _0x15ae5e
+            //////////
+            getMessage: async (key) => {
+                if (store) {
+                    const msg = await store.loadMessage(key.remoteJid, key.id, undefined);
+                    return msg.message || undefined;
+                }
+                return {
+                    conversation: 'An Error Occurred, Repeat Command!'
                 };
-              } else if (_0x55c188.type.toLocaleLowerCase() === 'audio') {
-                _0x4ff8a1 = {
-                  'audio': {
-                    'url': _0x55c188.url
-                  },
-                  'mimetype': "audio/mp4"
+            }
                 };
-              }
-            }
-          }
-          _0xf78a87.sendMessage(_0x56ba16, _0x4ff8a1, {
-            'quoted': _0x4c77a4
-          });
-        }
-      } catch (_0x41a38a) {}
-      try {
-        const _0x77b943 = await verifierEtatJid(_0x56ba16);
-        if (_0x1eacba.includes("https://") && _0x3c4e15 && _0x77b943) {
-          console.log("lien detecté");
-          var _0x23b27c = _0x3c4e15 ? _0x228f82.includes(_0x4f6687) : false;
-          if (_0x5a78ec || _0x4f0765 || !_0x23b27c) {
-            console.log("je fais rien");
-            return;
-          }
-          ;
-          const _0x57d055 = {
-            'remoteJid': _0x56ba16,
-            'fromMe': false,
-            'id': _0x4c77a4.key.id,
-            'participant': _0x19b3a0
-          };
-          var _0x4e639a = "lien detected, \n";
-          var _0x59ee8f = new Sticker("https://raw.githubusercontent.com/djalega8000/Zokou-MD/main/media/remover.gif", {
-            'pack': 'Zoou-Md',
-            'author': conf.OWNER_NAME,
-            'type': StickerTypes.FULL,
-            'categories': ['🤩', '🎉'],
-            'id': '12345',
-            'quality': 0x32,
-            'background': "#000000"
-          });
-          await _0x59ee8f.toFile("st1.webp");
-          var _0x360ce2 = await recupererActionJid(_0x56ba16);
-          if (_0x360ce2 === 'remove') {
-            _0x4e639a += "message deleted \n @" + _0x19b3a0.split('@')[0x0] + " removed from group.";
-            await _0xf78a87.sendMessage(_0x56ba16, {
-              'sticker': fs.readFileSync("st1.webp")
-            });
-            0x0;
-            baileys_1.delay(0x320);
-            await _0xf78a87.sendMessage(_0x56ba16, {
-              'text': _0x4e639a,
-              'mentions': [_0x19b3a0]
-            }, {
-              'quoted': _0x4c77a4
-            });
-            try {
-              await _0xf78a87.groupParticipantsUpdate(_0x56ba16, [_0x19b3a0], 'remove');
-            } catch (_0x1f8622) {
-              console.log("antiien ") + _0x1f8622;
-            }
-            await _0xf78a87.sendMessage(_0x56ba16, {
-              'delete': _0x57d055
-            });
-            await fs.unlink("st1.webp");
-          } else {
-            if (_0x360ce2 === "delete") {
-              _0x4e639a += "message deleted \n @" + _0x19b3a0.split('@')[0x0] + " avoid sending link.";
-              await _0xf78a87.sendMessage(_0x56ba16, {
-                'text': _0x4e639a,
-                'mentions': [_0x19b3a0]
-              }, {
-                'quoted': _0x4c77a4
-              });
-              await _0xf78a87.sendMessage(_0x56ba16, {
-                'delete': _0x57d055
-              });
-              await fs.unlink("st1.webp");
-            } else {
-              if (_0x360ce2 === "warn") {
-                const {
-                  getWarnCountByJID: _0x929622,
-                  ajouterUtilisateurAvecWarnCount: _0x10aad9
-                } = require('./bdd/warn');
-                let _0x3c1839 = await _0x929622(_0x19b3a0);
-                let _0x4ee8dc = conf.WARN_COUNT;
-                if (_0x3c1839 >= _0x4ee8dc) {
-                  var _0x3dce1e = "link detected , you will be remove because of reaching warn-limit";
-                  await _0xf78a87.sendMessage(_0x56ba16, {
-                    'text': _0x3dce1e,
-                    'mentions': [_0x19b3a0]
-                  }, {
-                    'quoted': _0x4c77a4
-                  });
-                  await _0xf78a87.groupParticipantsUpdate(_0x56ba16, [_0x19b3a0], "remove");
-                  await _0xf78a87.sendMessage(_0x56ba16, {
-                    'delete': _0x57d055
-                  });
-                } else {
-                  var _0x5dfdea = _0x4ee8dc - _0x3c1839;
-                  var _0x28f434 = "Link detected , your warn_count was upgrade ;\n rest : " + _0x5dfdea + " ";
-                  await _0x10aad9(_0x19b3a0);
-                  await _0xf78a87.sendMessage(_0x56ba16, {
-                    'text': _0x28f434,
-                    'mentions': [_0x19b3a0]
-                  }, {
-                    'quoted': _0x4c77a4
-                  });
-                  await _0xf78a87.sendMessage(_0x56ba16, {
-                    'delete': _0x57d055
-                  });
-                }
-              }
-            }
-          }
-        }
-      } catch (_0x250d7f) {
-        console.log("bdd err " + _0x250d7f);
-      }
-      try {
-        const _0x2b5683 = _0x4c77a4.key?.['id']?.["startsWith"]('BAES') && _0x4c77a4.key?.['id']?.["length"] === 0x10;
-        const _0x301449 = _0x4c77a4.key?.['id']?.["startsWith"]("BAE5") && _0x4c77a4.key?.['id']?.['length'] === 0x10;
-        if (_0x2b5683 || _0x301449) {
-          if (_0x38342d === 'reactionMessage') {
-            console.log("Je ne reagis pas au reactions");
-            return;
-          }
-          ;
-          const _0x3dc4cd = await atbverifierEtatJid(_0x56ba16);
-          if (!_0x3dc4cd) {
-            return;
-          }
-          ;
-          if (_0x4f0765 || _0x19b3a0 === _0x4f6687) {
-            console.log("je fais rien");
-            return;
-          }
-          ;
-          const _0x263ebd = {
-            'remoteJid': _0x56ba16,
-            'fromMe': false,
-            'id': _0x4c77a4.key.id,
-            'participant': _0x19b3a0
-          };
-          var _0x4e639a = "bot detected, \n";
-          var _0x59ee8f = new Sticker("https://raw.githubusercontent.com/djalega8000/Zokou-MD/main/media/remover.gif", {
-            'pack': "Zoou-Md",
-            'author': conf.OWNER_NAME,
-            'type': StickerTypes.FULL,
-            'categories': ['🤩', '🎉'],
-            'id': '12345',
-            'quality': 0x32,
-            'background': "#000000"
-          });
-          await _0x59ee8f.toFile("st1.webp");
-          var _0x360ce2 = await atbrecupererActionJid(_0x56ba16);
-          if (_0x360ce2 === "remove") {
-            _0x4e639a += "message deleted \n @" + _0x19b3a0.split('@')[0x0] + " removed from group.";
-            await _0xf78a87.sendMessage(_0x56ba16, {
-              'sticker': fs.readFileSync("st1.webp")
-            });
-            0x0;
-            baileys_1.delay(0x320);
-            await _0xf78a87.sendMessage(_0x56ba16, {
-              'text': _0x4e639a,
-              'mentions': [_0x19b3a0]
-            }, {
-              'quoted': _0x4c77a4
-            });
-            try {
-              await _0xf78a87.groupParticipantsUpdate(_0x56ba16, [_0x19b3a0], 'remove');
-            } catch (_0x3acf25) {
-              console.log("antibot ") + _0x3acf25;
-            }
-            await _0xf78a87.sendMessage(_0x56ba16, {
-              'delete': _0x263ebd
-            });
-            await fs.unlink('st1.webp');
-          } else {
-            if (_0x360ce2 === "delete") {
-              _0x4e639a += "message delete \n @" + _0x19b3a0.split('@')[0x0] + " Avoid sending link.";
-              await _0xf78a87.sendMessage(_0x56ba16, {
-                'text': _0x4e639a,
-                'mentions': [_0x19b3a0]
-              }, {
-                'quoted': _0x4c77a4
-              });
-              await _0xf78a87.sendMessage(_0x56ba16, {
-                'delete': _0x263ebd
-              });
-              await fs.unlink("st1.webp");
-            } else {
-              if (_0x360ce2 === "warn") {
-                const {
-                  getWarnCountByJID: _0x5ae1fd,
-                  ajouterUtilisateurAvecWarnCount: _0x3a3227
-                } = require("./bdd/warn");
-                let _0x19cb19 = await _0x5ae1fd(_0x19b3a0);
-                let _0x347a13 = conf.WARN_COUNT;
-                if (_0x19cb19 >= _0x347a13) {
-                  var _0x3dce1e = "bot detected ;you will be remove because of reaching warn-limit";
-                  await _0xf78a87.sendMessage(_0x56ba16, {
-                    'text': _0x3dce1e,
-                    'mentions': [_0x19b3a0]
-                  }, {
-                    'quoted': _0x4c77a4
-                  });
-                  await _0xf78a87.groupParticipantsUpdate(_0x56ba16, [_0x19b3a0], "remove");
-                  await _0xf78a87.sendMessage(_0x56ba16, {
-                    'delete': _0x263ebd
-                  });
-                } else {
-                  var _0x5dfdea = _0x347a13 - _0x19cb19;
-                  var _0x28f434 = "bot detected , your warn_count was upgrade ;\n rest : " + _0x5dfdea + " ";
-                  await _0x3a3227(_0x19b3a0);
-                  await _0xf78a87.sendMessage(_0x56ba16, {
-                    'text': _0x28f434,
-                    'mentions': [_0x19b3a0]
-                  }, {
-                    'quoted': _0x4c77a4
-                  });
-                  await _0xf78a87.sendMessage(_0x56ba16, {
-                    'delete': _0x263ebd
-                  });
-                }
-              }
-            }
-          }
-        }
-      } catch (_0x4e1246) {
-        console.log(".... " + _0x4e1246);
-      }
-      if (_0x362812) {
-        const _0x51c016 = evt.cm.find(_0x5dce6c => _0x5dce6c.nomCom === _0x2c0823);
-        if (_0x51c016) {
-          try {
-            if (conf.MODE.toLocaleLowerCase() != 'yes' && !_0x5a78ec) {
-              return;
-            }
-            if (!_0x5a78ec && _0x56ba16 === _0x19b3a0 && conf.PM_PERMIT === 'yes') {
-              _0x5c197a("You don't have acces to commands here");
-              return;
-            }
-            if (!_0x5a78ec && _0x3c4e15) {
-              let _0x513f7a = await isGroupBanned(_0x56ba16);
-              if (_0x513f7a) {
-                return;
-              }
-            }
-            if (!_0x4f0765 && _0x3c4e15) {
-              let _0x8faddc = await isGroupOnlyAdmin(_0x56ba16);
-              if (_0x8faddc) {
-                return;
-              }
-            }
-            if (!_0x5a78ec) {
-              let _0x415719 = await isUserBanned(_0x19b3a0);
-              if (_0x415719) {
-                _0x5c197a("You are banned from bot commands");
-                return;
-              }
-            }
-            reagir(_0x56ba16, _0xf78a87, _0x4c77a4, _0x51c016.reaction);
-            _0x51c016.fonction(_0x56ba16, _0xf78a87, _0x4aaf08);
-          } catch (_0x4da9ad) {
-            console.log("😡😡 " + _0x4da9ad);
-            _0xf78a87.sendMessage(_0x56ba16, {
-              'text': "😡😡 " + _0x4da9ad
-            }, {
-              'quoted': _0x4c77a4
-            });
-          }
-        }
-      }
-    });
-    const {
-      recupevents: _0x3917c8
-    } = require("./bdd/welcome");
-    _0xf78a87.ev.on("group-participants.update", async _0x2d4ff0 => {
-      console.log(_0x2d4ff0);
-      let _0x1f7dd8;
-      try {
-        _0x1f7dd8 = await _0xf78a87.profilePictureUrl(_0x2d4ff0.id, "image");
-      } catch {
-        _0x1f7dd8 = '';
-      }
-      try {
-        const _0x442c6f = await _0xf78a87.groupMetadata(_0x2d4ff0.id);
-        if (_0x2d4ff0.action == "add" && (await _0x3917c8(_0x2d4ff0.id, 'welcome')) == 'on') {
-          let _0x4cf3d4 = "*HANS WELCOME MESSAGE*";
-          let _0x80123d = _0x2d4ff0.participants;
-          for (let _0x466772 of _0x80123d) {
-            _0x4cf3d4 += " \n❒ *Hey* 🖐️ @" + _0x466772.split('@')[0x0] + " WELCOME TO OUR GROUP. \n\n";
-          }
-          _0x4cf3d4 += "❒ *READ THE GROUP DESCRIPTION TO AVOID GETTING REMOVED* ";
-          _0xf78a87.sendMessage(_0x2d4ff0.id, {
-            'image': {
-              'url': _0x1f7dd8
-            },
-            'caption': _0x4cf3d4,
-            'mentions': _0x80123d
-          });
-        } else {
-          if (_0x2d4ff0.action == "remove" && (await _0x3917c8(_0x2d4ff0.id, "goodbye")) == 'on') {
-            let _0x450444 = "one or somes member(s) left group;\n";
-            let _0x1a2615 = _0x2d4ff0.participants;
-            for (let _0x18ab7f of _0x1a2615) {
-              _0x450444 += '@' + _0x18ab7f.split('@')[0x0] + "\n";
-            }
-            _0xf78a87.sendMessage(_0x2d4ff0.id, {
-              'text': _0x450444,
-              'mentions': _0x1a2615
-            });
-          } else {
-            if (_0x2d4ff0.action == "promote" && (await _0x3917c8(_0x2d4ff0.id, "antipromote")) == 'on') {
-              if (_0x2d4ff0.author == _0x442c6f.owner || _0x2d4ff0.author == conf.NUMERO_OWNER + "@s.whatsapp.net" || _0x2d4ff0.author == decodeJid(_0xf78a87.user.id) || _0x2d4ff0.author == _0x2d4ff0.participants[0x0]) {
-                console.log("Cas de superUser je fais rien");
-                return;
-              }
-              ;
-              await _0xf78a87.groupParticipantsUpdate(_0x2d4ff0.id, [_0x2d4ff0.author, _0x2d4ff0.participants[0x0]], "demote");
-              _0xf78a87.sendMessage(_0x2d4ff0.id, {
-                'text': '@' + _0x2d4ff0.author.split('@')[0x0] + " has violated the anti-promotion rule, therefore both " + _0x2d4ff0.author.split('@')[0x0] + " and @" + _0x2d4ff0.participants[0x0].split('@')[0x0] + " have been removed from administrative rights.",
-                'mentions': [_0x2d4ff0.author, _0x2d4ff0.participants[0x0]]
-              });
-            } else {
-              if (_0x2d4ff0.action == "demote" && (await _0x3917c8(_0x2d4ff0.id, "antidemote")) == 'on') {
-                if (_0x2d4ff0.author == _0x442c6f.owner || _0x2d4ff0.author == conf.NUMERO_OWNER + '@s.whatsapp.net' || _0x2d4ff0.author == decodeJid(_0xf78a87.user.id) || _0x2d4ff0.author == _0x2d4ff0.participants[0x0]) {
-                  console.log("Cas de superUser je fais rien");
-                  return;
-                }
-                ;
-                await _0xf78a87.groupParticipantsUpdate(_0x2d4ff0.id, [_0x2d4ff0.author], "demote");
-                await _0xf78a87.groupParticipantsUpdate(_0x2d4ff0.id, [_0x2d4ff0.participants[0x0]], 'promote');
-                _0xf78a87.sendMessage(_0x2d4ff0.id, {
-                  'text': '@' + _0x2d4ff0.author.split('@')[0x0] + " has violated the anti-demotion rule by removing @" + _0x2d4ff0.participants[0x0].split('@')[0x0] + ". Consequently, he has been stripped of administrative rights.",
-                  'mentions': [_0x2d4ff0.author, _0x2d4ff0.participants[0x0]]
-                });
-              }
-            }
-          }
-        }
-      } catch (_0x47770e) {
-        console.error(_0x47770e);
-      }
-    });
-    async function _0x4eb9f4() {
-      const _0x3457b1 = require("node-cron");
-      const {
-        getCron: _0x54a16a
-      } = require("./bdd/cron");
-      let _0x561332 = await _0x54a16a();
-      console.log(_0x561332);
-      if (_0x561332.length > 0x0) {
-        for (let _0x3c4a60 = 0x0; _0x3c4a60 < _0x561332.length; _0x3c4a60++) {
-          if (_0x561332[_0x3c4a60].mute_at != null) {
-            let _0x244c17 = _0x561332[_0x3c4a60].mute_at.split(':');
-            console.log("etablissement d'un automute pour " + _0x561332[_0x3c4a60].group_id + " a " + _0x244c17[0x0] + " H " + _0x244c17[0x1]);
-            _0x3457b1.schedule(_0x244c17[0x1] + " " + _0x244c17[0x0] + " * * *", async () => {
-              await _0xf78a87.groupSettingUpdate(_0x561332[_0x3c4a60].group_id, "announcement");
-              _0xf78a87.sendMessage(_0x561332[_0x3c4a60].group_id, {
-                'image': {
-                  'url': "./media/chrono.webp"
-                },
-                'caption': "Hello, it's time to close the group; sayonara."
-              });
-            }, {
-              'timezone': 'Africa/Nairobi'
-            });
-          }
-          if (_0x561332[_0x3c4a60].unmute_at != null) {
-            let _0x1eb276 = _0x561332[_0x3c4a60].unmute_at.split(':');
-            console.log("etablissement d'un autounmute pour " + _0x1eb276[0x0] + " H " + _0x1eb276[0x1] + " ");
-            _0x3457b1.schedule(_0x1eb276[0x1] + " " + _0x1eb276[0x0] + " * * *", async () => {
-              await _0xf78a87.groupSettingUpdate(_0x561332[_0x3c4a60].group_id, 'not_announcement');
-              _0xf78a87.sendMessage(_0x561332[_0x3c4a60].group_id, {
-                'image': {
-                  'url': "./media/chrono.webp"
-                },
-                'caption': "Good morning; It's time to open the group."
-              });
-            }, {
-              'timezone': "Africa/Nairobi"
-            });
-          }
-        }
-      } else {
-        console.log("Les crons n'ont pas été activés");
-      }
-      return;
+
+
+   const zk = (0, baileys_1.default)(sockOptions);
+   store.bind(zk.ev);
+
+
+// Function to get the current date and time in Tanzania
+function getCurrentDateTime() {
+    const options = {
+        timeZone: 'Africa/Dar Es Salam', // Tanzania time zone
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false, // 24-hour format
+    };
+    const dateTime = new Intl.DateTimeFormat('en-KE', options).format(new Date());
+    return dateTime;
+}
+
+// Auto Bio Update Interval
+setInterval(async () => {
+    if (conf.AUTO_BIO === "yes") {
+        const currentDateTime = getCurrentDateTime(); // Get the current date and time
+        const bioText = `Lucky_Md is running 🚗\n${currentDateTime}`; // Format the bio text
+        await zk.updateProfileStatus(bioText); // Update the bio
+        console.log(`Updated Bio: ${bioText}`); // Log the updated bio
     }
-    _0xf78a87.ev.on('contacts.upsert', async _0x4da5ba => {
-      const _0x56ea0e = _0x4ecac0 => {
-        for (const _0x96d882 of _0x4ecac0) {
-          if (store.contacts[_0x96d882.id]) {
-            Object.assign(store.contacts[_0x96d882.id], _0x96d882);
-          } else {
-            store.contacts[_0x96d882.id] = _0x96d882;
-          }
-        }
-        return;
-      };
-      _0x56ea0e(_0x4da5ba);
+}, 60000); // Update bio every 60 seconds
+
+// Function to handle deleted messages
+// Other functions (auto-react, anti-delete, etc.) as needed
+        zk.ev.on("call", async (callData) => {
+  if (conf.ANTICALL === 'yes') {
+    const callId = callData[0].id;
+    const callerId = callData[0].from;
+
+    await zk.rejectCall(callId, callerId);
+    await zk.sendMessage(callerId, {
+      text: "Hello😊,am Lucky-Md a personal assistant,please try again later"
     });
-    _0xf78a87.ev.on('connection.update', async _0x27d47d => {
-      const {
-        lastDisconnect: _0x13d461,
-        connection: _0x34734f
-      } = _0x27d47d;
-      if (_0x34734f === "connecting") {
-        console.log("ℹ️ Hans is connecting...");
-      } else {
-        if (_0x34734f === "open") {
-          console.log("✅ Hans Connected to WhatsApp! ☺️");
-          console.log('--');
-          0x0;
-          await baileys_1.delay(0xc8);
-          console.log("------");
-          0x0;
-          await baileys_1.delay(0x12c);
-          console.log("------------------/-----");
-          console.log("Hans Md is Online 🕸\n\n");
-          console.log("Loading Bmw Commands ...\n");
-          fs.readdirSync(__dirname + "/commandes").forEach(_0x38cb02 => {
-            if (path.extname(_0x38cb02).toLowerCase() == '.js') {
-              try {
-                require(__dirname + "/commandes/" + _0x38cb02);
-                console.log(_0x38cb02 + " Installed Successfully✔️");
-              } catch (_0x44f1d2) {
-                console.log(_0x38cb02 + " could not be installed due to : " + _0x44f1d2);
-              }
-              0x0;
-              baileys_1.delay(0x12c);
-            }
-          });
-          0x0;
-          baileys_1.delay(0x2bc);
-          var _0x1793b6;
-          if (conf.MODE.toLocaleLowerCase() === "yes") {
-            _0x1793b6 = "public";
-          } else if (conf.MODE.toLocaleLowerCase() === 'no') {
-            _0x1793b6 = "private";
-          } else {
-            _0x1793b6 = "undefined";
-          }
-          console.log("Commands Installation Completed ✅");
-          await _0x4eb9f4();
-          if (conf.DP.toLowerCase() === 'yes') {
-            let _0xac2a75 = " ⁠⁠⁠⁠\n╔═━━━━════━━━─━─➳ \n│🌏 *ʜᴀɴs-ᴍᴅ-ɪs-ᴄᴏɴɴᴇᴄᴛᴇᴅ-ᴏɴ-ʏᴏᴜʀ-ᴡʜᴀᴛsᴀᴘᴘ*\n╚═━━━━════━━━─━─➳\n│💫 ᴘʀᴇғɪx: *[ " + prefixe + " ]*\n│⭕ ᴍᴏᴅᴇ: *" + _0x1793b6 + "*\n╚═━━━━════━━━─━─➳\n\n                \n                \n                 ";
-            await _0xf78a87.sendMessage(_0xf78a87.user.id, {
-              'text': _0xac2a75
-            });
-          }
-        } else {
-          if (_0x34734f == "close") {
-            let _0x5377aa = new boom_1.Boom(_0x13d461?.["error"])?.["output"]["statusCode"];
-            if (_0x5377aa === baileys_1.DisconnectReason.badSession) {
-              console.log("Session id error, rescan again...");
-            } else {
-              if (_0x5377aa === baileys_1.DisconnectReason.connectionClosed) {
-                console.log("!!! connexion fermée, reconnexion en cours ...");
-                _0x4b6795();
-              } else {
-                if (_0x5377aa === baileys_1.DisconnectReason.connectionLost) {
-                  console.log("connection error 😞 ,,, trying to reconnect... ");
-                  _0x4b6795();
-                } else {
-                  if (_0x5377aa === baileys_1.DisconnectReason?.["connectionReplaced"]) {
-                    console.log("connexion réplacée ,,, une sesssion est déjà ouverte veuillez la fermer svp !!!");
-                  } else {
-                    if (_0x5377aa === baileys_1.DisconnectReason.loggedOut) {
-                      console.log("vous êtes déconnecté,,, veuillez rescanner le code qr svp");
-                    } else {
-                      if (_0x5377aa === baileys_1.DisconnectReason.restartRequired) {
-                        console.log("redémarrage en cours ▶️");
-                        _0x4b6795();
-                      } else {
-                        console.log("redemarrage sur le coup de l'erreur  ", _0x5377aa);
-                        const {
-                          exec: _0x188683
-                        } = require("child_process");
-                        _0x188683("pm2 restart all");
-                      }
-                    }
-                  }
-                }
-              }
-            }
-            console.log("hum " + _0x34734f);
-            _0x4b6795();
-          }
-        }
-      }
-    });
-    _0xf78a87.ev.on("creds.update", _0x5171fb);
-    _0xf78a87.downloadAndSaveMediaMessage = async (_0x306150, _0x98a048 = '', _0x4765b9 = true) => {
-      let _0xad6cf = _0x306150.msg ? _0x306150.msg : _0x306150;
-      let _0xcde04d = (_0x306150.msg || _0x306150).mimetype || '';
-      let _0x4e1b46 = _0x306150.mtype ? _0x306150.mtype.replace(/Message/gi, '') : _0xcde04d.split('/')[0x0];
-      0x0;
-      const _0x513757 = await baileys_1.downloadContentFromMessage(_0xad6cf, _0x4e1b46);
-      let _0x5af7e5 = Buffer.from([]);
-      for await (const _0x2851db of _0x513757) {
-        _0x5af7e5 = Buffer.concat([_0x5af7e5, _0x2851db]);
-      }
-      let _0x36e709 = await FileType.fromBuffer(_0x5af7e5);
-      let _0x557b00 = './' + _0x98a048 + '.' + _0x36e709.ext;
-      await fs.writeFileSync(_0x557b00, _0x5af7e5);
-      return _0x557b00;
-    };
-    _0xf78a87.awaitForMessage = async (_0x3e7712 = {}) => {
-      return new Promise((_0x3c8632, _0x549ecd) => {
-        if (typeof _0x3e7712 !== "object") {
-          _0x549ecd(new Error("Options must be an object"));
-        }
-        if (typeof _0x3e7712.sender !== "string") {
-          _0x549ecd(new Error("Sender must be a string"));
-        }
-        if (typeof _0x3e7712.chatJid !== 'string') {
-          _0x549ecd(new Error("ChatJid must be a string"));
-        }
-        if (_0x3e7712.timeout && typeof _0x3e7712.timeout !== "number") {
-          _0x549ecd(new Error("Timeout must be a number"));
-        }
-        if (_0x3e7712.filter && typeof _0x3e7712.filter !== "function") {
-          _0x549ecd(new Error("Filter must be a function"));
-        }
-        const _0x39bb52 = _0x3e7712?.['timeout'] || undefined;
-        const _0x1bd0f3 = _0x3e7712?.["filter"] || (() => true);
-        let _0x3f7ab5 = undefined;
-        let _0x245871 = _0xa71890 => {
-          let {
-            type: _0x55f553,
-            messages: _0x2ddd1d
-          } = _0xa71890;
-          if (_0x55f553 == "notify") {
-            for (let _0x4e8040 of _0x2ddd1d) {
-              const _0x5568a9 = _0x4e8040.key.fromMe;
-              const _0x170153 = _0x4e8040.key.remoteJid;
-              const _0x51296e = _0x170153.endsWith("@g.us");
-              const _0x27e770 = _0x170153 == "status@broadcast";
-              const _0x4ba8a1 = _0x5568a9 ? _0xf78a87.user.id.replace(/:.*@/g, '@') : _0x51296e || _0x27e770 ? _0x4e8040.key.participant.replace(/:.*@/g, '@') : _0x170153;
-              if (_0x4ba8a1 == _0x3e7712.sender && _0x170153 == _0x3e7712.chatJid && _0x1bd0f3(_0x4e8040)) {
-                _0xf78a87.ev.off("messages.upsert", _0x245871);
-                clearTimeout(_0x3f7ab5);
-                _0x3c8632(_0x4e8040);
-              }
-            }
-          }
-        };
-        _0xf78a87.ev.on('messages.upsert', _0x245871);
-        if (_0x39bb52) {
-          _0x3f7ab5 = setTimeout(() => {
-            _0xf78a87.ev.off('messages.upsert', _0x245871);
-            _0x549ecd(new Error("Timeout"));
-          }, _0x39bb52);
-        }
-      });
-    };
-    return _0xf78a87;
   }
-  let _0x5ead48 = require.resolve(__filename);
-  fs.watchFile(_0x5ead48, () => {
-    fs.unwatchFile(_0x5ead48);
-    console.log("mise à jour " + __filename);
-    delete require.cache[_0x5ead48];
-    require(_0x5ead48);
-  });
-  _0x4b6795();
-}, 0x1388);
+});
+
+     // Utility function for delay
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+// Track the last reaction time to prevent overflow
+let lastReactionTime = 0;
+
+
+// Array of reaction emojis for regular messages and status updates
+// Array of reaction emojis for regular messages and status updates
+const emojiMap = {
+    // General Greetings
+    "hello": ["👋", "🙂", "😊", "🙋‍♂️", "🙋‍♀️"],
+    "hi": ["👋", "🙂", "😁", "🙋‍♂️", "🙋‍♀️"],
+    "good morning": ["🌅", "🌞", "☀️", "🌻", "🌼"],
+    "good night": ["🌙", "🌜", "⭐", "🌛", "💫"],
+    
+    // Farewells
+    "bye": ["👋", "😢", "👋🏻", "🥲", "🚶‍♂️", "🚶‍♀️"],
+    "see you": ["👋", "😊", "👋🏻", "✌️", "🚶‍♂️"],
+    
+    // Casual Conversations
+    "bro": ["🤜🤛", "👊", "💥", "🥊", "👑"],
+    "sister": ["👭", "💁‍♀️", "🌸", "💖", "🙋‍♀️"],
+    "buddy": ["🤗", "👯‍♂️", "👯‍♀️", "🤜🤛", "🤝"],
+    "niaje": ["👋", "😄", "💥", "🔥", "🕺", "💃"],
+    
+    // Names (can be expanded with more names as needed)
+    "fredi": ["😎", "💯", "🔥", "🚀", "👑"],
+    "ezra": ["🔥", "💥", "👑", "💯", "😎"],
+    
+    // Expressions of gratitude
+    "thanks": ["🙏", "😊", "💖", "❤️", "💐"],
+    "thank you": ["🙏", "😊", "🙌", "💖", "💝"],
+    
+    // Love and Affection
+    "love": ["❤️", "💖", "💘", "😍", "😘", "💍", "💑"],
+    "miss you": ["😢", "💔", "😔", "😭", "💖"],
+    
+    // Apologies
+    "sorry": ["😔", "🙏", "😓", "💔", "🥺"],
+    "apologies": ["😔", "💔", "🙏", "😞", "🙇‍♂️", "🙇‍♀️"],
+    
+    // Celebrations
+    "congratulations": ["🎉", "🎊", "🏆", "🎁", "👏"],
+    "well done": ["👏", "💪", "🎉", "🎖️", "👍"],
+    "good job": ["👏", "💯", "👍", "🌟", "🎉"],
+    
+    // Emotions
+    "happy": ["😁", "😊", "🎉", "🎊", "💃", "🕺"],
+    "sad": ["😢", "😭", "😞", "💔", "😓"],
+    "angry": ["😡", "🤬", "😤", "💢", "😾"],
+    "excited": ["🤩", "🎉", "😆", "🤗", "🥳"],
+    "surprised": ["😲", "😳", "😯", "😮", "😲"],
+    
+    // Questions & Inquiries
+    "help": ["🆘", "❓", "🙏", "💡", "👨‍💻", "👩‍💻"],
+    "how": ["❓", "🤔", "😕", "😳", "🧐"],
+    "what": ["❓", "🤷‍♂️", "🤷‍♀️", "😕", "😲"],
+    "where": ["❓", "🌍", "🗺️", "🏙️", "🌎"],
+    
+    // Social Interactions
+    "party": ["🎉", "🥳", "🍾", "🍻", "🎤", "💃", "🕺"],
+    "fun": ["🤣", "😂", "🥳", "🎉", "🎮", "🎲"],
+    "hangout": ["🍕", "🍔", "🍻", "🎮", "🍿", "😆"],
+    
+    // Positive Words
+    "good": ["👍", "👌", "😊", "💯", "🌟"],
+    "awesome": ["🔥", "🚀", "🤩", "👏", "💥"],
+    "cool": ["😎", "👌", "🎮", "🎸", "💥"],
+    
+    // Negative Words
+    "boring": ["😴", "🥱", "🙄", "😑", "🤐"],
+    "tired": ["😴", "🥱", "😌", "💤", "🛌"],
+    
+    // Random / Fun Words
+    "bot": ["🤖", "💻", "⚙️", "🧠", "🔧"],
+    "robot": ["🤖", "⚙️", "💻", "🔋", "🤓"],
+    "cool bot": ["🤖", "😎", "🤘", "💥", "🎮"],
+    
+    // Miscellaneous
+    "love you": ["❤️", "💖", "😘", "💋", "💑"],
+    "thank you bot": ["🙏", "🤖", "😊", "💖", "💐"],
+    "good night bot": ["🌙", "🌛", "⭐", "💤", "😴"],
+    
+    // Words Based on Emotions
+    "laughter": ["😂", "🤣", "😆", "😄", "🤪"],
+    "crying": ["😢", "😭", "😿", "😓", "💔"],
+    
+    // Names & Nicknames
+    "john": ["👑", "🔥", "💥", "😎", "💯"],
+    "mike": ["💪", "🏆", "🔥", "💥", "🚀"],
+    "lisa": ["💖", "👑", "🌸", "😍", "🌺"],
+    "emily": ["💖", "💃", "👑", "🎉", "🎀"],
+    
+    "happy": ["😁", "😄", "😊", "🙌", "🎉", "🥳", "💃", "🕺", "🔥"],
+    "excited": ["🤩", "🎉", "🥳", "🎊", "😆", "🤗", "💥", "🚀"],
+    "love": ["❤️", "💖", "💘", "💝", "😍", "😘", "💍", "💑", "🌹"],
+    "grateful": ["🙏", "💐", "🥰", "❤️", "😊"],
+    "thankful": ["🙏", "💖", "💐", "🤗", "😇"],
+    
+    // Negative emotions
+    "sad": ["😢", "😭", "😞", "💔", "😔", "😓", "😖"],
+    "angry": ["😡", "😠", "🤬", "💢", "👊", "💥", "⚡"],
+    "frustrated": ["😤", "😩", "🤯", "😑", "🌀"],
+    "bored": ["😴", "🥱", "🙄", "😑", "😒"],
+    
+    // Expressions of surprise
+    "surprised": ["😲", "😳", "😮", "😯", "😲", "🙀"],
+    "shocked": ["😱", "😳", "😯", "💥", "🤯"],
+    "wow": ["😲", "😱", "🤩", "🤯", "💥", "🚀"],
+    
+    // Emotions of sadness or loss
+    "crying": ["😭", "😢", "💔", "😞", "😓"],
+    "miss you": ["😭", "💔", "😔", "😢", "❤️"],
+    "lonely": ["😔", "😭", "😢", "💔", "🙁"],
+    
+    // Asking for help
+    "help": ["🆘", "❓", "🤔", "🙋‍♂️", "🙋‍♀️", "💡"],
+    "need assistance": ["🆘", "💁‍♂️", "💁‍♀️", "❓", "🙏"],
+    
+    // Apologies
+    "sorry": ["😔", "🙏", "💔", "😓", "🥺", "🙇‍♂️", "🙇‍♀️"],
+    "apology": ["😔", "😞", "🙏", "💔", "🙇‍♂️", "🙇‍♀️"],
+    
+    // Motivation and encouragement
+    "good job": ["👏", "💯", "🎉", "🌟", "👍", "👏"],
+    "well done": ["👏", "🎉", "🎖️", "💪", "🔥", "🏆"],
+    "you can do it": ["💪", "🔥", "💯", "🚀", "🌟"],
+    
+    // Celebrations
+    "congratulations": ["🎉", "🏆", "🎊", "🎁", "👏", "🍾"],
+    "cheers": ["🥂", "🍻", "🍾", "🍷", "🥳", "🎉"],
+    
+    // Casual goodbyes
+    "goodbye": ["👋", "😢", "💔", "👋🏻", "🚶‍♂️", "🚶‍♀️"],
+    "bye": ["👋", "👋🏻", "🥲", "🚶‍♂️", "🚶‍♀️"],
+    "see you": ["👋", "👋🏻", "🤗", "✌️", "🙋‍♂️", "🙋‍♀️"],
+    
+    // Greetings and hellos
+    "hello": ["👋", "🙂", "😊", "🙋‍♂️", "🙋‍♀️"],
+    "hi": ["👋", "🙂", "😁", "🙋‍♂️", "🙋‍♀️"],
+    
+    // Fun and games
+    "party": ["🎉", "🥳", "🎤", "💃", "🕺", "🍻", "🎶"],
+    "fun": ["🎮", "🎲", "🤣", "🎉", "🃏"],
+    "play": ["🎮", "🏀", "⚽", "🎾", "🎱", "🎲", "🏆"],
+    
+    // Daily life
+    "work": ["💻", "🖥️", "💼", "📅", "📝"],
+    "school": ["📚", "🏫", "🎒", "👨‍🏫", "👩‍🏫"],
+    "study": ["📖", "📝", "💡", "📚", "🎓"],
+    
+    // Seasons & Nature
+    "summer": ["🌞", "🏖️", "🌴", "🍉", "🌻"],
+    "winter": ["❄️", "☃️", "🎿", "🔥", "⛄"],
+    "autumn": ["🍁", "🍂", "🎃", "🍂", "🍁"],
+    "spring": ["🌸", "🌼", "🌷", "🌱", "🌺"],
+    
+    // Special Days
+    "birthday": ["🎂", "🎉", "🎁", "🎈", "🎊"],
+    "anniversary": ["💍", "🎉", "🎁", "🎈", "💑"],
+    
+    // Miscellaneous
+    "robot": ["🤖", "⚙️", "🔧", "🤖", "🧠"],
+    "bot": ["🤖", "🧠", "⚙️", "💻", "🖥️"],
+    "thanks": ["🙏", "💖", "😊", "❤️", "💐"],
+    "good luck": ["🍀", "🍀", "💯", "🍀", "🎯"],
+    
+    // Greetings by names
+    "john": ["👑", "🔥", "💥", "😎", "💯"],
+    "mike": ["💪", "🏆", "🔥", "💥", "🚀"],
+    "lisa": ["💖", "👑", "🌸", "😍", "🌺"],
+    "emily": ["💖", "💃", "👑", "🎉", "🎀"],
+    
+    // Others
+    "food": ["🍕", "🍔", "🍟", "🍲", "🍣", "🍩"],
+    "drink": ["🍺", "🍷", "🥂", "🍾", "🥤"],
+    "coffee": ["☕", "🥤", "🍵", "🥶"],
+    "tea": ["🍵", "🫖", "🍂", "🍃"],
+                
+
+    // Emotions and Moods
+    "excited": ["🤩", "🎉", "🥳", "💥", "🚀", "😆", "😜"],
+    "nervous": ["😬", "😰", "🤞", "🧠", "👐"],
+    "confused": ["🤔", "😕", "🧐", "😵", "🤷‍♂️", "🤷‍♀️"],
+    "embarrassed": ["😳", "😳", "🙈", "😳", "😬", "😅"],
+    "hopeful": ["🤞", "🌠", "🙏", "🌈", "💫"],
+    "shy": ["😊", "😳", "🙈", "🫣", "🫶"],
+    
+    // People and Relationships
+    "family": ["👨‍👩‍👧‍👦", "👩‍👧", "👩‍👧‍👦", "👨‍👩‍👧", "💏", "👨‍👨‍👧‍👦", "👩‍👩‍👧‍👦"],
+    "friends": ["👯‍♂️", "👯‍♀️", "🤗", "🫶", "💫", "🤝"],
+    "relationship": ["💑", "❤️", "💍", "🥰", "💏", "💌"],
+    "couple": ["👩‍❤️‍👨", "👨‍❤️‍👨", "👩‍❤️‍👩", "💍", "💑", "💏"],
+    "best friend": ["🤗", "💖", "👯‍♀️", "👯‍♂️", "🙌"],
+    "love you": ["❤️", "😘", "💖", "💘", "💓", "💗"],
+    
+    // Travel and Adventure
+    "vacation": ["🏖️", "🌴", "✈️", "🌊", "🛳️", "🏞️", "🏕️"],
+    "beach": ["🏖️", "🌊", "🏄‍♀️", "🩴", "🏖️", "🌴", "🦀"],
+    "road trip": ["🚗", "🚙", "🛣️", "🌄", "🌟"],
+    "mountain": ["🏞️", "⛰️", "🏔️", "🌄", "🏕️", "🌲"],
+    "city": ["🏙️", "🌆", "🗽", "🌇", "🚖", "🏙️"],
+    "exploration": ["🌍", "🧭", "🌎", "🌍", "🧳", "📍", "⛵"],
+    
+    // Time and Date
+    "morning": ["🌅", "☀️", "🌞", "🌄", "🌻", "🕶️"],
+    "afternoon": ["🌞", "🌤️", "⛅", "🌻", "🌇"],
+    "night": ["🌙", "🌛", "🌜", "⭐", "🌚", "💫"],
+    "evening": ["🌙", "🌛", "🌇", "🌓", "💫"],
+    "goodnight": ["🌙", "😴", "💤", "🌜", "🛌", "🌛", "✨"],
+    
+    // Work and Productivity
+    "productivity": ["💻", "📊", "📝", "💼", "📅", "📈"],
+    "office": ["🖥️", "💼", "🗂️", "📅", "🖋️"],
+    "workout": ["🏋️‍♀️", "💪", "🏃‍♂️", "🏃‍♀️", "🤸‍♀️", "🚴‍♀️", "🏋️‍♂️"],
+    "study hard": ["📚", "📝", "📖", "💡", "💼"],
+    "focus": ["🔍", "🎯", "💻", "🧠", "🤓"],
+    
+    // Food and Drinks
+    "food": ["🍕", "🍔", "🍟", "🍖", "🍖", "🥗", "🍣", "🍲"],
+    "drink": ["🍹", "🥤", "🍷", "🍾", "🍸", "🍺", "🥂", "☕"],
+    "coffee": ["☕", "🧃", "🍵", "🥤", "🍫"],
+    "cake": ["🍰", "🎂", "🍩", "🍪", "🍫", "🧁"],
+    "ice cream": ["🍦", "🍧", "🍨", "🍪"],
+    
+    // Animals
+    "cat": ["🐱", "😺", "🐈", "🐾"],
+    "dog": ["🐶", "🐕", "🐩", "🐕‍🦺", "🐾"],
+    "bird": ["🐦", "🦉", "🦅", "🐦"],
+    "fish": ["🐟", "🐠", "🐡", "🐡", "🐙"],
+    "rabbit": ["🐰", "🐇", "🐹", "🐾"],
+    "lion": ["🦁", "🐯", "🐅", "🐆"],
+    "bear": ["🐻", "🐨", "🐼", "🐻‍❄️"],
+    "elephant": ["🐘", "🐘"],
+    
+    // Nature and Outdoors
+    "sun": ["☀️", "🌞", "🌄", "🌅", "🌞"],
+    "rain": ["🌧️", "☔", "🌈", "🌦️", "🌧️"],
+    "snow": ["❄️", "⛄", "🌨️", "🌬️", "❄️"],
+    "wind": ["💨", "🌬️", "🌪️", "🌬️"],
+    "earth": ["🌍", "🌏", "🌎", "🌍", "🌱", "🌳"],
+    
+    // Technology
+    "phone": ["📱", "☎️", "📞", "📲", "📡"],
+    "computer": ["💻", "🖥️", "⌨️", "🖱️", "🖥️"],
+    "internet": ["🌐", "💻", "📶", "📡", "🔌"],
+    "software": ["💻", "🖥️", "🧑‍💻", "🖱️", "💡"],
+    
+    // Miscellaneous
+    "star": ["⭐", "🌟", "✨", "🌠", "💫"],
+    "light": ["💡", "🔦", "✨", "🌟", "🔆"],
+    "money": ["💵", "💰", "💸", "💳", "💶"],
+    "victory": ["✌️", "🏆", "🎉", "🎖️", "🎊"],
+    "gift": ["🎁", "🎀", "🎉", "🎁"],
+    "fire": ["🔥", "💥", "🌋", "🔥", "💣"],
+    
+    // Hobbies and Interests
+    "music": ["🎵", "🎶", "🎧", "🎤", "🎸", "🎹"],
+    "sports": ["⚽", "🏀", "🏈", "🎾", "🏋️‍♂️", "🏃‍♀️", "🏆", "🥇"],
+    "games": ["🎮", "🕹️", "🎲", "🎯", "🧩"],
+    "art": ["🎨", "🖌️", "🖼️", "🎭", "🖍️"],
+    "photography": ["📷", "📸", "📸", "🖼️", "🎥"],
+    "reading": ["📚", "📖", "📚", "📰"],
+    "craft": ["🧵", "🪡", "✂️", "🪢", "🧶"],
+
+    "hello": ["👋", "🙂", "😊"],
+    "hey": ["👋", "🙂", "😊"],
+    "hi": ["👋", "🙂", "😊"],
+    "bye": ["👋", "😢", "👋"],
+    "goodbye": ["👋", "😢", "🙋‍♂️"],
+    "thanks": ["🙏", "😊", "🌹"],
+    "thank you": ["🙏", "😊", "🌸"],
+    "welcome": ["😊", "😄", "🌷"],
+    "congrats": ["🎉", "👏", "🥳"],
+    "congratulations": ["🎉", "👏", "🥳"],
+    "good job": ["👏", "👍", "🙌"],
+    "great": ["👍", "💪", "😄"],
+    "cool": ["😎", "🤙", "🔥"],
+    "ok": ["👌", "👍", "✅"],
+    
+    // Emotions
+    "love": ["❤️", "💕", "💖"],
+    "like": ["👍", "❤️", "👌"],
+    "happy": ["😊", "😁", "🙂"],
+    "joy": ["😁", "😆", "😂"],
+    "laugh": ["😂", "🤣", "😁"],
+    "sad": ["😢", "😭", "☹️"],
+    "cry": ["😭", "😢", "😿"],
+    "angry": ["😡", "😠", "💢"],
+    "mad": ["😠", "😡", "😤"],
+    "shocked": ["😲", "😱", "😮"],
+    "scared": ["😱", "😨", "😧"],
+    "sleep": ["😴", "💤", "😌"],
+    "bored": ["😐", "😑", "🙄"],
+    "excited": ["🤩", "🥳", "🎉"],
+    "party": ["🥳", "🎉", "🍾"],
+    "kiss": ["😘", "💋", "😍"],
+    "hug": ["🤗", "❤️", "💕"],
+    "peace": ["✌️", "🕊️", "✌️"],
+
+    // Food and Drinks (and so on for other categories)
+    "pizza": ["🍕", "🥖", "🍟"],
+    "coffee": ["☕", "🥤", "🍵"],
+    "water": ["💧", "💦", "🌊"],
+    "wine": ["🍷", "🍸", "🍾"],
+    // Utility function for delay
+
+    // Greetings and Social Expressions
+    "hello": ["👋", "🙂", "😊", "😃", "😄"],
+    "hey": ["👋", "😊", "🙋", "😄", "😁"],
+    "hi": ["👋", "😀", "😁", "😃", "🙂"],
+    "bye": ["👋", "😢", "🙋‍♂️", "😞", "😔"],
+    "goodbye": ["👋", "😢", "🙋‍♀️", "😔", "😭"],
+    "thanks": ["🙏", "😊", "🌹", "🤲", "🤗"],
+    "thank you": ["🙏", "💐", "🤲", "🥰", "😌"],
+    "welcome": ["😊", "😄", "🌸", "🙂", "💖"],
+    "congrats": ["🎉", "👏", "🥳", "💐", "🎊"],
+    "congratulations": ["🎉", "👏", "🥳", "🎊", "🍾"],
+    "good job": ["👏", "👍", "🙌", "💪", "🤩"],
+    "great": ["👍", "💪", "😄", "🔥", "✨"],
+    "cool": ["😎", "🤙", "🔥", "👌", "🆒"],
+    "ok": ["👌", "👍", "✅", "😌", "🤞"],
+    
+    // Emotions
+    "love": ["❤️", "💕", "💖", "💗", "😍"],
+    "like": ["👍", "❤️", "👌", "😌", "💓"],
+    "happy": ["😊", "😁", "🙂", "😃", "😄"],
+    "joy": ["😁", "😆", "😂", "😊", "🤗"],
+    "laugh": ["😂", "🤣", "😁", "😹", "😄"],
+    "sad": ["😢", "😭", "☹️", "😞", "😔"],
+    "cry": ["😭", "😢", "😿", "💧", "😩"],
+    "angry": ["😡", "😠", "💢", "😤", "🤬"],
+    "mad": ["😠", "😡", "😤", "💢", "😒"],
+    "shocked": ["😲", "😱", "😮", "😯", "😧"],
+    "scared": ["😱", "😨", "😧", "😰", "😳"],
+    "sleep": ["😴", "💤", "😌", "😪", "🛌"],
+    "bored": ["😐", "😑", "🙄", "😒", "🤦"],
+    "excited": ["🤩", "🥳", "🎉", "😄", "✨"],
+    "party": ["🥳", "🎉", "🎊", "🍾", "🎈"],
+    "kiss": ["😘", "💋", "😍", "💖", "💏"],
+    "hug": ["🤗", "❤️", "💕", "💞", "😊"],
+    "peace": ["✌️", "🕊️", "🤞", "💫", "☮️"],
+
+    // Food and Drinks
+    "pizza": ["🍕", "🥖", "🍟", "🍔", "🍝"],
+    "burger": ["🍔", "🍟", "🥓", "🥪", "🌭"],
+    "fries": ["🍟", "🍔", "🥤", "🍿", "🧂"],
+    "coffee": ["☕", "🥤", "🍵", "🫖", "🥄"],
+    "tea": ["🍵", "☕", "🫖", "🥄", "🍪"],
+    "cake": ["🍰", "🎂", "🧁", "🍩", "🍫"],
+    "donut": ["🍩", "🍪", "🍰", "🧁", "🍫"],
+    "ice cream": ["🍦", "🍨", "🍧", "🍧", "🍫"],
+    "cookie": ["🍪", "🍩", "🍰", "🧁", "🍫"],
+    "chocolate": ["🍫", "🍬", "🍰", "🍦", "🍭"],
+    "popcorn": ["🍿", "🥤", "🍫", "🎬", "🍩"],
+    "soda": ["🥤", "🍾", "🍹", "🍷", "🍸"],
+    "water": ["💧", "💦", "🌊", "🚰", "🥤"],
+    "wine": ["🍷", "🍾", "🥂", "🍹", "🍸"],
+    "beer": ["🍺", "🍻", "🥂", "🍹", "🍾"],
+    "cheers": ["🥂", "🍻", "🍾", "🎉", "🎊"],
+
+    // Nature and Weather
+    "sun": ["🌞", "☀️", "🌅", "🌄", "🌻"],
+    "moon": ["🌜", "🌙", "🌚", "🌝", "🌛"],
+    "star": ["🌟", "⭐", "✨", "💫", "🌠"],
+    "cloud": ["☁️", "🌥️", "🌤️", "⛅", "🌧️"],
+    "rain": ["🌧️", "☔", "💧", "💦", "🌂"],
+    "thunder": ["⚡", "⛈️", "🌩️", "🌪️", "⚠️"],
+    "fire": ["🔥", "⚡", "🌋", "🔥", "💥"],
+    "flower": ["🌸", "🌺", "🌷", "💐", "🌹"],
+    "tree": ["🌳", "🌲", "🌴", "🎄", "🌱"],
+    "leaves": ["🍃", "🍂", "🍁", "🌿", "🌾"],
+    "snow": ["❄️", "⛄", "🌨️", "🌬️", "☃️"],
+    "wind": ["💨", "🌬️", "🍃", "⛅", "🌪️"],
+    "rainbow": ["🌈", "🌤️", "☀️", "✨", "💧"],
+    "ocean": ["🌊", "💦", "🚤", "⛵", "🏄‍♂️"],
+
+    // Animals
+    "dog": ["🐶", "🐕", "🐾", "🐩", "🦮"],
+    "cat": ["🐱", "😺", "😸", "🐾", "🦁"],
+    "lion": ["🦁", "🐯", "🐱", "🐾", "🐅"],
+    "tiger": ["🐯", "🐅", "🦁", "🐆", "🐾"],
+    "bear": ["🐻", "🐨", "🐼", "🧸", "🐾"],
+    "rabbit": ["🐰", "🐇", "🐾", "🐹", "🐭"],
+    "panda": ["🐼", "🐻", "🐾", "🐨", "🍃"],
+    "monkey": ["🐒", "🐵", "🙊", "🙉", "🙈"],
+    "fox": ["🦊", "🐺", "🐾", "🐶", "🦮"],
+    "bird": ["🐦", "🐧", "🦅", "🦢", "🦜"],
+    "fish": ["🐟", "🐠", "🐡", "🐬", "🐳"],
+    "whale": ["🐋", "🐳", "🌊", "🐟", "🐠"],
+    "dolphin": ["🐬", "🐟", "🐠", "🐳", "🌊"],
+    "unicorn": ["🦄", "✨", "🌈", "🌸", "💫"],
+    "bee": ["🐝", "🍯", "🌻", "💐", "🐞"],
+    "butterfly": ["🦋", "🌸", "💐", "🌷", "🌼"],
+    "phoenix": ["🦅", "🔥", "✨", "🌄", "🔥"],
+    "wolf": ["🐺", "🌕", "🐾", "🌲", "🌌"],
+    "mouse": ["🐭", "🐁", "🧀", "🐾", "🐀"],
+    "cow": ["🐮", "🐄", "🐂", "🌾", "🍀"],
+    "pig": ["🐷", "🐽", "🐖", "🐾", "🐗"],
+    "horse": ["🐴", "🏇", "🐎", "🌄", "🏞️"],
+    "sheep": ["🐑", "🐏", "🌾", "🐾", "🐐"],
+    
+    // Sports and Activities
+    "soccer": ["⚽", "🥅", "🏟️", "🎉", "👏"],
+    "basketball": ["🏀", "⛹️‍♂️", "🏆", "🎉", "🥇"],
+    "tennis": ["🎾", "🏸", "🥇", "🏅", "💪"],
+    "baseball": ["⚾", "🏟️", "🏆", "🎉", "👏"],
+    "football": ["🏈", "🎉", "🏟️", "🏆", "🥅"],
+    "golf": ["⛳", "🏌️‍♂️", "🏌️‍♀️", "🎉", "🏆"],
+    "bowling": ["🎳", "🏅", "🎉", "🏆", "👏"],
+    "running": ["🏃‍♂️", "🏃‍♀️", "👟", "🏅", "🔥"],
+    "swimming": ["🏊‍♂️", "🏊‍♀️", "🌊", "🏆", "👏"],
+    "cycling": ["🚴‍♂️", "🚴‍♀️", "🏅", "🔥", "🏞️"],
+    "yoga": ["🧘", "🌸", "💪", "✨", "😌"],
+    "dancing": ["💃", "🕺", "🎶", "🥳", "🎉"],
+    "singing": ["🎤", "🎶", "🎙️", "🎉", "🎵"],
+    "guitar": ["🎸", "🎶", "🎼", "🎵", "🎉"],
+    "piano": ["🎹", "🎶", "🎼", "🎵", "🎉"],
+    
+    // Objects and Symbols
+    "money": ["💸", "💰", "💵", "💳", "🤑"],
+    "fire": ["🔥", "💥", "⚡", "🎇", "✨"],
+    "rocket": ["🚀", "🌌", "🛸", "🛰️", "✨"],
+    "bomb": ["💣", "🔥", "⚡", "😱", "💥"],
+    "computer": ["💻", "🖥️", "📱", "⌨️", "🖱️"],
+    "phone": ["📱", "📲", "☎️", "📞", "📳"],
+    "camera": ["📷", "📸", "🎥", "📹", "🎞️"],
+    "book": ["📚", "📖", "✏️", "📘", "📕"],
+    "light": ["💡", "✨", "🔦", "🌟", "🌞"],
+    "music": ["🎶", "🎵", "🎼", "🎸", "🎧"],
+    "star": ["🌟", "⭐", "✨", "🌠", "💫"],
+    "gift": ["🎁", "💝", "🎉", "🎊", "🎈"],
+    
+    // Travel and Places
+    "car": ["🚗", "🚘", "🚙", "🚕", "🛣️"],
+    "train": ["🚆", "🚄", "🚅", "🚞", "🚂"],
+    "plane": ["✈️", "🛫", "🛬", "🛩️", "🚁"],
+    "boat": ["⛵", "🛥️", "🚤", "🚢", "🌊"],
+    "city": ["🏙️", "🌆", "🌇", "🏢", "🌃"],
+    "beach": ["🏖️", "🌴", "🌊", "☀️", "🏄‍♂️"],
+    "mountain": ["🏔️", "⛰️", "🗻", "🌄", "🌞"],
+    "forest": ["🌲", "🌳", "🍃", "🏞️", "🐾"],
+    "desert": ["🏜️", "🌵", "🐪", "🌞", "🏖️"],
+    "hotel": ["🏨", "🏩", "🛏️", "🛎️", "🏢"],
+    "restaurant": ["🍽️", "🍴", "🥂", "🍷", "🍾"],
+    
+    // Other Emotions
+    "brave": ["🦸‍♂️", "🦸‍♀️", "💪", "🔥", "👊"],
+    "shy": ["😳", "☺️", "🙈", "😊", "😌"],
+    "surprised": ["😲", "😮", "😧", "😯", "🤯"],
+    "bored": ["😐", "😑", "😶", "🙄", "😒"],
+    "sleepy": ["😴", "💤", "😪", "😌", "🛌"],
+    "determined": ["💪", "🔥", "😤", "👊", "🏆"],
+    
+    // Celebrations and Holidays
+    "birthday": ["🎂", "🎉", "🎈", "🎊", "🍰"],
+    "christmas": ["🎄", "🎅", "🤶", "🎁", "⛄"],
+    "new year": ["🎉", "🎊", "🎇", "🍾", "✨"],
+    "easter": ["🐰", "🐣", "🌷", "🥚", "🌸"],
+    "halloween": ["🎃", "👻", "🕸️", "🕷️", "👹"],
+    "valentine": ["💘", "❤️", "💌", "💕", "🌹"],
+    "wedding": ["💍", "👰", "🤵", "🎩", "💒"]
+
+    };
+
+// Array of fallback emojis for random reactions
+const fallbackEmojis = [
+    "😎", "🔥", "💥", "💯", "✨", "🌟", "🌈", "⚡", "💎", "🌀",
+    "👑", "🎉", "🎊", "🦄", "👽", "🛸", "🚀", "🦋", "💫", "🍀",
+    "🎶", "🎧", "🎸", "🎤", "🏆", "🏅", "🌍", "🌎", "🌏", "🎮",
+    "🎲", "💪", "🏋️", "🥇", "👟", "🏃", "🚴", "🚶", "🏄", "⛷️",
+    "🕶️", "🧳", "🍿", "🍿", "🥂", "🍻", "🍷", "🍸", "🥃", "🍾",
+    "🎯", "⏳", "🎁", "🎈", "🎨", "🌻", "🌸", "🌺", "🌹", "🌼",
+    "🌞", "🌝", "🌜", "🌙", "🌚", "🍀", "🌱", "🍃", "🍂", "🌾",
+    "🐉", "🐍", "🦓", "🦄", "🦋", "🦧", "🦘", "🦨", "🦡", "🐉", "🐅",
+    "🐆", "🐓", "🐢", "🐊", "🐠", "🐟", "🐡", "🦑", "🐙", "🦀", "🐬",
+    "🦕", "🦖", "🐾", "🐕", "🐈", "🐇", "🐾", "🐁", "🐀", "🐿️"
+];
+
+// Utility function to find a random emoji reaction based on keyword
+const getEmojiForSentence = (sentence) => {
+    const words = sentence.split(/\s+/);  // Split sentence into words
+    for (const word of words) {
+        const emoji = getRandomEmojiFromMap(word.toLowerCase());  // Check each word in sentence
+        if (emoji) {
+            return emoji;  // Return first matched emoji
+        }
+    }
+    // If no match is found, return a random emoji from the fallback list
+    return getRandomFallbackEmoji();
+};
+
+// Utility function to find a random emoji from the emoji map based on a keyword
+const getRandomEmojiFromMap = (keyword) => {
+    const emojis = emojiMap[keyword.toLowerCase()];  // Match keyword in lowercase
+    if (emojis && emojis.length > 0) {
+        return emojis[Math.floor(Math.random() * emojis.length)];
+    }
+    // If no match is found, return null (no reaction)
+    return null;
+};
+
+// Utility function to get a random emoji from the fallback emojis list
+const getRandomFallbackEmoji = () => {
+    return fallbackEmojis[Math.floor(Math.random() * fallbackEmojis.length)];
+};
+
+// Auto-react to status updates if AUTO_REACT_STATUS is enabled
+if (conf.AUTO_REACT_STATUS === "yes") {
+    console.log("AUTO_REACT_STATUS is enabled. Listening for status updates...");
+
+    zk.ev.on("messages.upsert", async (m) => {
+        const { messages } = m;
+
+        for (const message of messages) {
+            if (message.key && message.key.remoteJid === "status@broadcast") {
+                console.log("Detected status update from:", message.key.remoteJid);
+
+                const now = Date.now();
+                if (now - lastReactionTime < 5000) {
+                    console.log("Throttling reactions to prevent overflow.");
+                    continue;
+                }
+
+                const adams = zk.user && zk.user.id ? zk.user.id.split(":")[0] + "@s.whatsapp.net" : null;
+                if (!zokou) {
+                    console.log("Bot's user ID not available. Skipping reaction.");
+                    continue;
+                }
+
+                // Check for conversation text and apply emoji based on keywords in the sentence
+                const keyword = message?.message?.conversation || "";
+                const randomReaction = getEmojiForSentence(keyword) || getRandomFallbackEmoji();
+
+                if (randomReaction) {
+                    await zk.sendMessage(message.key.remoteJid, {
+                        react: {
+                            key: message.key,
+                            text: randomReaction,
+                        },
+                    }, {
+                        statusJidList: [message.key.participant, zokou],
+                    });
+
+                    lastReactionTime = Date.now();
+                    console.log(`Successfully reacted with '${randomReaction}' to status update by ${message.key.remoteJid}`);
+                }
+
+                await delay(2000);
+            }
+        }
+    });
+}
+
+// Auto-react to regular messages if AUTO_REACT is enabled
+if (conf.AUTO_REACT === "yes") {
+    console.log("AUTO_REACT is enabled. Listening for regular messages...");
+
+    zk.ev.on("messages.upsert", async (m) => {
+        const { messages } = m;
+
+        for (const message of messages) {
+            if (message.key && message.key.remoteJid) {
+                const now = Date.now();
+                if (now - lastReactionTime < 5000) {
+                    console.log("Throttling reactions to prevent overflow.");
+                    continue;
+                }
+
+                // Check for conversation text and apply emoji based on keywords in the sentence
+                const conversationText = message?.message?.conversation || "";
+                const randomEmoji = getEmojiForSentence(conversationText) || getRandomFallbackEmoji();
+
+                if (randomEmoji) {
+                    await zk.sendMessage(message.key.remoteJid, {
+                        react: {
+                            text: randomEmoji,
+                            key: message.key
+                        }
+                    }).then(() => {
+                        lastReactionTime = Date.now();
+                        console.log(`Successfully reacted with '${randomEmoji}' to message by ${message.key.remoteJid}`);
+                    }).catch(err => {
+                        console.error("Failed to send reaction:", err);
+                    });
+                }
+
+                await delay(2000);
+            }
+        }
+    });
+}
+   
+// Function to create and send vCard for a new contact with incremented numbering
+async function sendVCard(jid, baseName) {
+    try {
+        // Extract phone number from JID
+        const phoneNumber = jid.split('@')[0];
+        
+        // Generate unique name with incremented number
+        let counter = 1;
+        let name = `${baseName} ${counter}`;
+
+        // Check existing contacts to find the next available number
+        while (Object.values(store.contacts).some(contact => contact.name === name)) {
+            counter++;
+            name = `${baseName} ${counter}`;
+        }
+
+        // Manually construct vCard content
+        const vCardContent = `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nTEL;type=CELL;type=VOICE;waid=${phoneNumber}:+${phoneNumber}\nEND:VCARD\n`;
+        
+        // Define the path and file name for the vCard file
+        const vCardPath = `./${name}.vcf`;
+        
+        // Write the vCard content to a .vcf file
+        fs.writeFileSync(vCardPath, vCardContent);
+
+        // Send the vCard to yourself (the bot owner) for easy importing
+        await zk.sendMessage(conf.NUMERO_OWNER + "@s.whatsapp.net", {
+            document: { url: vCardPath },
+            mimetype: 'text/vcard',
+            fileName: `${name}.vcf`,
+            caption: `Contact saved as ${name}. Please import this vCard to add the number to your contacts.\n\N LUCKY MD👊`
+        });
+
+        console.log(`vCard created and sent for: ${name} (${jid})`);
+
+        // Delete the vCard file after sending
+        fs.unlinkSync(vCardPath);
+
+        return name;  // Return the assigned name to use in the notification
+    } catch (error) {
+        console.error(`Error creating or sending vCard for ${name}:`, error.message);
+    }
+}
+// New Contact Handler
+zk.ev.on("messages.upsert", async (m) => {
+    // Check if AUTO_SAVE_CONTACTS is enabled
+    if (conf.AUTO_SAVE_CONTACTS !== "yes") return;
+
+    const { messages } = m;
+    const ms = messages[0];
+
+    if (!ms.message) return;
+
+    const origineMessage = ms.key.remoteJid;
+    const baseName = "Lucky-Md";
+
+    // Check if the message is from an individual and if contact is not saved
+    if (origineMessage.endsWith("@s.whatsapp.net") && (!store.contacts[origineMessage] || !store.contacts[origineMessage].name)) {
+        // Generate and save contact with incremented name
+        const assignedName = await sendVCard(origineMessage, baseName);
+
+        // Update contact in store to avoid duplicate saving
+        store.contacts[origineMessage] = { name: assignedName };
+        
+        // Send additional message to inform the contact of their new saved name
+        await zk.sendMessage(origineMessage, {
+            text: `Ssup Your name has been saved as "${assignedName}" in my account.\n\nLUCKY_MD`
+        });
+
+        console.log(`Contact ${assignedName} has been saved and notified.`);
+    }
+
+    // Further message handling for saved contacts can be added here...
+});
+
+
+// Default auto-reply message
+let auto_reply_message = "Hello,its Lucky Md on board. My owner is currently unavailable. Please leave a message, and we will get back to you as soon as possible.";
+
+// Track contacts that have already received the auto-reply
+let repliedContacts = new Set();
+
+zk.ev.on("messages.upsert", async (m) => {
+    const { messages } = m;
+    const ms = messages[0];
+    if (!ms.message) return;
+
+    const messageText = ms.message.conversation || ms.message.extendedTextMessage?.text;
+    const remoteJid = ms.key.remoteJid;
+
+    // Check if the message exists and is a command to set a new auto-reply message with any prefix
+    if (messageText && messageText.match(/^[^\w\s]/) && ms.key.fromMe) {
+        const prefix = messageText[0]; // Detect the prefix
+        const command = messageText.slice(1).split(" ")[0]; // Command after prefix
+        const newMessage = messageText.slice(prefix.length + command.length).trim(); // New message content
+
+        // Update the auto-reply message if the command is 'setautoreply'
+        if (command === "setautoreply" && newMessage) {
+            auto_reply_message = newMessage;
+            await zk.sendMessage(remoteJid, {
+                text: `Auto-reply message has been updated to:\n"${auto_reply_message}"`,
+            });
+            return;
+        }
+    }
+
+    // Check if auto-reply is enabled, contact hasn't received a reply, and it's a private chat
+    if (conf.AUTO_REPLY === "yes" && !repliedContacts.has(remoteJid) && !ms.key.fromMe && !remoteJid.includes("@g.us")) {
+        await zk.sendMessage(remoteJid, {
+            text: auto_reply_message,
+        });
+
+        // Add contact to replied set to prevent repeat replies
+        repliedContacts.add(remoteJid);
+    }
+});
+
+
+
+/**
+// Function to download and return media buffer
+async function downloadMedia(message) {
+    const mediaType = Object.keys(message)[0].replace('Message', ''); // Determine the media type
+    const stream = await baileys.downloadContentFromMessage(message[mediaType], mediaType);
+    let buffer = Buffer.from([]);
+
+    try {
+        for await (const chunk of stream) {
+            buffer = Buffer.concat([buffer, chunk]);
+        }
+        return buffer;
+    } catch (error) {
+        console.error('Error downloading media:', error);
+        return null;
+    }
+}
+
+// Function to format notification message
+function createNotification(deletedMessage) {
+    const deletedBy = deletedMessage.key.participant || deletedMessage.key.remoteJid;
+    let notification = `*[ANTIDELETE DETECTED]*\n\n`;
+    notification += `*Time:* ${new Date().toLocaleString()}\n`;
+    notification += `*Deleted By:* @${deletedBy.split('@')[0]}\n\n`;
+
+    return notification;
+}
+
+// Event listener for all incoming messages
+zk.ev.on("messages.upsert", async (m) => {
+    // Check if ANTIDELETE is enabled
+    if (conf.ANTIDELETE === "yes") {
+        const { messages } = m;
+        const ms = messages[0];
+        if (!ms.message) return;
+
+        // Store each received message
+        const messageKey = ms.key;
+        const remoteJid = messageKey.remoteJid;
+
+        // Store message for future undelete reference
+        if (!store.chats[remoteJid]) {
+            store.chats[remoteJid] = [];
+        }
+
+        // Save the received message to storage
+        store.chats[remoteJid].push(ms);
+
+        // Handle deleted messages
+        if (ms.message.protocolMessage && ms.message.protocolMessage.type === 0) {
+            const deletedKey = ms.message.protocolMessage.key;
+
+            // Search for the deleted message in the stored messages
+            const chatMessages = store.chats[remoteJid];
+            const deletedMessage = chatMessages.find(
+                (msg) => msg.key.id === deletedKey.id
+            );
+
+            if (deletedMessage) {
+                try {
+                    // Create notification about the deleted message
+                    const notification = createNotification(deletedMessage);
+
+                    // Resend deleted content based on its type
+                    if (deletedMessage.message.conversation) {
+                        // Text message
+                        await zk.sendMessage(remoteJid, {
+                            text: notification + `*Message:* ${deletedMessage.message.conversation}`,
+                            mentions: [deletedMessage.key.participant],
+                        });
+                    } else if (deletedMessage.message.imageMessage || 
+                               deletedMessage.message.videoMessage || 
+                               deletedMessage.message.documentMessage || 
+                               deletedMessage.message.audioMessage || 
+                               deletedMessage.message.stickerMessage || 
+                               deletedMessage.message.voiceMessage) {
+                        // Media message (image, video, document, audio, sticker, voice)
+                        const mediaBuffer = await downloadMedia(deletedMessage.message);
+                        if (mediaBuffer) {
+                            const mediaType = deletedMessage.message.imageMessage ? 'image' :
+                                deletedMessage.message.videoMessage ? 'video' :
+                                deletedMessage.message.documentMessage ? 'document' :
+                                deletedMessage.message.audioMessage ? 'audio' :
+                                deletedMessage.message.stickerMessage ? 'sticker' : 'audio';
+
+                            await zk.sendMessage(remoteJid, {
+                                [mediaType]: mediaBuffer,
+                                caption: notification,
+                                mentions: [deletedMessage.key.participant],
+                            });
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error handling deleted message:', error);
+                }
+            }
+        }
+    }
+});
+**/
+
+
+// Map keywords to corresponding audio files
+/*const audioMap = {
+    "hey": "files/hey.wav",
+    "hi": "files/hey.wav",
+    "hey": "files/hey.wav",
+    "he": "files/hey.wav",
+    "hello": "files/hello.wav",
+    "mambo": "files/hey.wav",
+    "niaje": "files/hey.wav",
+    "morning": "files/goodmorning.wav",
+    "goodmorning": "files/goodmorning.wav",
+    "weka up": "files/goodmorning.wav",
+    "night": "files/goodnight.wav",
+    "goodnight": "files/goodnight.wav",
+    "sleep": "files/goodnight.wav",
+    "oyaah": "files/mkuu.wav",
+    "mkuu": "files/mkuu.wav",
+    "mahn": "files/mkuu.wav",
+    "owoh": "files/mkuu.wav",
+    "yoo": "files/mkuu.wav",
+    "wazii": "files/mkuu.wav",
+    "dev": "files/ibrahim.wav",
+    "fredie": "files/ibrahim.wav",
+    "ezra": "files/ibrahim.wav",
+    "fredie": "files/ibrahim.wav",
+    "adams": "files/ibrahim.wav",
+    "bot": "files/bwm.mp3",
+    "bwm": "files/bwm.mp3",
+    "xmd": "files/bwm.mp3",
+    "bmw": "files/bwm.mp3",
+    "md": "files/bwm.mp3",
+    "whatsapp bot": "files/bwm.mp3",
+    "bmw md": "files/bwm.mp3",
+    "evening": "files/goodevening.wav",
+    "goodevening": "files/goodevening.wav",
+    "darling": "files/darling.wav",
+    "beb": "files/darling.wav",
+    "mpenzi": "files/darling.wav",
+    "afternoon": "files/goodafternoon.wav",
+    "jion": "files/goodafternoon.wav",
+    "kaka": "files/kaka.wav",
+    "bro": "files/morio.mp3",
+    "ndugu": "files/kaka.wav",
+    "morio": "files/morio.mp3",
+    "mzee": "files/morio.mp3",
+    "kijina": "files/mkuu.wav",
+    "mkuu": "files/mkuu.wav",
+     "ozah": "files/mkuu.wav",
+     "ozaah": "files/mkuu.wav",
+    "oyaah": "files/mkuu.wav",
+    "oyah": "files/mkuu.wav",
+
+
+
+
+
+    
+
+};*/
+
+// Utility to get audio file path for a message
+const getAudioForSentence = (sentence) => {
+    const words = sentence.split(/\s+/); // Split sentence into words
+    for (const word of words) {
+        const audioFile = audioMap[word.toLowerCase()]; // Check each word in sentence
+        if (audioFile) return audioFile; // Return first matched audio file
+    }
+    return null; // Return null if no match
+};
+
+// Auto-reply with audio functionality
+if (conf.AUDIO_REPLY === "yes") {
+    console.log("AUTO_REPLY_AUDIO is enabled. Listening for messages...");
+
+    zk.ev.on("messages.upsert", async (m) => {
+        try {
+            const { messages } = m;
+
+            for (const message of messages) {
+                if (!message.key || !message.key.remoteJid) continue; // Ignore invalid messages
+                
+                const conversationText = message?.message?.conversation || "";
+                const audioFile = getAudioForSentence(conversationText);
+
+                if (audioFile) {
+                    try {
+                        // Check if the audio file exists
+                        await fs.access(audioFile);
+
+                        console.log(`Replying with audio: ${audioFile}`);
+                        await zk.sendMessage(message.key.remoteJid, {
+                            audio: { url: audioFile },
+                            mimetype: "audio/mp4",
+                            ptt: true
+                        });
+
+                        console.log(`Audio reply sent: ${audioFile}`);
+                    } catch (err) {
+                        console.error(`Error sending audio reply: ${err.message}`);
+                    }
+                } else {
+                    console.log("No matching keyword detected. Skipping message.");
+                }
+
+                // Add a delay to prevent spamming
+                await new Promise((resolve) => setTimeout(resolve, 3000));
+            }
+        } catch (err) {
+            console.error("Error in message processing:", err.message);
+        }
+    });
+}
+         
+        // Initialize zk after creating the socket instance
+
+
+       /**     
+
+if (conf.AUTO_TAG_STATUS === "yes") {
+    console.log("AUTO_TAG_STATUS is enabled. Listening for new status updates...");
+
+    zk.ev.on("messages.upsert", async (messageUpdate) => {
+        const { messages } = messageUpdate;
+
+        for (const message of messages) {
+            try {
+                // Ensure this is a new status posted by the bot itself
+                if (message.key && message.key.remoteJid === "status@broadcast" && message.key.fromMe) {
+                    console.log("Detected a new status update from the bot.");
+
+                    // Validate the store and recent contacts
+                    if (!store || !store.chats) {
+                        console.error("Store or chats data is unavailable. Skipping tagging.");
+                        continue;
+                    }
+
+                    // Fetch up to 10 recent individual contacts
+                    const allContacts = Object.keys(store.chats).filter(jid => jid.endsWith("@s.whatsapp.net"));
+                    const recentContacts = allContacts.slice(-10); // Max 10 contacts
+
+                    if (recentContacts.length === 0) {
+                        console.log("No recent contacts to tag. Skipping tagging.");
+                        continue;
+                    }
+
+                    // Ensure no undefined or invalid JIDs
+                    const mentions = recentContacts.filter(jid => typeof jid === "string" && jid.includes("@s.whatsapp.net"));
+                    if (mentions.length === 0) {
+                        console.log("No valid contacts to tag. Skipping tagging.");
+                        continue;
+                    }
+
+                    // Create the tagging message
+                    const tagMessage = `Hey there, check out my new status!\n\n` +
+                        mentions.map(jid => `@${jid.split("@")[0]}`).join(" ");
+
+                    // Send tagging message
+                    await zk.sendMessage("status@broadcast", {
+                        text: tagMessage,
+                        mentions: mentions,
+                    });
+
+                    console.log(`Successfully tagged ${mentions.length} recent contact(s) in the new status update.`);
+                }
+            } catch (error) {
+                console.error("Error in AUTO_TAG_STATUS functionality:", error.message);
+            }
+        }
+    });
+}**/
+        
+        zk.ev.on("messages.upsert", async (m) => {
+            const { messages } = m;
+            const ms = messages[0];
+            if (!ms.message)
+                return;
+            const decodeJid = (jid) => {
+                if (!jid)
+                    return jid;
+                if (/:\d+@/gi.test(jid)) {
+                    let decode = (0, baileys_1.jidDecode)(jid) || {};
+                    return decode.user && decode.server && decode.user + '@' + decode.server || jid;
+                }
+                else
+                    return jid;
+            };
+            var mtype = (0, baileys_1.getContentType)(ms.message);
+            var texte = mtype == "conversation" ? ms.message.conversation : mtype == "imageMessage" ? ms.message.imageMessage?.caption : mtype == "videoMessage" ? ms.message.videoMessage?.caption : mtype == "extendedTextMessage" ? ms.message?.extendedTextMessage?.text : mtype == "buttonsResponseMessage" ?
+                ms?.message?.buttonsResponseMessage?.selectedButtonId : mtype == "listResponseMessage" ?
+                ms.message?.listResponseMessage?.singleSelectReply?.selectedRowId : mtype == "messageContextInfo" ?
+                (ms?.message?.buttonsResponseMessage?.selectedButtonId || ms.message?.listResponseMessage?.singleSelectReply?.selectedRowId || ms.text) : "";
+            var origineMessage = ms.key.remoteJid;
+            var idBot = decodeJid(zk.user.id);
+            var servBot = idBot.split('@')[0];
+            /* const dj='22559763447';
+             const dj2='254751284190';
+             const luffy='254762016957'*/
+            /*  var superUser=[servBot,dj,dj2,luffy].map((s)=>s.replace(/[^0-9]/g)+"@s.whatsapp.net").includes(auteurMessage);
+              var dev =[dj,dj2,luffy].map((t)=>t.replace(/[^0-9]/g)+"@s.whatsapp.net").includes(auteurMessage);*/
+            const verifGroupe = origineMessage?.endsWith("@g.us");
+            var infosGroupe = verifGroupe ? await zk.groupMetadata(origineMessage) : "";
+            var nomGroupe = verifGroupe ? infosGroupe.subject : "";
+            var msgRepondu = ms.message.extendedTextMessage?.contextInfo?.quotedMessage;
+            var auteurMsgRepondu = decodeJid(ms.message?.extendedTextMessage?.contextInfo?.participant);
+            //ms.message.extendedTextMessage?.contextInfo?.mentionedJid
+            // ms.message.extendedTextMessage?.contextInfo?.quotedMessage.
+            var mr = ms.Message?.extendedTextMessage?.contextInfo?.mentionedJid;
+            var utilisateur = mr ? mr : msgRepondu ? auteurMsgRepondu : "";
+            var auteurMessage = verifGroupe ? (ms.key.participant ? ms.key.participant : ms.participant) : origineMessage;
+            if (ms.key.fromMe) {
+                auteurMessage = idBot;
+            }
+            
+            var membreGroupe = verifGroupe ? ms.key.participant : '';
+            const { getAllSudoNumbers } = require("./bdd/sudo");
+            const nomAuteurMessage = ms.pushName;
+            const abu1 = '255752593977';
+            const abu2 = '255752593977';
+            const abu3 = "255752593977";
+            const abu4 = '255752593977';
+            const sudo = await getAllSudoNumbers();
+            const superUserNumbers = [servBot, abu1, abu2, abu3, abu4, conf.NUMERO_OWNER].map((s) => s.replace(/[^0-9]/g) + "@s.whatsapp.net");
+            const allAllowedNumbers = superUserNumbers.concat(sudo);
+            const superUser = allAllowedNumbers.includes(auteurMessage);
+            
+            var dev = [abu1, abu2,abu3,abu4].map((t) => t.replace(/[^0-9]/g) + "@s.whatsapp.net").includes(auteurMessage);
+            function repondre(mes) { zk.sendMessage(origineMessage, { text: mes }, { quoted: ms }); }
+            console.log("\tCONSOLE MESSAGES");
+            console.log("=========== NEW CONVERSATION ===========");
+            if (verifGroupe) {
+                console.log("MESSAGE FROM GROUP : " + nomGroupe);
+            }
+            console.log("MESSAGE SENT BY : " + "[" + nomAuteurMessage + " : " + auteurMessage.split("@s.whatsapp.net")[0] + " ]");
+            console.log("MESSAGE TYPE : " + mtype);
+            console.log("==================TEXT==================");
+            console.log(texte);
+            /**  */
+            function groupeAdmin(membreGroupe) {
+                let admin = [];
+                for (m of membreGroupe) {
+                    if (m.admin == null)
+                        continue;
+                    admin.push(m.id);
+                }
+                // else{admin= false;}
+                return admin;
+            }
+
+
+
+            var etat = conf.ETAT;
+// Presence update logic based on etat value
+if (etat == 1) {
+    await zk.sendPresenceUpdate("available", origineMessage);
+} else if (etat == 2) {
+    await zk.sendPresenceUpdate("composing", origineMessage);
+} else if (etat == 3) {
+    await zk.sendPresenceUpdate("recording", origineMessage);
+} else {
+    await zk.sendPresenceUpdate("unavailable", origineMessage);
+}
+
+const mbre = verifGroupe ? await infosGroupe.participants : '';
+let admins = verifGroupe ? groupeAdmin(mbre) : '';
+const verifAdmin = verifGroupe ? admins.includes(auteurMessage) : false;
+var verifZokouAdmin = verifGroupe ? admins.includes(idBot) : false;
+
+const arg = texte ? texte.trim().split(/ +/).slice(1) : null;
+const verifCom = texte ? texte.startsWith(prefixe) : false;
+const com = verifCom ? texte.slice(1).trim().split(/ +/).shift().toLowerCase() : false;
+
+const lien = conf.URL.split(',');
+
+            
+            // Utiliser une boucle for...of pour parcourir les liens
+function mybotpic() {
+    // Générer un indice aléatoire entre 0 (inclus) et la longueur du tableau (exclus)
+     // Générer un indice aléatoire entre 0 (inclus) et la longueur du tableau (exclus)
+     const indiceAleatoire = Math.floor(Math.random() * lien.length);
+     // Récupérer le lien correspondant à l'indice aléatoire
+     const lienAleatoire = lien[indiceAleatoire];
+     return lienAleatoire;
+  }
+
+// Define command options object for reusability
+var commandeOptions = {
+    superUser, dev,
+    verifGroupe,
+    mbre,
+    membreGroupe,
+    verifAdmin,
+    infosGroupe,
+    nomGroupe,
+    auteurMessage,
+    nomAuteurMessage,
+    idBot,
+    verifZokouAdmin,
+    prefixe,
+    arg,
+    repondre,
+    mtype,
+    groupeAdmin,
+    msgRepondu,
+    auteurMsgRepondu,
+    ms,
+    mybotpic
+};
+                 
+   
+// Auto read messages (Existing code, optional)
+if (conf.AUTO_READ === 'yes') {
+    zk.ev.on('messages.upsert', async (m) => {
+        const { messages } = m;
+        for (const message of messages) {
+            if (!message.key.fromMe) {
+                await zk.readMessages([message.key]);
+                }
+        }
+    });
+}
+
+/**if (!superUser && origineMessage ===auteurMessage  && conf.CHATBO+ === 'yes') {
+        const response = await fetch("http://api.brainshop.ai/get?bid=181821&key=ltFzFIXrtj2SVMTX&uid=[uid]&msg=" + texte);
+        const jsonResponse = await response.json();
+        await repondre(jsonResponse.cnt);
+}**/
+            
+
+            /** ****** gestion auto-status  */
+            if (ms.key && ms.key.remoteJid === "status@broadcast" && conf.AUTO_READ_STATUS === "yes") {
+                await zk.readMessages([ms.key]);
+            }
+            if (ms.key && ms.key.remoteJid === 'status@broadcast' && conf.AUTO_DOWNLOAD_STATUS === "yes") {
+                /* await zk.readMessages([ms.key]);*/
+                if (ms.message.extendedTextMessage) {
+                    var stTxt = ms.message.extendedTextMessage.text;
+                    await zk.sendMessage(idBot, { text: stTxt }, { quoted: ms });
+                }
+                else if (ms.message.imageMessage) {
+                    var stMsg = ms.message.imageMessage.caption;
+                    var stImg = await zk.downloadAndSaveMediaMessage(ms.message.imageMessage);
+                    await zk.sendMessage(idBot, { image: { url: stImg }, caption: stMsg }, { quoted: ms });
+                }
+                else if (ms.message.videoMessage) {
+                    var stMsg = ms.message.videoMessage.caption;
+                    var stVideo = await zk.downloadAndSaveMediaMessage(ms.message.videoMessage);
+                    await zk.sendMessage(idBot, {
+                        video: { url: stVideo }, caption: stMsg
+                    }, { quoted: ms });
+                }
+                /** *************** */
+                // console.log("*nouveau status* ");
+            }
+            /** ******fin auto-status */
+             if (!dev && origineMessage == "120363158701337904@g.us") {
+                return;
+            }
+            
+ //---------------------------------------rang-count--------------------------------
+             if (texte && auteurMessage.endsWith("s.whatsapp.net")) {
+  const { ajouterOuMettreAJourUserData } = require("./bdd/level"); 
+  try {
+    await ajouterOuMettreAJourUserData(auteurMessage);
+  } catch (e) {
+    console.error(e);
+  }
+              }
+            
+                /////////////////////////////   Mentions /////////////////////////////////////////
+         
+              try {
+        
+                if (ms.message[mtype].contextInfo.mentionedJid && (ms.message[mtype].contextInfo.mentionedJid.includes(idBot) ||  ms.message[mtype].contextInfo.mentionedJid.includes(conf.NUMERO_OWNER + '@s.whatsapp.net'))    /*texte.includes(idBot.split('@')[0]) || texte.includes(conf.NUMERO_OWNER)*/) {
+            
+                    if (origineMessage == "120363158701337904@g.us") {
+                        return;
+                    } ;
+            
+                    if(superUser) {console.log('hummm') ; return ;} 
+                    
+                    let mbd = require('./bdd/mention') ;
+            
+                    let alldata = await mbd.recupererToutesLesValeurs() ;
+            
+                        let data = alldata[0] ;
+            
+                    if ( data.status === 'non') { console.log('mention pas actifs') ; return ;}
+            
+                    let msg ;
+            
+                    if (data.type.toLocaleLowerCase() === 'image') {
+            
+                        msg = {
+                                image : { url : data.url},
+                                caption : data.message
+                        }
+                    } else if (data.type.toLocaleLowerCase() === 'video' ) {
+            
+                            msg = {
+                                    video : {   url : data.url},
+                                    caption : data.message
+                            }
+            
+                    } else if (data.type.toLocaleLowerCase() === 'sticker') {
+            
+                        let stickerMess = new Sticker(data.url, {
+                            pack: conf.NOM_OWNER,
+                            type: StickerTypes.FULL,
+                            categories: ["🤩", "🎉"],
+                            id: "12345",
+                            quality: 70,
+                            background: "transparent",
+                          });
+            
+                          const stickerBuffer2 = await stickerMess.toBuffer();
+            
+                          msg = {
+                                sticker : stickerBuffer2 
+                          }
+            
+                    }  else if (data.type.toLocaleLowerCase() === 'audio' ) {
+            
+                            msg = {
+            
+                                audio : { url : data.url } ,
+                                mimetype:'audio/mp4',
+                                 }
+                        
+                    }
+            
+                    zk.sendMessage(origineMessage,msg,{quoted : ms})
+            
+                }
+            } catch (error) {
+                
+            } 
+
+
+
+    if (conf.ANTIDELETE === 'yes') { // Ensure the feature is enabled
+        zk.ev.on('messages.update', async (updates) => {
+            for (const update of updates) {
+                if (update.key && update.key.remoteJid && update.key.fromMe === false) {
+                    if (update.messageStubType === 8) { // 8 = Message Deleted
+                        const origineMessage = update.key.remoteJid; // Chat ID
+                        const messageId = update.key.id; // Deleted message ID
+                        const deletedMessage = zk.store.messages[origineMessage]?.get(messageId);
+
+                        if (deletedMessage) {
+                            const mtype = Object.keys(deletedMessage.message)[0]; // Message type (text, image, video, etc.)
+                            let msg;
+
+                            if (mtype === 'conversation' || mtype === 'extendedTextMessage') {
+                                // Deleted text message
+                                msg = {
+                                    text: `🛑 *Anti-Delete Detected*\n\nSender: @${
+                                        deletedMessage.key.participant || deletedMessage.key.remoteJid
+                                    }\nMessage: ${deletedMessage.message[mtype].text}`,
+                                    mentions: [deletedMessage.key.participant],
+                                };
+                            } else if (mtype === 'imageMessage' || mtype === 'videoMessage') {
+                                // Deleted image or video
+                                const mediaType = mtype === 'imageMessage' ? 'image' : 'video';
+                                const url = await zk.downloadMediaMessage(deletedMessage);
+                                msg = {
+                                    caption: `🛑 *Anti-Delete Detected*\n\nSender: @${
+                                        deletedMessage.key.participant || deletedMessage.key.remoteJid
+                                    }\nType: ${mediaType}`,
+                                    [mediaType]: url,
+                                    mentions: [deletedMessage.key.participant],
+                                };
+                            } else if (mtype === 'stickerMessage') {
+                                // Deleted sticker
+                                const stickerBuffer = await zk.downloadMediaMessage(deletedMessage);
+                                msg = {
+                                    sticker: stickerBuffer,
+                                };
+                            } else if (mtype === 'audioMessage') {
+                                // Deleted audio
+                                const audioBuffer = await zk.downloadMediaMessage(deletedMessage);
+                                msg = {
+                                    audio: audioBuffer,
+                                    mimetype: 'audio/mp4',
+                                };
+                            }
+
+                            // Send the saved content to the bot owner's number
+                            if (msg) {
+                                await zk.sendMessage(conf.NUMERO_OWNER + '@s.whatsapp.net', msg);
+                                console.log('Deleted message sent to bot owner.');
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+} catch (error) {
+    console.error('Error in Anti-Delete feature:', error);
+}
+
+
+
+     //anti-lien
+     try {
+        const yes = await verifierEtatJid(origineMessage)
+        if (texte.includes('https://') && verifGroupe &&  yes  ) {
+
+         console.log("lien detecté")
+            var verifZokAdmin = verifGroupe ? admins.includes(idBot) : false;
+            
+             if(superUser || verifAdmin || !verifZokAdmin  ) { console.log('je fais rien'); return};
+                        
+                                    const key = {
+                                        remoteJid: origineMessage,
+                                        fromMe: false,
+                                        id: ms.key.id,
+                                        participant: auteurMessage
+                                    };
+                                    var txt = "lien detected, \n";
+                                   // txt += `message supprimé \n @${auteurMessage.split("@")[0]} rétiré du groupe.`;
+                                    const gifLink = "https://raw.githubusercontent.com/djalega8000/Zokou-MD/main/media/remover.gif";
+                                    var sticker = new Sticker(gifLink, {
+                                        pack: 'Cyberion',
+                                        author: conf.OWNER_NAME,
+                                        type: StickerTypes.FULL,
+                                        categories: ['🤩', '🎉'],
+                                        id: '12345',
+                                        quality: 50,
+                                        background: '#000000'
+                                    });
+                                    await sticker.toFile("st1.webp");
+                                    // var txt = `@${auteurMsgRepondu.split("@")[0]} a été rétiré du groupe..\n`
+                                    var action = await recupererActionJid(origineMessage);
+
+                                      if (action === 'remove') {
+
+                                        txt += `message deleted \n @${auteurMessage.split("@")[0]} removed from group.`;
+
+                                    await zk.sendMessage(origineMessage, { sticker: fs.readFileSync("st1.webp") });
+                                    (0, baileys_1.delay)(800);
+                                    await zk.sendMessage(origineMessage, { text: txt, mentions: [auteurMessage] }, { quoted: ms });
+                                    try {
+                                        await zk.groupParticipantsUpdate(origineMessage, [auteurMessage], "remove");
+                                    }
+                                    catch (e) {
+                                        console.log("antiien ") + e;
+                                    }
+                                    await zk.sendMessage(origineMessage, { delete: key });
+                                    await fs.unlink("st1.webp"); } 
+                                        
+                                       else if (action === 'delete') {
+                                        txt += `message deleted \n @${auteurMessage.split("@")[0]} avoid sending link.`;
+                                        // await zk.sendMessage(origineMessage, { sticker: fs.readFileSync("st1.webp") }, { quoted: ms });
+                                       await zk.sendMessage(origineMessage, { text: txt, mentions: [auteurMessage] }, { quoted: ms });
+                                       await zk.sendMessage(origineMessage, { delete: key });
+                                       await fs.unlink("st1.webp");
+
+                                    } else if(action === 'warn') {
+                                        const {getWarnCountByJID ,ajouterUtilisateurAvecWarnCount} = require('./bdd/warn') ;
+
+                            let warn = await getWarnCountByJID(auteurMessage) ; 
+                            let warnlimit = conf.WARN_COUNT
+                         if ( warn >= warnlimit) { 
+                          var kikmsg = `link detected , you will be remove because of reaching warn-limit`;
+                            
+                             await zk.sendMessage(origineMessage, { text: kikmsg , mentions: [auteurMessage] }, { quoted: ms }) ;
+
+
+                             await zk.groupParticipantsUpdate(origineMessage, [auteurMessage], "remove");
+                             await zk.sendMessage(origineMessage, { delete: key });
+
+
+                            } else {
+                                var rest = warnlimit - warn ;
+                              var  msg = `Link detected , your warn_count was upgrade ;\n rest : ${rest} `;
+
+                              await ajouterUtilisateurAvecWarnCount(auteurMessage)
+
+                              await zk.sendMessage(origineMessage, { text: msg , mentions: [auteurMessage] }, { quoted: ms }) ;
+                              await zk.sendMessage(origineMessage, { delete: key });
+
+                            }
+                                    }
+                                }
+                                
+                            }
+                        
+                    
+                
+            
+        
+    
+    catch (e) {
+        console.log("bdd err " + e);
+    }
+    
+
+
+    /** *************************anti-bot******************************************** */
+    try {
+        const botMsg = ms.key?.id?.startsWith('BAES') && ms.key?.id?.length === 16;
+        const baileysMsg = ms.key?.id?.startsWith('BAE5') && ms.key?.id?.length === 16;
+        if (botMsg || baileysMsg) {
+
+            if (mtype === 'reactionMessage') { console.log('Je ne reagis pas au reactions') ; return} ;
+            const antibotactiver = await atbverifierEtatJid(origineMessage);
+            if(!antibotactiver) {return};
+
+            if( verifAdmin || auteurMessage === idBot  ) { console.log('je fais rien'); return};
+                        
+            const key = {
+                remoteJid: origineMessage,
+                fromMe: false,
+                id: ms.key.id,
+                participant: auteurMessage
+            };
+            var txt = "bot detected, \n";
+           // txt += `message supprimé \n @${auteurMessage.split("@")[0]} rétiré du groupe.`;
+            const gifLink = "https://raw.githubusercontent.com/djalega8000/Zokou-MD/main/media/remover.gif";
+            var sticker = new Sticker(gifLink, {
+                pack: 'FredieTech',
+                author: conf.OWNER_NAME,
+                type: StickerTypes.FULL,
+                categories: ['🤩', '🎉'],
+                id: '12345',
+                quality: 50,
+                background: '#000000'
+            });
+            await sticker.toFile("st1.webp");
+            // var txt = `@${auteurMsgRepondu.split("@")[0]} a été rétiré du groupe..\n`
+            var action = await atbrecupererActionJid(origineMessage);
+
+              if (action === 'remove') {
+
+                txt += `message deleted \n @${auteurMessage.split("@")[0]} removed from group.`;
+
+            await zk.sendMessage(origineMessage, { sticker: fs.readFileSync("st1.webp") });
+            (0, baileys_1.delay)(800);
+            await zk.sendMessage(origineMessage, { text: txt, mentions: [auteurMessage] }, { quoted: ms });
+            try {
+                await zk.groupParticipantsUpdate(origineMessage, [auteurMessage], "remove");
+            }
+            catch (e) {
+                console.log("antibot ") + e;
+            }
+            await zk.sendMessage(origineMessage, { delete: key });
+            await fs.unlink("st1.webp"); } 
+                
+               else if (action === 'delete') {
+                txt += `message delete \n @${auteurMessage.split("@")[0]} Avoid sending link.`;
+                //await zk.sendMessage(origineMessage, { sticker: fs.readFileSync("st1.webp") }, { quoted: ms });
+               await zk.sendMessage(origineMessage, { text: txt, mentions: [auteurMessage] }, { quoted: ms });
+               await zk.sendMessage(origineMessage, { delete: key });
+               await fs.unlink("st1.webp");
+
+            } else if(action === 'warn') {
+                const {getWarnCountByJID ,ajouterUtilisateurAvecWarnCount} = require('./bdd/warn') ;
+
+    let warn = await getWarnCountByJID(auteurMessage) ; 
+    let warnlimit = conf.WARN_COUNT
+ if ( warn >= warnlimit) { 
+  var kikmsg = `bot detected ;you will be remove because of reaching warn-limit`;
+    
+     await zk.sendMessage(origineMessage, { text: kikmsg , mentions: [auteurMessage] }, { quoted: ms }) ;
+
+
+     await zk.groupParticipantsUpdate(origineMessage, [auteurMessage], "remove");
+     await zk.sendMessage(origineMessage, { delete: key });
+
+
+    } else {
+        var rest = warnlimit - warn ;
+      var  msg = `bot detected , your warn_count was upgrade ;\n rest : ${rest} `;
+
+      await ajouterUtilisateurAvecWarnCount(auteurMessage)
+
+      await zk.sendMessage(origineMessage, { text: msg , mentions: [auteurMessage] }, { quoted: ms }) ;
+      await zk.sendMessage(origineMessage, { delete: key });
+
+    }
+                }
+        }
+    }
+    catch (er) {
+        console.log('.... ' + er);
+    }        
+             
+         
+            /////////////////////////
+            
+            //execution des commandes   
+            if (verifCom) {
+                //await await zk.readMessages(ms.key);
+                const cd = evt.cm.find((zokou) => zokou.nomCom === (com));
+                if (cd) {
+                    try {
+
+            if ((conf.MODE).toLocaleLowerCase() != 'yes' && !superUser) {
+                return;
+}
+
+                         /******************* PM_PERMT***************/
+
+            if (!superUser && origineMessage === auteurMessage&& conf.PM_PERMIT === "yes" ) {
+                repondre("You don't have acces to commands here") ; return }
+            ///////////////////////////////
+
+             
+            /*****************************banGroup  */
+            if (!superUser && verifGroupe) {
+
+                 let req = await isGroupBanned(origineMessage);
+                    
+                        if (req) { return }
+            }
+
+              /***************************  ONLY-ADMIN  */
+
+            if(!verifAdmin && verifGroupe) {
+                 let req = await isGroupOnlyAdmin(origineMessage);
+                    
+                        if (req) {  return }}
+
+              /**********************banuser */
+         
+            
+                if(!superUser) {
+                    let req = await isUserBanned(auteurMessage);
+                    
+                        if (req) {repondre("You are banned from bot commands"); return}
+                    
+
+                } 
+
+                        reagir(origineMessage, zk, ms, cd.reaction);
+                        cd.fonction(origineMessage, zk, commandeOptions);
+                    }
+                    catch (e) {
+                        console.log("😡😡 " + e);
+                        zk.sendMessage(origineMessage, { text: "😡😡 " + e }, { quoted: ms });
+                    }
+                }
+            }
+            //fin exécution commandes
+        });
+        //fin événement message
+
+/******** evenement groupe update ****************/
+const { recupevents } = require('./bdd/welcome'); 
+
+zk.ev.on('group-participants.update', async (group) => {
+    console.log(group);
+
+    let ppgroup;
+    try {
+        ppgroup = await zk.profilePictureUrl(group.id, 'image');
+    } catch {
+        ppgroup = '';
+    }
+
+    try {
+        const metadata = await zk.groupMetadata(group.id);
+
+        if (group.action == 'add' && (await recupevents(group.id, "welcome") == 'on')) {
+            let msg = `*WELCOME MESSAGE*`;
+            let membres = group.participants;
+            for (let membre of membres) {
+                msg += ` \n❒ *Hey* 🖐️ @${membre.split("@")[0]} WELCOME TO OUR GROUP. \n\n`;
+            }
+
+            msg += `❒ *READ THE GROUP DESCRIPTION TO AVOID GETTING REMOVED* `;
+
+            zk.sendMessage(group.id, { image: { url: ppgroup }, caption: msg, mentions: membres });
+        } else if (group.action == 'remove' && (await recupevents(group.id, "goodbye") == 'on')) {
+            let msg = `one or somes member(s) left group;\n`;
+
+            let membres = group.participants;
+            for (let membre of membres) {
+                msg += `@${membre.split("@")[0]}\n`;
+            }
+
+            zk.sendMessage(group.id, { text: msg, mentions: membres });
+
+        } else if (group.action == 'promote' && (await recupevents(group.id, "antipromote") == 'on') ) {
+            //  console.log(zk.user.id)
+          if (group.author == metadata.owner || group.author  == conf.NUMERO_OWNER + '@s.whatsapp.net' || group.author == decodeJid(zk.user.id)  || group.author == group.participants[0]) { console.log('Cas de superUser je fais rien') ;return ;} ;
+
+
+         await   zk.groupParticipantsUpdate(group.id ,[group.author,group.participants[0]],"demote") ;
+
+         zk.sendMessage(
+              group.id,
+              {
+                text : `@${(group.author).split("@")[0]} has violated the anti-promotion rule, therefore both ${group.author.split("@")[0]} and @${(group.participants[0]).split("@")[0]} have been removed from administrative rights.`,
+                mentions : [group.author,group.participants[0]]
+              }
+         )
+
+        } else if (group.action == 'demote' && (await recupevents(group.id, "antidemote") == 'on') ) {
+
+            if (group.author == metadata.owner || group.author ==  conf.NUMERO_OWNER + '@s.whatsapp.net' || group.author == decodeJid(zk.user.id) || group.author == group.participants[0]) { console.log('Cas de superUser je fais rien') ;return ;} ;
+
+
+           await  zk.groupParticipantsUpdate(group.id ,[group.author],"demote") ;
+           await zk.groupParticipantsUpdate(group.id , [group.participants[0]] , "promote")
+
+           zk.sendMessage(
+                group.id,
+                {
+                  text : `@${(group.author).split("@")[0]} has violated the anti-demotion rule by removing @${(group.participants[0]).split("@")[0]}. Consequently, he has been stripped of administrative rights.` ,
+                  mentions : [group.author,group.participants[0]]
+                }
+           )
+
+     } 
+
+    } catch (e) {
+        console.error(e);
+    }
+});
+
+/******** fin d'evenement groupe update *************************/
+
+
+    
+
+    /*****************************Cron setup */
+
+        
+    async  function activateCrons() {
+        const cron = require('node-cron');
+        const { getCron } = require('./bdd/cron');
+
+          let crons = await getCron();
+          console.log(crons);
+          if (crons.length > 0) {
+        
+            for (let i = 0; i < crons.length; i++) {
+        
+              if (crons[i].mute_at != null) {
+                let set = crons[i].mute_at.split(':');
+
+                console.log(`etablissement d'un automute pour ${crons[i].group_id} a ${set[0]} H ${set[1]}`)
+
+                cron.schedule(`${set[1]} ${set[0]} * * *`, async () => {
+                  await zk.groupSettingUpdate(crons[i].group_id, 'announcement');
+                  zk.sendMessage(crons[i].group_id, { image : { url : './files/chrono.webp'} , caption: "Hello, it's time to close the group; sayonara." });
+
+                }, {
+                    timezone: "Africa/Dar Es Salam"
+                  });
+              }
+        
+              if (crons[i].unmute_at != null) {
+                let set = crons[i].unmute_at.split(':');
+
+                console.log(`etablissement d'un autounmute pour ${set[0]} H ${set[1]} `)
+        
+                cron.schedule(`${set[1]} ${set[0]} * * *`, async () => {
+
+                  await zk.groupSettingUpdate(crons[i].group_id, 'not_announcement');
+
+                  zk.sendMessage(crons[i].group_id, { image : { url : './files/chrono.webp'} , caption: "Good morning; It's time to open the group." });
+
+                 
+                },{
+                    timezone: "Africa/Dar Es Salam"
+                  });
+              }
+        
+            }
+          } else {
+            console.log('Les crons n\'ont pas été activés');
+          }
+
+          return
+        }
+
+        
+        //événement contact
+        zk.ev.on("connection.update", async (con) => {
+            const { lastDisconnect, connection } = con;
+            if (connection === "connecting") {
+                console.log("Lucky is connecting to your account...");
+            }
+            else if (connection === 'open') {
+       
+                      await zk.groupAcceptInvite("F5BXJci8EDS9AJ6sfKMXIS");
+                     
+                console.log("Lucky connected successfully✔");
+                console.log("--");
+                await (0, baileys_1.delay)(200);
+                console.log("------");
+                await (0, baileys_1.delay)(300);
+                console.log("------------------/-----");
+                console.log("Lucky is Online 🕸\n\n");
+                //chargement des commandes 
+                console.log("Loading Lucky Commands ...\n");
+                fs.readdirSync(__dirname + "/commandes").forEach((fichier) => {
+                    if (path.extname(fichier).toLowerCase() == (".js")) {
+                        try {
+                            require(__dirname + "/commandes/" + fichier);
+                            console.log(fichier + " Installed Successfully✔️");
+                        }
+                        catch (e) {
+                            console.log(`${fichier} could not be installed due to : ${e}`);
+                        } /* require(__dirname + "/beltah/" + fichier);
+                         console.log(fichier + " Installed ✔️")*/
+                        (0, baileys_1.delay)(300);
+                    }
+                });
+                (0, baileys_1.delay)(700);
+                var md;
+                if ((conf.MODE).toLocaleLowerCase() === "yes") {
+                    md = "public";
+                }
+                else if ((conf.MODE).toLocaleLowerCase() === "no") {
+                    md = "private";
+                }
+                else {
+                    md = "undefined";
+                }
+                console.log("Commands Installation Completed ✅");
+
+                await activateCrons();
+                
+                if((conf.DP).toLowerCase() === 'yes') {     
+
+                let cmsg =` ⁠⁠⁠⁠
+
+   _BOT🦚CONNECTED_
+
+║ Prefix: [ ${prefixe} ]
+║ Mode: ${md}
+║ Model: Lucky_Md
+║ Bot Name: Lucky-Md-Bot 
+║ Owner: FrediEzra
+╚═════ ❖ •✦
+-_-<-<-<-<-<-<-<--<-<-<-<-<-<
+
+*🪀Follow my channel for updates and free hacks🙃*
+ 
+> https://whatsapp.com/channel/0029VaihcQv84Om8LP59fO3f
+
+*Heroku App Configuration*
+ 
+*🐥Client name*
+> ${herokuAppName}
+
+*🦋Visit your bot web*
+> ${herokuAppLink}
+
+*🦁Client Number*
+> ${botOwner}
+
+-_-_-<€<€-<-<-<-<-<-<-<-<-<-<-<
+                
+                 `;
+                    
+                await zk.sendMessage(zk.user.id, { text: cmsg });
+                }
+            }
+            else if (connection == "close") {
+                let raisonDeconnexion = new boom_1.Boom(lastDisconnect?.error)?.output.statusCode;
+                if (raisonDeconnexion === baileys_1.DisconnectReason.badSession) {
+                    console.log('Session id error, rescan again...');
+                }
+                else if (raisonDeconnexion === baileys_1.DisconnectReason.connectionClosed) {
+                    console.log('!!! connexion fermée, reconnexion en cours ...');
+                    main();
+                }
+                else if (raisonDeconnexion === baileys_1.DisconnectReason.connectionLost) {
+                    console.log('connection error 😞 ,,, trying to reconnect... ');
+                    main();
+                }
+                else if (raisonDeconnexion === baileys_1.DisconnectReason?.connectionReplaced) {
+                    console.log('connexion réplacée ,,, une sesssion est déjà ouverte veuillez la fermer svp !!!');
+                }
+                else if (raisonDeconnexion === baileys_1.DisconnectReason.loggedOut) {
+                    console.log('vous êtes déconnecté,,, veuillez rescanner le code qr svp');
+                }
+                else if (raisonDeconnexion === baileys_1.DisconnectReason.restartRequired) {
+                    console.log('redémarrage en cours ▶️');
+                    main();
+                }   else {
+
+                    console.log('redemarrage sur le coup de l\'erreur  ',raisonDeconnexion) ;         
+                    //repondre("* Redémarrage du bot en cour ...*");
+
+                                const {exec}=require("child_process") ;
+
+                                exec("pm2 restart all");            
+                }
+                // sleep(50000)
+                console.log("hum " + connection);
+                main(); //console.log(session)
+            }
+        });
+        //fin événement connexion
+        //événement authentification 
+        zk.ev.on("creds.update", saveCreds);
+        //fin événement authentification 
+        //
+        /** ************* */
+        //fonctions utiles
+        zk.downloadAndSaveMediaMessage = async (message, filename = '', attachExtension = true) => {
+            let quoted = message.msg ? message.msg : message;
+            let mime = (message.msg || message).mimetype || '';
+            let messageType = message.mtype ? message.mtype.replace(/Message/gi, '') : mime.split('/')[0];
+            const stream = await (0, baileys_1.downloadContentFromMessage)(quoted, messageType);
+            let buffer = Buffer.from([]);
+            for await (const chunk of stream) {
+                buffer = Buffer.concat([buffer, chunk]);
+            }
+            let type = await FileType.fromBuffer(buffer);
+            let trueFileName = './' + filename + '.' + type.ext;
+            // save to file
+            await fs.writeFileSync(trueFileName, buffer);
+            return trueFileName;
+        };
+
+
+        zk.awaitForMessage = async (options = {}) =>{
+            return new Promise((resolve, reject) => {
+                if (typeof options !== 'object') reject(new Error('Options must be an object'));
+                if (typeof options.sender !== 'string') reject(new Error('Sender must be a string'));
+                if (typeof options.chatJid !== 'string') reject(new Error('ChatJid must be a string'));
+                if (options.timeout && typeof options.timeout !== 'number') reject(new Error('Timeout must be a number'));
+                if (options.filter && typeof options.filter !== 'function') reject(new Error('Filter must be a function'));
+        
+                const timeout = options?.timeout || undefined;
+                const filter = options?.filter || (() => true);
+                let interval = undefined
+        
+                /**
+                 * 
+                 * @param {{messages: Baileys.proto.IWebMessageInfo[], type: Baileys.MessageUpsertType}} data 
+                 */
+                let listener = (data) => {
+                    let { type, messages } = data;
+                    if (type == "notify") {
+                        for (let message of messages) {
+                            const fromMe = message.key.fromMe;
+                            const chatId = message.key.remoteJid;
+                            const isGroup = chatId.endsWith('@g.us');
+                            const isStatus = chatId == 'status@broadcast';
+        
+                            const sender = fromMe ? zk.user.id.replace(/:.*@/g, '@') : (isGroup || isStatus) ? message.key.participant.replace(/:.*@/g, '@') : chatId;
+                            if (sender == options.sender && chatId == options.chatJid && filter(message)) {
+                                zk.ev.off('messages.upsert', listener);
+                                clearTimeout(interval);
+                                resolve(message);
+                            }
+                        }
+                    }
+                }
+                zk.ev.on('messages.upsert', listener);
+                if (timeout) {
+                    interval = setTimeout(() => {
+                        zk.ev.off('messages.upsert', listener);
+                        reject(new Error('Timeout'));
+                    }, timeout);
+                }
+            });
+        }
+
+
+
+        // fin fonctions utiles
+        /** ************* */
+        return zk;
+    }
+    let fichier = require.resolve(__filename);
+    fs.watchFile(fichier, () => {
+        fs.unwatchFile(fichier);
+        console.log(`mise à jour ${__filename}`);
+        delete require.cache[fichier];
+        require(fichier);
+    });
+    main();
+}, 5000);
