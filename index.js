@@ -773,21 +773,41 @@ setTimeout(() => {
         _0x1f7dd8 = '';
       }
       try {
-        const _0x442c6f = await _0xf78a87.groupMetadata(_0x2d4ff0.id);
-        if (_0x2d4ff0.action == "add" && (await _0x3917c8(_0x2d4ff0.id, 'welcome')) == 'on') {
-          let _0x4cf3d4 = "*HANS WELCOME MESSAGE*";
-          let _0x80123d = _0x2d4ff0.participants;
-          for (let _0x466772 of _0x80123d) {
-            _0x4cf3d4 += " \n❒ *Hey* 🖐️ @" + _0x466772.split('@')[0x0] + " WELCOME TO OUR GROUP. \n\n";
-          }
-          _0x4cf3d4 += "❒ *READ THE GROUP DESCRIPTION TO AVOID GETTING REMOVED* ";
-          _0xf78a87.sendMessage(_0x2d4ff0.id, {
-            'image': {
-              'url': _0x1f7dd8
-            },
-            'caption': _0x4cf3d4,
-            'mentions': _0x80123d
-          });
+        "use strict";
+
+async function handleGroupAddEvent(_0xf78a87, _0x2d4ff0, _0x3917c8, _0x1f7dd8) {
+    try {
+        // Fetch group metadata
+        const groupMetadata = await _0xf78a87.groupMetadata(_0x2d4ff0.id);
+
+        // Check if the event is "add" and welcome messages are enabled
+        if (_0x2d4ff0.action === "add" && (await _0x3917c8(_0x2d4ff0.id, 'welcome')) === 'on') {
+            let welcomeMessage = "*HANS WELCOME MESSAGE*";
+            const newParticipants = _0x2d4ff0.participants;
+
+            // Add welcome messages for each new participant
+            for (let participant of newParticipants) {
+                welcomeMessage += `\n❒ *Hey* 🖐️ @${participant.split('@')[0]} WELCOME TO OUR GROUP. \n\n`;
+            }
+
+            welcomeMessage += "❒ *READ THE GROUP DESCRIPTION TO AVOID GETTING REMOVED*";
+
+            // Send the welcome message with the image
+            await _0xf78a87.sendMessage(_0x2d4ff0.id, {
+                image: { url: _0x1f7dd8 }, // Ensure `_0x1f7dd8` contains a valid image URL or path
+                caption: welcomeMessage,
+                mentions: newParticipants
+            });
+
+            console.log("Welcome message sent successfully!");
+        }
+    } catch (error) {
+        console.error("Error handling group add event:", error);
+    }
+}
+
+module.exports = { handleGroupAddEvent };
+
         } else {
           if (_0x2d4ff0.action == "remove" && (await _0x3917c8(_0x2d4ff0.id, "goodbye")) == 'on') {
             let _0x450444 = "one or somes member(s) left group;\n";
