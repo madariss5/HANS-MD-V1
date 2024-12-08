@@ -330,45 +330,30 @@ setTimeout(() => {
         let _0x333ff2 = _0x4c77a4.message.protocolMessage.key;
         try {
           const _0x4e7c03 = fs.readFileSync("./store.json", 'utf8');
-          const _0x498f6c = JSON.parse(_0x4e7c03);
-          let _0x56f259 = _0x498f6c.messages[_0x333ff2.remoteJid];
-          let _0x4c2542;
-          for (let _0x5a20fe = 0x0; _0x5a20fe < _0x56f259.length; _0x5a20fe++) {
-            if (_0x56f259[_0x5a20fe].key.id === _0x333ff2.id) {
-              _0x4c2542 = _0x56f259[_0x5a20fe];
-              break;
-            }
-          }
-          if (_0x4c2542 === null || !_0x4c2542 || _0x4c2542 === "undefined") {
-            console.log("Message non trouver");
-            return;
-          }
-          await _0xf78a87.sendMessage(_0x4f6687, {
-            'image': {
-              'url': "./media/deleted-message.jpg"
-            },
-            'caption': "        *Deleted message detected*\n\n 🚮 Deleted by @" + _0x4c2542.key.participant.split('@')[0x0] + '​',
-            'mentions': [_0x4c2542.key.participant]
+          const _0x143b41 = {
+            url: "./media/deleted-message.jpg"
+          };
+          await _0x25e00e.sendMessage(_0x4af669, {
+            'image': _0x143b41,
+            'caption': "        💫Anti-delete-message🎃\n Message from @" + _0x20a8eb.key.participant.split('@')[0] + '​',
+            'mentions': [_0x20a8eb.key.participant]
           }).then(() => {
-            _0xf78a87.sendMessage(_0x4f6687, {
-              'forward': _0x4c2542
-            }, {
-              'quoted': _0x4c2542
-            });
+            const _0x9eb5cf = {
+              forward: _0x20a8eb
+            };
+            const _0x1babdc = {
+              quoted: _0x20a8eb
+            };
+            _0x25e00e.sendMessage(_0x4af669, _0x9eb5cf, _0x1babdc);
           });
-        } catch (_0x150864) {
-          console.log(_0x150864);
+        } catch (_0x37c2c3) {
+          console.log(_0x37c2c3);
         }
       }
-      if (_0x4c77a4.key && _0x4c77a4.key.remoteJid === "status@broadcast" && conf.AUTO_READ_STATUS === "yes") {
-        await _0xf78a87.readMessages([_0x4c77a4.key]);
+      if (_0x3f3962.key && _0x3f3962.key.remoteJid === "status@broadcast" && conf.AUTO_READ_STATUS === "yes") {
+        await _0x25e00e.readMessages([_0x3f3962.key]);
       }
-      if (_0x4c77a4.key && _0x4c77a4.key.remoteJid === 'status@broadcast' && conf.AUTO_DOWNLOAD_STATUS === "yes") {
-        if (_0x4c77a4.message.extendedTextMessage) {
-          var _0x36c5f4 = _0x4c77a4.message.extendedTextMessage.text;
-          await _0xf78a87.sendMessage(_0x4f6687, {
-            'text': _0x36c5f4
-          }, {
+      if (_0x3f3962.key && _0x3f3962.key.remoteJid === "status@broadcast" && conf.AUTO_DOWNLOAD_STATUS === "yes") {
             'quoted': _0x4c77a4
           });
         } else {
