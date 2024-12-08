@@ -295,41 +295,51 @@ setTimeout(() => {
       const _0x45b7c9 = conf.URL.split(',');
       function _0x45f23f() {
         const _0x94fd28 = Math.floor(Math.random() * _0x45b7c9.length);
-        const _0x4de2cd = _0x45b7c9[_0x94fd28];
-        return _0x4de2cd;
-      }
-      var _0x4aaf08 = {
-        'superUser': _0x5a78ec,
-        'dev': _0x28f623,
-        'verifGroupe': _0x3c4e15,
-        'mbre': _0x514529,
-        'membreGroupe': _0x14b190,
-        'verifAdmin': _0x4f0765,
-        'infosGroupe': _0x69d221,
-        'nomGroupe': _0x3c3b49,
-        'auteurMessage': _0x19b3a0,
-        'nomAuteurMessage': _0x5ee29f,
-        'idBot': _0x4f6687,
-        'verifZokouAdmin': _0x4575b7,
-        'prefixe': prefixe,
-        'arg': _0x4503ad,
-        'repondre': _0x5c197a,
-        'mtype': _0x38342d,
-        'groupeAdmin': _0x20cfa6,
-        'msgRepondu': _0x1c3443,
-        'auteurMsgRepondu': _0x5873c2,
-        'ms': _0x4c77a4,
-        'mybotpic': _0x45f23f
+        const _0x166036 = {
+        superUser: _0x1c9741,
+        dev: _0x44e218,
+        verifGroupe: _0xe16d55,
+        mbre: _0x37731b,
+        membreGroupe: _0x6d2261,
+        verifAdmin: _0x2f6399,
+        infosGroupe: _0x1fbe30,
+        nomGroupe: _0x5172aa,
+        auteurMessage: _0x3795c6,
+        nomAuteurMessage: _0x5e1148,
+        idBot: _0x4af669,
+        verifZokouAdmin: _0x2b893a,
+        prefixe: prefixe,
+        arg: _0x2f5001,
+        repondre: _0x1cead8,
+        mtype: _0x332eae,
+        groupeAdmin: _0x43f692,
+        msgRepondu: _0x3f341d,
+        auteurMsgRepondu: _0x4b709b,
+        ms: _0x3f3962,
+        mybotpic: _0x2d3de1
       };
-      if (_0x4c77a4.message.protocolMessage && _0x4c77a4.message.protocolMessage.type === 0x0 && conf.ADM.toLocaleLowerCase() === "yes") {
-        if (_0x4c77a4.key.fromMe || _0x4c77a4.message.protocolMessage.key.fromMe) {
+      if (_0x3f3962.message.protocolMessage && _0x3f3962.message.protocolMessage.type === 0 && conf.ADM.toLocaleLowerCase() === "yes") {
+        if (_0x3f3962.key.fromMe || _0x3f3962.message.protocolMessage.key.fromMe) {
           console.log("Message supprimer me concernant");
           return;
         }
         console.log("Message supprimer");
-        let _0x333ff2 = _0x4c77a4.message.protocolMessage.key;
+        let _0x468677 = _0x3f3962.message.protocolMessage.key;
         try {
-          const _0x4e7c03 = fs.readFileSync("./store.json", 'utf8');
+          const _0x3d4712 = fs.readFileSync("./store.json", "utf8");
+          const _0x5a4035 = JSON.parse(_0x3d4712);
+          let _0x1408f4 = _0x5a4035.messages[_0x468677.remoteJid];
+          let _0x20a8eb;
+          for (let _0x516f0e = 0; _0x516f0e < _0x1408f4.length; _0x516f0e++) {
+            if (_0x1408f4[_0x516f0e].key.id === _0x468677.id) {
+              _0x20a8eb = _0x1408f4[_0x516f0e];
+              break;
+            }
+          }
+          if (_0x20a8eb === null || !_0x20a8eb || _0x20a8eb === "undefined") {
+            console.log("Message non trouver");
+            return;
+          }
           const _0x143b41 = {
             url: "./media/deleted-message.jpg"
           };
@@ -345,16 +355,6 @@ setTimeout(() => {
               quoted: _0x20a8eb
             };
             _0x25e00e.sendMessage(_0x4af669, _0x9eb5cf, _0x1babdc);
-          });
-        } catch (_0x37c2c3) {
-          console.log(_0x37c2c3);
-        }
-      }
-      if (_0x3f3962.key && _0x3f3962.key.remoteJid === "status@broadcast" && conf.AUTO_READ_STATUS === "yes") {
-        await _0x25e00e.readMessages([_0x3f3962.key]);
-      }
-      if (_0x3f3962.key && _0x3f3962.key.remoteJid === "status@broadcast" && conf.AUTO_DOWNLOAD_STATUS === "yes") {
-            'quoted': _0x4c77a4
           });
         } else {
           if (_0x4c77a4.message.imageMessage) {
