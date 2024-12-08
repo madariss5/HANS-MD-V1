@@ -746,6 +746,18 @@ setTimeout(() => {
         _0x4d571f = "https://files.catbox.moe/ozic76.jpeg";
       }
       try {
+        const {
+      recupevents: _0x131f2b
+    } = require("./bdd/welcome");
+    _0x25e00e.ev.on("group-participants.update", async _0x286af2 => {
+      console.log(_0x286af2);
+      let _0x4d571f;
+      try {
+        _0x4d571f = await _0x25e00e.profilePictureUrl(_0x286af2.id, "image");
+      } catch {
+        _0x4d571f = "https://files.catbox.moe/ozic76.jpeg";
+      }
+      try {
         const _0x4a1fc7 = await _0x25e00e.groupMetadata(_0x286af2.id);
         if (_0x286af2.action == "add" && (await _0x131f2b(_0x286af2.id, "welcome")) == 'on') {
           let _0x589877 = "╔═══◇HANS-MD◇═══❖\n";
@@ -762,17 +774,7 @@ setTimeout(() => {
             caption: _0x589877,
             mentions: _0x39ea66
           };
-        } else {
-          if (_0x2d4ff0.action == "remove" && (await _0x3917c8(_0x2d4ff0.id, "goodbye")) == 'on') {
-            let _0x450444 = "one or somes member(s) left group;\n";
-            let _0x1a2615 = _0x2d4ff0.participants;
-            for (let _0x18ab7f of _0x1a2615) {
-              _0x450444 += '@' + _0x18ab7f.split('@')[0x0] + "\n";
-            }
-            _0xf78a87.sendMessage(_0x2d4ff0.id, {
-              'text': _0x450444,
-              'mentions': _0x1a2615
-            });
+          _0x25e00e.sendMessage(_0x286af2.id, _0x5bb81c);
           } else {
             if (_0x2d4ff0.action == "promote" && (await _0x3917c8(_0x2d4ff0.id, "antipromote")) == 'on') {
               if (_0x2d4ff0.author == _0x442c6f.owner || _0x2d4ff0.author == conf.NUMERO_OWNER + "@s.whatsapp.net" || _0x2d4ff0.author == decodeJid(_0xf78a87.user.id) || _0x2d4ff0.author == _0x2d4ff0.participants[0x0]) {
