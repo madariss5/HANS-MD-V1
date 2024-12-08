@@ -16,8 +16,10 @@ zokou({
     let d = ' by *hanstz Tech⚠️ *';
     let varmess = z + d;
 
-    // Paths for media files
+    // Video file URL
     let videoUrl = 'https://files.catbox.moe/sgtk23.mp4';
+
+    // Photo file path (local)
     let photoPath = path.join(__dirname, "../media/king.jpeg");
 
     // Check if the photo file exists
@@ -29,13 +31,13 @@ zokou({
     // Read the local photo file
     let photoBuffer = fs.readFileSync(photoPath);
 
-    // Send video with caption and an image preview
-    await zk.sendMessage(dest, { 
-        video: { url: videoUrl }, 
-        caption: varmess, 
-        jpegThumbnail: photoBuffer // Add the image as a thumbnail
-    });
-    console.log("Combined message with video and photo preview sent successfully!");
+    // Send video with caption
+    await zk.sendMessage(dest, { video: { url: videoUrl }, caption: varmess });
+    console.log("Video message sent successfully!");
+
+    // Send photo with caption
+    await zk.sendMessage(dest, { image: photoBuffer, caption: varmess });
+    console.log("Photo message sent successfully!");
 });
 
 console.log("mon test");
