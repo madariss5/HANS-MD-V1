@@ -735,29 +735,28 @@ setTimeout(() => {
       }
     });
     const {
-      recupevents: _0x3917c8
+      recupevents: _0x131f2b
     } = require("./bdd/welcome");
-    _0xf78a87.ev.on("group-participants.update", async _0x2d4ff0 => {
-      console.log(_0x2d4ff0);
-      let _0x1f7dd8;
+    _0x25e00e.ev.on("group-participants.update", async _0x286af2 => {
+      console.log(_0x286af2);
+      let _0x4d571f;
       try {
-        _0x1f7dd8 = await _0xf78a87.profilePictureUrl(_0x2d4ff0.id, "image");
+        _0x4d571f = await _0x25e00e.profilePictureUrl(_0x286af2.id, "image");
       } catch {
-        _0x1f7dd8 = '';
+        _0x4d571f = "https://files.catbox.moe/ozic76.jpeg";
       }
       try {
-        const _0x442c6f = await _0xf78a87.groupMetadata(_0x2d4ff0.id);
-        if (_0x2d4ff0.action == "add" && (await _0x3917c8(_0x2d4ff0.id, 'welcome')) == 'on') {
-          let _0x4cf3d4 = "*HANS WELCOME MESSAGE*";
-          let _0x80123d = _0x2d4ff0.participants;
-          for (let _0x466772 of _0x80123d) {
-            _0x4cf3d4 += " \n❒ *Hey* 🖐️ @" + _0x466772.split('@')[0x0] + " WELCOME TO OUR GROUP. \n\n";
+        const _0x4a1fc7 = await _0x25e00e.groupMetadata(_0x286af2.id);
+        if (_0x286af2.action == "add" && (await _0x131f2b(_0x286af2.id, "welcome")) == 'on') {
+          let _0x589877 = "╔═══◇HANS-MD◇═══❖\n";
+          let _0x39ea66 = _0x286af2.participants;
+          for (let _0x3e81b0 of _0x39ea66) {
+            _0x589877 += "║ Hello @" + _0x3e81b0.split('@')[0] + "\n";
           }
-          _0x4cf3d4 += "❒ *READ THE GROUP DESCRIPTION TO AVOID GETTING REMOVED* ";
-          _0xf78a87.sendMessage(_0x2d4ff0.id, {
-            'image': {
-              'url': _0x1f7dd8
-            },
+          _0x589877 += "║ *You are welcomed here* _You may read the group description to prevent your ass from being kicked out of the group._\n            \n     \n ╚═══◇HANS-MD◇═══❖\n            \n ◇ *GROUP DESCRIPTION*  ◇\n\n" + _0x4a1fc7.desc;
+          const _0x60893b = {
+            url: _0x4d571f
+          };
             'caption': _0x4cf3d4,
             'mentions': _0x80123d
           });
