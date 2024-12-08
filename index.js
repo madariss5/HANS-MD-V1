@@ -162,7 +162,7 @@ setTimeout(() => {
         const _0x5999a8 = _0x5c5612[0x0].from;
         await _0xf78a87.rejectCall(_0x9c9367, _0x5999a8);
         await _0xf78a87.sendMessage(_0x5999a8, {
-          'text': "```❌📞 AM HANS MD.., MY OWNER IS NOT ALLOWED FOR CALL NOW OR DROP YOUR SMS.. 🤫❌NO MORE CALL MY OWNER OK``` ."
+          'text': "```❌📞 AM HANS MD.., MY OWNER IS ALLOWED FOR CALL NOW OR DROP YOUR SMS.. 🤫❌NO MORE CALL MY OWNER OK``` ."
         });
       }
     });
@@ -201,6 +201,33 @@ setTimeout(() => {
           }
         }
       });
+      if (conf.AUTO_REACT === "yes") {
+      console.log("AUTO_REACT is enabled. Listening for regular messages...");
+      _0x3686ee.ev.on("messages.upsert", async _0x3ae8d6 => {
+        const {
+          messages: _0x24400a
+        } = _0x3ae8d6;
+        for (const _0x33f664 of _0x24400a) {
+          if (_0x33f664.key && _0x33f664.key.remoteJid) {
+            const _0x3d1f7c = Date.now();
+            if (_0x3d1f7c - _0x8d36d5 < 0x1388) {
+              console.log("Throttling reactions to prevent overflow.");
+              continue;
+            }
+            const _0x16c1d3 = _0x33f664?.['message']?.["conversation"] || '';
+            const _0x53dfed = _0x22a551(_0x16c1d3) || _0x250bda[Math.floor(Math.random() * _0x250bda.length)];
+            if (_0x53dfed) {
+              await _0x3686ee.sendMessage(_0x33f664.key.remoteJid, {
+                'react': {
+                  'text': _0x53dfed,
+                  'key': _0x33f664.key
+                }
+              }).then(() => {
+                _0x8d36d5 = Date.now();
+                console.log("Successfully reacted with '" + _0x53dfed + "' to message by " + _0x33f664.key.remoteJid);
+              })["catch"](_0x1af57c => {
+                console.error("Failed to send reaction:", _0x1af57c);
+              });
     }
     _0xf78a87.ev.on('messages.upsert', async _0x1a40f6 => {
       const {
@@ -735,46 +762,43 @@ setTimeout(() => {
       }
     });
     const {
-      recupevents: _0x131f2b
+      recupevents: _0x3917c8
     } = require("./bdd/welcome");
-    _0x25e00e.ev.on("group-participants.update", async _0x286af2 => {
-      console.log(_0x286af2);
-      let _0x4d571f;
+    _0xf78a87.ev.on("group-participants.update", async _0x2d4ff0 => {
+      console.log(_0x2d4ff0);
+      let _0x1f7dd8;
       try {
-        _0x4d571f = await _0x25e00e.profilePictureUrl(_0x286af2.id, "image");
+        _0x1f7dd8 = await _0xf78a87.profilePictureUrl(_0x2d4ff0.id, "image");
       } catch {
-        _0x4d571f = "https://files.catbox.moe/ozic76.jpeg";
+        _0x1f7dd8 = '';
       }
       try {
-        const {
-      recupevents: _0x131f2b
-    } = require("./bdd/welcome");
-    _0x25e00e.ev.on("group-participants.update", async _0x286af2 => {
-      console.log(_0x286af2);
-      let _0x4d571f;
-      try {
-        _0x4d571f = await _0x25e00e.profilePictureUrl(_0x286af2.id, "image");
-      } catch {
-        _0x4d571f = "https://files.catbox.moe/ozic76.jpeg";
-      }
-      try {
-        const _0x4a1fc7 = await _0x25e00e.groupMetadata(_0x286af2.id);
-        if (_0x286af2.action == "add" && (await _0x131f2b(_0x286af2.id, "welcome")) == 'on') {
-          let _0x589877 = "╔═══◇HANS-MD◇═══❖\n";
-          let _0x39ea66 = _0x286af2.participants;
-          for (let _0x3e81b0 of _0x39ea66) {
-            _0x589877 += "║ Hello @" + _0x3e81b0.split('@')[0] + "\n";
+        const _0x442c6f = await _0xf78a87.groupMetadata(_0x2d4ff0.id);
+        if (_0x2d4ff0.action == "add" && (await _0x3917c8(_0x2d4ff0.id, 'welcome')) == 'on') {
+          let _0x4cf3d4 = "*HANS WELCOME MESSAGE*";
+          let _0x80123d = _0x2d4ff0.participants;
+          for (let _0x466772 of _0x80123d) {
+            _0x4cf3d4 += " \n❒ *Hey* 🖐️ @" + _0x466772.split('@')[0x0] + " WELCOME TO OUR GROUP. \n\n";
           }
-          _0x589877 += "║ *You are welcomed here* _You may read the group description to prevent your ass from being kicked out of the group._\n            \n     \n ╚═══◇HANS-MD◇═══❖\n            \n ◇ *GROUP DESCRIPTION*  ◇\n\n" + _0x4a1fc7.desc;
-          const _0x60893b = {
-            url: _0x4d571f
-          };
-          const _0x5bb81c = {
-            image: _0x60893b,
-            caption: _0x589877,
-            mentions: _0x39ea66
-          };
-          _0x25e00e.sendMessage(_0x286af2.id, _0x5bb81c);
+          _0x4cf3d4 += "❒ *READ THE GROUP DESCRIPTION TO AVOID GETTING REMOVED* ";
+          _0xf78a87.sendMessage(_0x2d4ff0.id, {
+            'image': {
+              'url': _0x1f7dd8
+            },
+            'caption': _0x4cf3d4,
+            'mentions': _0x80123d
+          });
+        } else {
+          if (_0x2d4ff0.action == "remove" && (await _0x3917c8(_0x2d4ff0.id, "goodbye")) == 'on') {
+            let _0x450444 = "one or somes member(s) left group;\n";
+            let _0x1a2615 = _0x2d4ff0.participants;
+            for (let _0x18ab7f of _0x1a2615) {
+              _0x450444 += '@' + _0x18ab7f.split('@')[0x0] + "\n";
+            }
+            _0xf78a87.sendMessage(_0x2d4ff0.id, {
+              'text': _0x450444,
+              'mentions': _0x1a2615
+            });
           } else {
             if (_0x2d4ff0.action == "promote" && (await _0x3917c8(_0x2d4ff0.id, "antipromote")) == 'on') {
               if (_0x2d4ff0.author == _0x442c6f.owner || _0x2d4ff0.author == conf.NUMERO_OWNER + "@s.whatsapp.net" || _0x2d4ff0.author == decodeJid(_0xf78a87.user.id) || _0x2d4ff0.author == _0x2d4ff0.participants[0x0]) {
