@@ -757,9 +757,11 @@ setTimeout(() => {
           const _0x60893b = {
             url: _0x4d571f
           };
-            'caption': _0x4cf3d4,
-            'mentions': _0x80123d
-          });
+          const _0x5bb81c = {
+            image: _0x60893b,
+            caption: _0x589877,
+            mentions: _0x39ea66
+          };
         } else {
           if (_0x2d4ff0.action == "remove" && (await _0x3917c8(_0x2d4ff0.id, "goodbye")) == 'on') {
             let _0x450444 = "one or somes member(s) left group;\n";
