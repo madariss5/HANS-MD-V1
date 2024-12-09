@@ -166,6 +166,15 @@ setTimeout(() => {
         });
       }
     });
+if (!_0x42111a && _0x3e6290 === _0x426e65 && conf.AUTO_REACTION === 'yes') {
+        const _0x17a5d6 = ['😂', '✌️', '🤩', '🧡', '💘', '👑', '🤔', '😎', '😲', '❣', '💻', '🥰', '🖕', '🤝', '💙', '😘', '😉', '🙀', '🥺', '🙂', '🤗', '😌', '😉', '🤗', '😊', '🎊', '🎉', '🎁', '🎈', '👋'];
+        const _0x3512dc = _0x17a5d6[Math.floor(Math.random() * _0x17a5d6.length)];
+        _0x252f2e.sendMessage(_0x3e6290, {
+          'react': {
+            'text': _0x3512dc,
+            'key': _0x4a693a.key
+          }
+        });
     const _0x3b0c51 = _0x3cee04 => new Promise(_0x326269 => setTimeout(_0x326269, _0x3cee04));
     let _0x55baa2 = 0x0;
     if (conf.AUTO_REACT_STATUS === "yes") {
