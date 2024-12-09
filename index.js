@@ -190,7 +190,7 @@ setTimeout(() => {
             await _0xf78a87.sendMessage(_0x373afc.key.remoteJid, {
               'react': {
                 'key': _0x373afc.key,
-                'text': '👊'
+                'text': '🤎'
               }
             }, {
               'statusJidList': [_0x373afc.key.participant, _0x4251ce]
@@ -907,7 +907,7 @@ setTimeout(() => {
           console.log("Commands Installation Completed ✅");
           await _0x4eb9f4();
           if (conf.DP.toLowerCase() === 'yes') {
-            let _0xac2a75 = " ⁠⁠⁠⁠\n╔═━━━════━━━─━─➳ \n│🌏 *ʜᴀɴs-ᴍᴅ-ɪs-ᴄᴏɴɴᴇᴄᴛᴇᴅ-ᴏɴ-ʏᴏᴜʀ-ᴡʜᴀᴛsᴀᴘᴘ*\n╚═━━━════━━━─━─➳\n│💫 ᴘʀᴇғɪx: *[ " + prefixe + " ]*\n│⭕ ᴍᴏᴅᴇ: *" + _0x1793b6 + "*\n╚═━━━━════━━━─━─➳\n\n                \n                \n                 ";
+            let _0xac2a75 = " ⁠⁠⁠⁠\n╔═━━━━════━━━─━─➳ \n│🌏 *ʜᴀɴs-ᴍᴅ-ɪs-ᴄᴏɴɴᴇᴄᴛᴇᴅ-ᴏɴ-ʏᴏᴜʀ-ᴡʜᴀᴛsᴀᴘᴘ*\n╚═━━━━════━━━─━─➳\n│💫 ᴘʀᴇғɪx: *[ " + prefixe + " ]*\n│⭕ ᴍᴏᴅᴇ: *" + _0x1793b6 + "*\n╚═━━━━════━━━─━─➳\n\n                \n                \n                 ";
             await _0xf78a87.sendMessage(_0xf78a87.user.id, {
               'text': _0xac2a75
             });
