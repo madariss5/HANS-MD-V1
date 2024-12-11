@@ -14,7 +14,7 @@ const s = require(__dirname + "/../set");
 
 
 
-zokou({ nomCom: "hans", categorie: "Hans" }, async (dest, zk, commandeOptions) => {
+zokou({ nomCom: "hansmd", categorie: "Hans" }, async (dest, zk, commandeOptions) => {
 
     let { ms, repondre ,prefixe,nomAuteurMessage,mybotpic} = commandeOptions;
 
@@ -84,9 +84,9 @@ const date = moment().format('DD/MM/YYYY');
     
 
 let menuMsg = `
-┏━━━━══════━━━━━━┓
+┏━━━═══━━━━━━┓
 ┃✫ʜᴀɴs-ᴍᴅ-2025 ᴡᴀ ʙᴏᴛ
-┗━━━━══════━━━━━━┛\n
+┗━━━━══━━━━━━┛\n
 
 
 `;
@@ -95,7 +95,7 @@ let menuMsg = `
 
     for (const cat in coms) {
 
-        menuMsg += `╭─━━═━➳ _*${cat}*`;
+        menuMsg += `╔═━━═━➳ _*${cat}*`;
 
         for (const cmd of coms[cat]) {
             
@@ -105,7 +105,7 @@ let menuMsg = `
         }
 
         menuMsg += `
-╰─━━━━══════━━━━✫\n`
+╚━━━━━══════━━━━✫\n`
 
     }
 
@@ -114,13 +114,13 @@ let menuMsg = `
     menuMsg += `
 
 
- ╭──━━══════━━━━━━━━━┓
+ ╔━━━━═════━━━━━━━┓
  ┃➳ HI ✌️IM HANS MD
  ┃➳ ᴛʜɪs ɪs ʜᴀɴs-ᴍᴅ ɴᴇᴡ ᴜᴘᴅᴀᴛᴇ
- ╰──━━══════━━━━━━━━━┛
- ╭──━━━══════━━━━━━━━━━━┓
+ ╚━━━━════━━━━━━━━┛
+ ╔━━━━━━━━━━━━━━━━┓
  ┃ᴍᴀᴅᴇ ʙʏ ʜᴀɴs ᴛᴢ ғʀᴏᴍ ᴛᴀɴᴢᴀɴɪᴀ
- ╰──━━━══════━━━━━━━━━━━┛\n
+ ╚━━━━━═══━━━━━━━━┛\n
 
 
 `;

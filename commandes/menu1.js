@@ -47,7 +47,7 @@ const date = moment().format('DD/MM/YYYY');
 let menuMsg = `
 > Hello ${nomAuteurMessage},,, Type menu to access a list of commands. 
   
-╚═══════════════════📡`;
+╚═━━━━━═══━━━━━━─━─➳`;
 
    var lien = mybotpic();
 

@@ -30,13 +30,14 @@ zokou({ nomCom: "tagall", categorie: 'Group', reaction: "📯" }, async (dest, z
   } ;
   let membresGroupe = verifGroupe ? await infosGroupe.participants : ""
   var tag = ""; 
-  tag += `========================\n  
-        🌟 *𝑯𝑨𝑵𝑺-𝐌𝐃*𝕋𝔸𝔾𝔾𝔼𝔻 🌟
-========================\n
-👥 Group : ${nomGroupe} 🚀 
-👤 Autor : *${nomAuteurMessage}* 👋 
-📜 Message : *${mess}* 📝
-========================\n
+  tag += `
+  ========================\n  
+    🌟 *𝑯𝑨𝑵𝑺-𝐌𝐃*𝕋𝔸𝔾𝔾𝔼𝔻 🌟
+  ========================\n
+  👥 Group : ${nomGroupe} 🚀 
+  👤 Autor : *${nomAuteurMessage}* 👋 
+  📜 Message : *${mess}* 📝
+  ========================\n
 \n
 
 ` ;

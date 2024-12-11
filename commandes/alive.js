@@ -35,15 +35,20 @@ const temps = moment().format('HH:mm:ss');
 const date = moment().format('DD/MM/YYYY');
 
     const alivemsg = `
-*Owner* : ${s.OWNER_NAME}
-*Mode* : ${mode}
-*Date* : ${date}
-*Hours(GMT)* : ${temps}
-
+╔═════━━─━─➳
+║*𝑶𝑾𝑵𝑬𝑹* : ${s.OWNER_NAME}
+║*𝑴𝑶𝑫𝑬* : ${mode}
+║*𝑫𝑨𝑻𝑬* : ${date}
+║*𝑯𝑶𝑼𝑹𝑺(𝑮𝑴𝑻)* : ${temps}
+║*𝑭𝑹𝑶𝑴* : Tanzania
+║*𝑩𝑶𝑻* : ${s.bot} 
+║*𝑭𝑶𝑹𝑲𝑺* : ${forks} 
+║*𝑼𝑺𝑬𝑹* : ${nomAuteurMessage}
+╚═━━══━━─━─➳
  ${message}
  
  
- *HANS-MD-WA-BOT2025*`
+ *HANS MD 2025*`
 
  if (lien.match(/\.(mp4|gif)$/i)) {
     try {
@@ -71,14 +76,14 @@ else {
 }
 
     } else {
-        if(!superUser) { repondre("ℍ𝕀 👋 ℍ𝔸ℕ𝕊-𝕄𝔻-𝕀𝕊-𝔸𝕃𝕀𝕍𝔼-𝔸ℕ𝕐-𝕋𝕀𝕄𝔼") ; return};
+        if(!superUser) { repondre("Hellow 👋 Am alive 24hr and more than 👋😃") ; return};
 
       await   repondre("You have not yet saved your alive, to do this;  enter after alive your message and your image or video link in this context: .alive message;lien");
          repondre("don't do fake thinks :)")
      }
  } else {
 
-    if(!superUser) { repondre ("Only the owner can  modify the alive") ; return};
+    if(!superUser) { repondre ("🛑STOP IT ONLY THE OWENER OR HANS CAN MODIFY THE ALIVE") ; return};
 
   
     const texte = arg.join(' ').split(';')[0];
@@ -88,7 +93,7 @@ else {
     
 await addOrUpdateDataInAlive(texte , tlien)
 
-repondre('  𝕋ℍ𝕀𝕊 𝕀𝕊 ℍ𝔸ℕ𝕊-𝕄𝔻 ℕ𝔼𝕎 𝕌ℙ𝔻𝔸𝕋𝔼✨. ')
+repondre('  HANS-MD Is alive any time keep using. ')
 
 }
     });
