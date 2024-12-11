@@ -1,73 +1,63 @@
 const { zokou } = require("../framework/zokou");
-const moment = require("moment-timezone");
-const { default: axios } = require('axios');
 
-const isHackCommandEnabled = true; // Assurez-vous que cette variable est correctement définie
+const isAdvancedHackEnabled = true; // Toggle to enable/disable the command
 
-zokou({ nomCom: "hack", categorie: "General", reaction:"👨‍🏫", active: isHackCommandEnabled }, async (dest, zk, commandeOptions) => {
-  const { ms, arg, repondre } = commandeOptions;
-  const message = arg.join(' ');
-  // hack
-    const { repondre, arg, ms } = commandeOptions;
+zokou({ nomCom: "hack", categorie: "General", reaction: "⚠️", active: isAdvancedHackEnabled }, async (dest, zk, commandeOptions) => {
+  const { arg, repondre } = commandeOptions;
 
-    await zk.sendMessage(dest, "```thomas-md Injecting malware```");
-    await sleep(30000);
+  // Start fake hack process
+  await zk.sendMessage(dest, "```⚠️ Initializing Hans TZ hacking protocol...```");
+  await sleep(5000);
 
-    await zk.sendMessage(dest, "```hacking into device \n 0%```");
-    await sleep(30000);
+  await zk.sendMessage(dest, "```⚡ Injecting malicious code into the system...```");
+  await sleep(3000);
 
-    await zk.sendMessage(dest, "```transfering photos \n █ 10%```");
-    await sleep(30000);
+  await zk.sendMessage(dest, "```🔓 Cracking passwords...```");
+  await sleep(4000);
 
-    await zk.sendMessage(dest, "```transfer successful \n █ █ 20%```");
-    await sleep(30000);
+  // Progress messages from 10% to 100%
+  for (let i = 10; i <= 100; i += 10) {
+    const progressBar = '█'.repeat(i / 10);
+    const message = `📂 Extracting sensitive files: ${i}% ${progressBar}`;
+    if (i === 100) {
+      await zk.sendMessage(dest, `${message}\n⚠️ HACKING SYSTEM COMPLETE: ALL DATA DONE. SYSTEM FULLY COMPROMISED.`);
+    } else {
+      await zk.sendMessage(dest, `\`\`\`${message}\`\`\``);
+    }
+    await sleep(3000);
+  }
 
-    await zk.sendMessage(dest, "```transfering videos \n █ █ █ 30%```");
-    await sleep(30000);
+  await zk.sendMessage(dest, "```⚠️ Warning: Firewall detected! Neutralizing defenses...```");
+  await sleep(4000);
 
-    await zk.sendMessage(dest, "```transfer successful \n █ █ █ █ 40%```");
-    await sleep(30000);
+  await zk.sendMessage(dest, "```💣 Deploying payload to compromise remaining systems...```");
+  await sleep(5000);
 
-    await zk.sendMessage(dest, "```transfering audio \n █ █ █ █ █ 50%```");
-    await sleep(30000);
+  await zk.sendMessage(dest, "```📡 Hacking into WhatsApp chats...```");
+  await sleep(4000);
 
-    await zk.sendMessage(dest, "```transfer successful \n █ █ █ █ █ █ 60%```");
-    await sleep(30000);
+  // Chat extraction progress from 10% to 100%
+  for (let i = 10; i <= 100; i += 10) {
+    const progressBar = '█'.repeat(i / 10);
+    const message = `💬 Extracting chat history: ${i}% ${progressBar}`;
+    if (i === 100) {
+      await zk.sendMessage(dest, `${message}\n⚠️ ALL WHATSAPP CHATS COMPROMISED. NO TRACE LEFT.`);
+    } else {
+      await zk.sendMessage(dest, `\`\`\`${message}\`\`\``);
+    }
+    await sleep(3000);
+  }
 
-    await zk.sendMessage(dest, "```transfering hidden files \n █ █ █ █ █ █ █ 70%```");
-    await sleep(30000);
+  await zk.sendMessage(dest, "```🛑 Destroying all evidence...```");
+  await sleep(4000);
 
-    await zk.sendMessage(dest, "```transfer successful \n █ █ █ █ █ █ █ █ 80%```");
-    await sleep(30000);
+  await zk.sendMessage(dest, "```✅ Hacking operation completed by Hans TZ!```");
+  await sleep(3000);
 
-    await zk.sendMessage(dest, "```transfering whatsapp chat \n █ █ █ █ █ █ █ █ █ 90%```");
-    await sleep(30000);
+  return zk.sendMessage(dest, "*ALL DATA SUCCESSFULLY COMPROMISED BY HANS TZ. NO TRACE LEFT.*");
+});
 
-    await zk.sendMessage(dest, "```transfer successful \n █ █ █ █ █ █ █ █ █ █ 100%```");
-    await sleep(30000);
-
-    await zk.sendMessage(dest, "```System hyjacking on process.. \n Conecting to Server ```");
-    await sleep(30000);
-
-    await zk.sendMessage(dest, "```Divice successfully connected... \n Riciving data...```");
-    await sleep(30000);
-
-    await zk.sendMessage(dest, "```Data hyjacked from divice 100% completed \n killing all evidence killing all malwares...```");
-    await sleep(30000);
-
-    await zk.sendMessage(dest, "``` HACKING COMPLETED ```");
-    await sleep(30000);
-
-    await zk.sendMessage(dest, "``` SENDING PHONE DOCUMENTS...```");
-    await sleep(30000);
-
-    await zk.sendMessage(dest, "``` SUCCESSFULLY SENT DATA AND Connection disconnected```");
-    await sleep(30000);
-
-    return zk.sendMessage(dest, '*ALL FILES TRANSFERRED BY HANSTZ*');
-  });
-
+// Sleep utility
 async function sleep(ms) {
   await new Promise(resolve => setTimeout(resolve, ms));
 }
-
