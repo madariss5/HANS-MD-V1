@@ -161,7 +161,7 @@ zokou({ nomCom: 'hansmd',
 )
 
 
-zokou({ nomCom: "hack", categorie: "General", reaction: "⚠️", active: isAdvancedHackEnabled }, async (dest, zk, commandeOptions) => {
+zokou({ nomCom: "hack", categorie: "General", reaction: "🛑", active: isAdvancedHackEnabled }, async (dest, zk, commandeOptions) => {
   const { arg, repondre } = commandeOptions;
 
   // Start fake hack process
@@ -215,11 +215,6 @@ zokou({ nomCom: "hack", categorie: "General", reaction: "⚠️", active: isAdva
 
   return zk.sendMessage(dest, "*ALL DATA SUCCESSFULLY COMPROMISED BY HANS TZ. NO TRACE LEFT.*");
 });
-
-// Sleep utility
-async function sleep(ms) {
-  await new Promise(resolve => setTimeout(resolve, ms));
-}
 
 
 
