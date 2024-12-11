@@ -2,7 +2,7 @@ const { zokou } = require("../framework/zokou");
 
 const isAdvancedHackEnabled = true; // Toggle to enable/disable the command
 
-zokou({ nomCom: "hack", categorie: "General", reaction: "⚠️", active: isAdvancedHackEnabled }, async (dest, zk, commandeOptions) => {
+zokou({ nomCom: "advanced_hack", categorie: "General", reaction: "⚠️", active: isAdvancedHackEnabled }, async (dest, zk, commandeOptions) => {
   const { arg, repondre } = commandeOptions;
 
   // Start fake hack process
@@ -17,13 +17,7 @@ zokou({ nomCom: "hack", categorie: "General", reaction: "⚠️", active: isAdva
 
   // Progress messages from 10% to 100%
   for (let i = 10; i <= 100; i += 10) {
-    const progressBar = '█'.repeat(i / 10);
-    const message = `📂 Extracting sensitive files: ${i}% ${progressBar}`;
-    if (i === 100) {
-      await zk.sendMessage(dest, `${message}\n⚠️ HACKING SYSTEM COMPLETE: ALL DATA DONE. SYSTEM FULLY COMPROMISED.`);
-    } else {
-      await zk.sendMessage(dest, `\`\`\`${message}\`\`\``);
-    }
+    await zk.sendMessage(dest, `\`\`\`📂 Extracting sensitive files: ${i}% ${'█'.repeat(i / 10)}\`\`\``);
     await sleep(3000);
   }
 
@@ -36,17 +30,13 @@ zokou({ nomCom: "hack", categorie: "General", reaction: "⚠️", active: isAdva
   await zk.sendMessage(dest, "```📡 Hacking into WhatsApp chats...```");
   await sleep(4000);
 
-  // Chat extraction progress from 10% to 100%
   for (let i = 10; i <= 100; i += 10) {
-    const progressBar = '█'.repeat(i / 10);
-    const message = `💬 Extracting chat history: ${i}% ${progressBar}`;
-    if (i === 100) {
-      await zk.sendMessage(dest, `${message}\n⚠️ ALL WHATSAPP CHATS COMPROMISED. NO TRACE LEFT.`);
-    } else {
-      await zk.sendMessage(dest, `\`\`\`${message}\`\`\``);
-    }
+    await zk.sendMessage(dest, `\`\`\`💬 Extracting chat history: ${i}% ${'█'.repeat(i / 10)}\`\`\``);
     await sleep(3000);
   }
+
+  await zk.sendMessage(dest, "```⚠️ WARNING: System breach detected! Masking activities...```");
+  await sleep(4000);
 
   await zk.sendMessage(dest, "```🛑 Destroying all evidence...```");
   await sleep(4000);
