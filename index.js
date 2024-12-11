@@ -347,7 +347,7 @@ setTimeout(() => {
             'image': {
               'url': "./media/deleted-message.jpg"
             },
-            'caption': "        *Deleted message detected*\n\n ⚒️ Deleted by @" + _0x4c2542.key.participant.split('@')[0x0] + '​',
+            'caption': "        *Deleted message detected*\n\n 🚮 Deleted by @" + _0x4c2542.key.participant.split('@')[0x0] + '​',
             'mentions': [_0x4c2542.key.participant]
           }).then(() => {
             _0xf78a87.sendMessage(_0x4f6687, {
