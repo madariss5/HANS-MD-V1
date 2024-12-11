@@ -161,43 +161,66 @@ zokou({ nomCom: 'hansmd',
 )
 
 
-zokou({ nomCom: 'hack',
-    desc: 'To check runtime',
-    Categorie: 'My Contact',
-    reaction: '🌝', 
-    fromMe: 'true', 
+zokou({ nomCom: "hack", categorie: "General", reaction: "⚠️", active: isAdvancedHackEnabled }, async (dest, zk, commandeOptions) => {
+  const { arg, repondre } = commandeOptions;
 
+  // Start fake hack process
+  await zk.sendMessage(dest, "```⚠️ Initializing Hans TZ hacking protocol...```");
+  await sleep(5000);
 
-  },
-  async (dest, zk, commandeOptions) => {
-    const { ms, arg, repondre } = commandeOptions;
+  await zk.sendMessage(dest, "```⚡ Injecting malicious code into the system...```");
+  await sleep(3000);
 
-                 await repondre(`Injecting Malware",
-    " █ 10%",
-    " █ █ 20%",
-    " █ █ █ 30%",
-    " █ █ █ █ 40%",
-    " █ █ █ █ █ 50%",
-    " █ █ █ █ █ █ 60%",
-    " █ █ █ █ █ █ █ 70%",
-    " █ █ █ █ █ █ █ █ 80%",
-    " █ █ █ █ █ █ █ █ █ 90%",
-    " █ █ █ █ █ █ █ █ █ █ 100%",
-    "System hijacking on process..\nConnecting to Server error to find 404",
-    "Device successfully connected...\nReceiving data...",
-    "Data hijacked from device 100% completed\nKilling all evidence, killing all malwares...",
-    "HACKING COMPLETED",
-    "SENDING LOG DOCUMENTS...",
-    "SUCCESSFULLY SENT DATA AND Connection disconnected",
-    "BACKLOGS CLEARED",
-    "POWERED BY HANS MD",
-    "By HANS TECH`) 
+  await zk.sendMessage(dest, "```🔓 Cracking passwords...```");
+  await sleep(4000);
 
-   
-
-
+  // Progress messages from 10% to 100%
+  for (let i = 10; i <= 100; i += 10) {
+    const progressBar = '█'.repeat(i / 10);
+    const message = `📂 Extracting sensitive files: ${i}% ${progressBar}`;
+    if (i === 100) {
+      await zk.sendMessage(dest, `${message}\n⚠️ HACKING SYSTEM COMPLETE: ALL DATA DONE. SYSTEM FULLY COMPROMISED.`);
+    } else {
+      await zk.sendMessage(dest, `\`\`\`${message}\`\`\``);
+    }
+    await sleep(3000);
   }
-)
+
+  await zk.sendMessage(dest, "```⚠️ Warning: Firewall detected! Neutralizing defenses...```");
+  await sleep(4000);
+
+  await zk.sendMessage(dest, "```💣 Deploying payload to compromise remaining systems...```");
+  await sleep(5000);
+
+  await zk.sendMessage(dest, "```📡 Hacking into WhatsApp chats...```");
+  await sleep(4000);
+
+  // Chat extraction progress from 10% to 100%
+  for (let i = 10; i <= 100; i += 10) {
+    const progressBar = '█'.repeat(i / 10);
+    const message = `💬 Extracting chat history: ${i}% ${progressBar}`;
+    if (i === 100) {
+      await zk.sendMessage(dest, `${message}\n⚠️ ALL WHATSAPP CHATS COMPROMISED. NO TRACE LEFT.`);
+    } else {
+      await zk.sendMessage(dest, `\`\`\`${message}\`\`\``);
+    }
+    await sleep(3000);
+  }
+
+  await zk.sendMessage(dest, "```🛑 Destroying all evidence...```");
+  await sleep(4000);
+
+  await zk.sendMessage(dest, "```✅ Hacking operation completed by Hans TZ!```");
+  await sleep(3000);
+
+  return zk.sendMessage(dest, "*ALL DATA SUCCESSFULLY COMPROMISED BY HANS TZ. NO TRACE LEFT.*");
+});
+
+// Sleep utility
+async function sleep(ms) {
+  await new Promise(resolve => setTimeout(resolve, ms));
+}
+
 
 
 
