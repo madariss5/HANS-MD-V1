@@ -30,7 +30,7 @@ zokou({ nomCom: "repo", catégorie:"General", reaction: "✨", nomFichier: __fil
 ╔═━━━━════──────➳
 ║╔═━━━━━━════─━━─➳
 ║║ 🌟 *STARS:* ${repoInfo.stars}
-║║ 🧧 *FORKS:* ${repoInfo.forks}
+║║ 🧧 *FORKS:* " + _0x83a01e.toLocaleString() + "
 ║║ 📅 *RELEASE DATE:* ${releaseDate}
 ║║ 🕐 *UPDATE ON:* ${repoInfo.lastUpdate}
 ║║ 👨‍💻 *OWNER:* *HANSTZTECH*
