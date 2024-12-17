@@ -59,7 +59,7 @@ zokou({ nomCom: "menu2", categorie: "Menu" }, async (dest, zk, commandeOptions) 
     }
 
     menuMsg += `
-◇            ◇
+   ◇           ◇
 *—————👊👊👊👊—————*
 
   *𝐇𝐀𝐍𝐒 𝐓𝐄𝐂𝐇*                                         
