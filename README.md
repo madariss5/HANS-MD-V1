@@ -1,17 +1,17 @@
-# HANS-MD
+# HANS-MD  
 
-[![HANS-MD Logo](https://files.catbox.moe/cnkqte.webp)](https://whatsapp.com/channel/0029VasiOoR3bbUw5aV4qB31)
+[![HANS-MD Logo](https://files.catbox.moe/cnkqte.webp)](https://whatsapp.com/channel/0029VasiOoR3bbUw5aV4qB31)  
 
-HANS-MD is an advanced WhatsApp bot built to make your WhatsApp experience more interactive and efficient. Designed for seamless integration, HANS-MD allows users to perform tasks with ease and customization.
+HANS-MD is an advanced gaming bot designed to bring interactive and fun gameplay to WhatsApp users. Whether you enjoy multiplayer challenges, trivia, or puzzles, HANS-MD has something exciting for everyone.  
 
 ---
 
-## 🌟 Features
+## 🌟 Features  
 
-- Advanced bot functionalities for WhatsApp.  
-- Easy to use with session ID integration.  
-- Deployable on platforms like Heroku.  
-- Regular updates and support via WhatsApp and YouTube.
+- Multiplayer and single-player gaming modes.  
+- Quizzes, puzzles, and trivia to test your skills.  
+- Score tracking and leaderboard integration.  
+- Easy deployment and seamless updates.  
 
 ---
 
@@ -61,3 +61,12 @@ For any issues or to stay updated, use the options below:
 
 ---
 
+## ⭐ Contribution  
+
+Feel free to contribute to the project by forking the repository and submitting a pull request. Don't forget to star the repo if you find it useful!  
+
+---
+
+### License  
+
+This project is licensed under the MIT License.  
