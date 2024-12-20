@@ -61,28 +61,3 @@ For any issues or to stay updated, use the options below:
 
 ---
 
-## 🚀 Deployment Instructions  
-
-1. **Star and Fork the Repository**  
-   Start by visiting the [GitHub repository](https://github.com/Mrhanstz/HANS-MD).  
-
-2. **Generate Session ID**  
-   Use the [Session ID Generator](https://hans-md-session-id-sowl.onrender.com/) to generate your session.  
-
-3. **Create Account on Heroku**  
-   Sign up or log in to [Heroku](https://heroku.com) if you don’t already have an account.  
-
-4. **Deploy to Heroku**  
-   Use the [Deployment Template](https://dashboard.heroku.com/new?template=https://github.com/Mrhannstz/HANS-MD) to deploy your bot quickly.
-
----
-
-## ⭐ Contribution  
-
-Feel free to contribute to the project by forking the repository and submitting a pull request. Don't forget to star the repo if you find it useful!
-
----
-
-### License  
-
-This project is licensed under the MIT License.
