@@ -2,7 +2,7 @@
 
 [![HANS-MD Logo](https://files.catbox.moe/cnkqte.webp)](https://whatsapp.com/channel/0029VasiOoR3bbUw5aV4qB31)
 
-<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&random=false&width=435&lines=𝑻𝑯𝑰𝑺+𝐈𝐒+𝐻𝐴𝑁𝑆-𝐌𝐃+𝑴𝑨𝑫𝑬+𝑩𝒀+𝐇𝐀𝐍𝐒𝐓𝐙+𝐓𝐄𝐂𝐇" alt="Typing SVG" /></a>
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&random=false&width=435&lines=𝑻𝑯𝑰𝑺+𝐈𝐒+𝐻𝐴𝑁𝑆-𝐌𝐃+𝑴𝑨𝑫𝑬+𝑩𝒀+𝐇𝐀𝐍𝐒𝐓𝐙+🇹🇿" alt="Typing SVG" /></a>
 
   🌟 Features 
 
