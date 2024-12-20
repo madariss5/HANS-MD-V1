@@ -1,10 +1,8 @@
-🙏 HANS-MD 🙏
+   🙏 ℍ𝔸ℕ𝕊 𝕄𝔻 𝕄𝔸𝔻𝔼 𝔹𝕐 ℍ𝔸ℕ𝕊𝕋ℤ 🌟 
 
 [![HANS-MD Logo](https://files.catbox.moe/cnkqte.webp)](https://whatsapp.com/channel/0029VasiOoR3bbUw5aV4qB31)
 
-HANS-MD is an advanced WhatsApp bot built to make your WhatsApp experience more interactive and efficient. Designed for seamless integration, HANS-MD allows users to perform tasks with ease and customization.
-
----
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&random=false&width=435&lines=𝑻𝑯𝑰𝑺+𝐈𝐒+𝐻𝐴𝑁𝑆-𝐌𝐃+𝑴𝑨𝑫𝑬+𝑩𝒀+𝐇𝐀𝐍𝐒𝐓𝐙+𝐓𝐄𝐂𝐇" alt="Typing SVG" /></a>
 
   🌟 Features 
 
@@ -18,7 +16,7 @@ HANS-MD is an advanced WhatsApp bot built to make your WhatsApp experience more 
 👉 🔗 Follow This steps
 
 1.👇 Star and Fork This Repo  
-[![Star and Fork This Repo](https://img.shields.io/static/v1?label=Star%20%26%20Fork%20This%20Repo&message=GitHub&color=181717&style=for-the-badge&logo=github&logoColor=white)](https://github.com/Mrhanstz/HANS-MD)  
+[![Star and Fork This Repo](https://img.shields.io/static/v1?label=Star%20%26%20Fork%20This%20Repo&message=GitHub&color=181717&style=for-the-badge&logo=github&logoColor=white)](https://github.com/kinghanstz/HANS-MD-V1)  
 
 <br>
 
@@ -57,7 +55,7 @@ For any issues or to stay updated, use the options below:
 <br>
 
 👇 Follow My GitHub 🤝
-[![Follow My GitHub](https://img.shields.io/static/v1?label=Follow%20My%20GitHub&message=GitHub&color=181717&style=for-the-badge&logo=github&logoColor=white)](https://github.com/Mrhanstz)  
+[![Follow My GitHub](https://img.shields.io/static/v1?label=Follow%20My%20GitHub&message=GitHub&color=181717&style=for-the-badge&logo=github&logoColor=white)](https://github.com/kinghanstz)  
 
 
 ## ⭐ thanks for your choosing HANS-MD🙏
